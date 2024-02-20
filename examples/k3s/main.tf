@@ -16,13 +16,13 @@ terraform {
   }
   backend "kubernetes" {
     secret_suffix = "state"
-    config_path   = "/home/vscode/.kube/config"
+    config_path   = "~/.kube/dev3.yaml"
   }
 }
 
 variable "kubeconfig_path" {
   type    = string
-  default = "/home/vscode/.kube/config"
+  default = "~/.kube/dev3.yaml"
 }
 
 provider "kustomization" {

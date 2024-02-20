@@ -90,6 +90,7 @@
 | <a name="input_enable_external_secrets"></a> [enable\_external\_secrets](#input\_enable\_external\_secrets) | n/a | `bool` | `false` | no |
 | <a name="input_enable_gatekeeper"></a> [enable\_gatekeeper](#input\_enable\_gatekeeper) | n/a | `bool` | `false` | no |
 | <a name="input_enable_gpu_operator"></a> [enable\_gpu\_operator](#input\_enable\_gpu\_operator) | n/a | `bool` | `false` | no |
+| <a name="input_enable_istio_resources"></a> [enable\_istio\_resources](#input\_enable\_istio\_resources) | Enable istio resources for clusters with pre-existing istio | `bool` | `true` | no |
 | <a name="input_enable_kserve"></a> [enable\_kserve](#input\_enable\_kserve) | n/a | `bool` | `false` | no |
 | <a name="input_enable_kubeflow_pipelines"></a> [enable\_kubeflow\_pipelines](#input\_enable\_kubeflow\_pipelines) | n/a | `bool` | `false` | no |
 | <a name="input_enable_kuberay"></a> [enable\_kuberay](#input\_enable\_kuberay) | n/a | `bool` | `false` | no |

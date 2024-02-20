@@ -15,4 +15,4 @@ RUN sudo apt-get update -y && sudo apt-get install -y \
   iputils-ping \
   traceroute \
   kmod
-ENV PATH="/workspaces/shadowfax/bin:/home/vscode/.local/bin/:$PATH"
+ENV PATH="/home/vscode/.local/bin/:$PATH"

@@ -90,28 +90,28 @@ data "kustomization_overlay" "istio_install" {
   ]
 
 
-  dynamic "patches" {
-    for_each = var.enable_external_dns ? [1] : []
-    content {
-      target {
-        kind      = "Service"
-        name      = "istio-ingressgateway"
-        namespace = "istio-system"
-      }
-      patch = <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: istio-ingressgateway
-  namespace: istio-system
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: ${var.hostname}
-    external-dns.alpha.kubernetes.io/ttl: "60" #optional
-spec:
-  type: LoadBalancer
-EOF
-    }
-  }
+  #   dynamic "patches" {
+  #     for_each = var.enable_external_dns ? [1] : []
+  #     content {
+  #       target {
+  #         kind      = "Service"
+  #         name      = "istio-ingressgateway"
+  #         namespace = "istio-system"
+  #       }
+  #       patch = <<EOF
+  # apiVersion: v1
+  # kind: Service
+  # metadata:
+  #   name: istio-ingressgateway
+  #   namespace: istio-system
+  #   annotations:
+  #     external-dns.alpha.kubernetes.io/hostname: ${var.hostname}
+  #     external-dns.alpha.kubernetes.io/ttl: "60" #optional
+  # spec:
+  #   type: LoadBalancer
+  # EOF
+  #     }
+  # }
 }
 
 module "istio_install" {
@@ -127,7 +127,7 @@ data "kustomization_overlay" "oidc_authservice" {
     name     = "oidc-authservice-parameters"
     behavior = "merge"
     literals = [
-      "OIDC_PROVIDER=${var.protocol}${var.hostname}${var.port}/dex"
+      # "OIDC_PROVIDER=${var.protocol}${var.hostname}${var.port}/dex"
     ]
   }
 
@@ -157,7 +157,7 @@ metadata:
   namespace: auth
 data:
   config.yaml: |-
-    issuer: ${local.base_url}/dex
+    issuer: http://dex.auth.svc.cluster.local:5556/dex
     storage:
       type: kubernetes
       config:
@@ -237,10 +237,12 @@ module "knative_serving" {
 }
 
 data "kustomization_build" "cluster_local_gateway" {
-  path = "${path.module}/submodules/manifests/common/istio-1-17/cluster-local-gateway/base"
+  count = var.enable_kserve ? 1 : 0
+  path  = "${path.module}/submodules/manifests/common/istio-1-17/cluster-local-gateway/base"
 }
 
 module "cluster_local_gateway" {
+  count  = var.enable_kserve ? 1 : 0
   source = "./modules/kust"
   build  = data.kustomization_build.cluster_local_gateway
   depends_on = [
@@ -279,33 +281,41 @@ module "kubeflow_roles" {
 
 ## kubeflow istio resources
 
+variable "enable_istio_resources" {
+  type        = bool
+  default     = true
+  description = "Enable istio resources for clusters with pre-existing istio"
+}
+
 data "kustomization_overlay" "kubeflow_istio_resources" {
+  count = var.enable_istio_resources ? 1 : 0
   resources = [
     "${path.module}/overlays/istio-resources"
   ]
-  patches {
-    target {
-      kind      = "Certificate"
-      name      = "gateway-cert"
-      namespace = "istio-system"
-    }
-    patch = <<EOF
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: gateway-cert
-  namespace: istio-system
-spec:
-  commonName: ${var.hostname}
-  dnsNames:
-    - ${var.hostname}
-EOF
-  }
+  #   patches {
+  #     target {
+  #       kind      = "Certificate"
+  #       name      = "gateway-cert"
+  #       namespace = "istio-system"
+  #     }
+  #     patch = <<EOF
+  # apiVersion: cert-manager.io/v1
+  # kind: Certificate
+  # metadata:
+  #   name: gateway-cert
+  #   namespace: istio-system
+  # spec:
+  #   commonName: ${var.hostname}
+  #   dnsNames:
+  #     - ${var.hostname}
+  # EOF
+  #   }
 }
 
 module "kubeflow_istio_resources" {
+  count  = var.enable_istio_resources ? 1 : 0
   source = "./modules/kust"
-  build  = data.kustomization_overlay.kubeflow_istio_resources
+  build  = data.kustomization_overlay.kubeflow_istio_resources[0]
   depends_on = [
     module.kubeflow_roles
   ]

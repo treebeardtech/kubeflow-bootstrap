@@ -66,7 +66,7 @@
     },
     "ghcr.io/rio/features/k9s:1": {
     },
-    "ghcr.io/devcontainers-contrib/features/vercel-cli:1": {
+    "ghcr.io/devcontainers-contrib/features/istioctl:1": {
     },
   },
   "mounts": [

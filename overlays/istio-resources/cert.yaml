@@ -1,26 +1,26 @@
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: treebeard-issuer
-  namespace: istio-system
-spec:
-  acme:
-    email: <patch me>
-    preferredChain: ''
-    privateKeySecretRef:
-      name: treebeard-issuer-account-key
-    server: https://acme-v02.api.letsencrypt.org/directory
-    solvers:
-    - dns01:
-        route53:
-          region: <patch me>
-          hostedZoneID: <patch me>
-          accessKeyIDSecretRef:
-            name: aws-credentials
-            key: aws_access_key_id
-          secretAccessKeySecretRef:
-            name: aws-credentials
-            key: aws_secret_access_key
+# apiVersion: cert-manager.io/v1
+# kind: Issuer
+# metadata:
+#   name: treebeard-issuer
+#   namespace: istio-system
+# spec:
+#   acme:
+#     email: <patch me>
+#     preferredChain: ''
+#     privateKeySecretRef:
+#       name: treebeard-issuer-account-key
+#     server: https://acme-v02.api.letsencrypt.org/directory
+#     solvers:
+#     - dns01:
+#         route53:
+#           region: <patch me>
+#           hostedZoneID: <patch me>
+#           accessKeyIDSecretRef:
+#             name: aws-credentials
+#             key: aws_access_key_id
+#           secretAccessKeySecretRef:
+#             name: aws-credentials
+#             key: aws_secret_access_key
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
