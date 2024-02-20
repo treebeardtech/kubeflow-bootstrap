@@ -1,8 +1,3 @@
-variable "owner_email" {
-  description = "The email of the owner of the Kubeflow deployment"
-  type        = string
-}
-
 data "kustomization_overlay" "kubeflow_profile" {
   resources = [
     "${path.module}/overlays/profile"
@@ -21,7 +16,7 @@ metadata:
 spec:
   owner:
     kind: User
-    name: ${var.owner_email}
+    name: user@example.com
 EOF
   }
 }

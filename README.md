@@ -25,6 +25,7 @@
 | <a name="module_dex"></a> [dex](#module\_dex) | ./modules/kust | n/a |
 | <a name="module_istio_crds"></a> [istio\_crds](#module\_istio\_crds) | ./modules/kust | n/a |
 | <a name="module_istio_install"></a> [istio\_install](#module\_istio\_install) | ./modules/kust | n/a |
+| <a name="module_istio_namespace"></a> [istio\_namespace](#module\_istio\_namespace) | ./modules/kust | n/a |
 | <a name="module_jupyter_web_app"></a> [jupyter\_web\_app](#module\_jupyter\_web\_app) | ./modules/kust | n/a |
 | <a name="module_knative_serving"></a> [knative\_serving](#module\_knative\_serving) | ./modules/kust | n/a |
 | <a name="module_kserve"></a> [kserve](#module\_kserve) | ./modules/kust | n/a |
@@ -48,7 +49,6 @@
 
 | Name | Type |
 |------|------|
-| [helm_release.external_dns](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.external_secrets](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.gatekeeper](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.gpu_operator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
@@ -60,6 +60,7 @@
 | [kustomization_build.cert_manager](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
 | [kustomization_build.cluster_local_gateway](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
 | [kustomization_build.istio_crds](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
+| [kustomization_build.istio_namespace](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
 | [kustomization_build.jupyter_web_app](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
 | [kustomization_build.kserve](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
 | [kustomization_build.kubeflow_issuer](https://registry.terraform.io/providers/kbst/kustomization/latest/docs/data-sources/build) | data source |
@@ -85,7 +86,6 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | n/a | `string` | `"eu-west-1"` | no |
 | <a name="input_enable_external_dns"></a> [enable\_external\_dns](#input\_enable\_external\_dns) | n/a | `bool` | `true` | no |
 | <a name="input_enable_external_secrets"></a> [enable\_external\_secrets](#input\_enable\_external\_secrets) | n/a | `bool` | `false` | no |
 | <a name="input_enable_gatekeeper"></a> [enable\_gatekeeper](#input\_enable\_gatekeeper) | n/a | `bool` | `false` | no |
@@ -95,9 +95,7 @@
 | <a name="input_enable_kuberay"></a> [enable\_kuberay](#input\_enable\_kuberay) | n/a | `bool` | `false` | no |
 | <a name="input_enable_mlflow"></a> [enable\_mlflow](#input\_enable\_mlflow) | n/a | `bool` | `false` | no |
 | <a name="input_enable_tensorboard"></a> [enable\_tensorboard](#input\_enable\_tensorboard) | n/a | `bool` | `false` | no |
-| <a name="input_github"></a> [github](#input\_github) | n/a | <pre>object({<br>    client_id     = string<br>    client_secret = string<br>    org           = string<br>  })</pre> | n/a | yes |
 | <a name="input_hostname"></a> [hostname](#input\_hostname) | n/a | `string` | `"localhost"` | no |
-| <a name="input_owner_email"></a> [owner\_email](#input\_owner\_email) | The email of the owner of the Kubeflow deployment | `string` | n/a | yes |
 | <a name="input_port"></a> [port](#input\_port) | n/a | `string` | `"8080"` | no |
 | <a name="input_protocol"></a> [protocol](#input\_protocol) | n/a | `string` | `"http://"` | no |
 

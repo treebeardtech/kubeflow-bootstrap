@@ -30,13 +30,6 @@ variable "port" {
   default = "8080"
 }
 
-variable "github" {
-  type = object({
-    client_id     = string
-    client_secret = string
-    org           = string
-  })
-}
 
 locals {
   base_url = "${var.protocol}${var.hostname}${var.port}"
@@ -78,47 +71,18 @@ module "istio_crds" {
   ]
 }
 
-# data "kustomization_build" "istio_namespace" {
-#   path = "${path.module}/submodules/manifests/common/istio-1-17/istio-namespace/base"
-# }
+data "kustomization_build" "istio_namespace" {
+  path = "${path.module}/submodules/manifests/common/istio-1-17/istio-namespace/base"
+}
 
-# module "istio_namespace" {
-#   source = "./modules/kust"
-#   build  = data.kustomization_build.istio_namespace
-#   depends_on = [
-#     module.istio_crds
-#   ]
-# }
-
-resource "helm_release" "external_dns" {
-  count      = var.enable_external_dns ? 1 : 0
-  name       = "external-dns"
-  chart      = "external-dns"
-  repository = "https://kubernetes-sigs.github.io/external-dns/"
-  namespace  = "istio-system"
-  version    = "1.14.0"
-  values = [
-    <<-EOF
-    provider: aws
-    env:
-      - name: AWS_REGION
-        value: ${var.aws_region}
-      - name: AWS_ACCESS_KEY_ID
-        valueFrom:
-          secretKeyRef:
-            name: aws-credentials
-            key: aws_access_key_id
-      - name: AWS_SECRET_ACCESS_KEY
-        valueFrom:
-          secretKeyRef:
-            name: aws-credentials
-            key: aws_secret_access_key
-    EOF
-  ]
+module "istio_namespace" {
+  source = "./modules/kust"
+  build  = data.kustomization_build.istio_namespace
   depends_on = [
     module.istio_crds
   ]
 }
+
 
 data "kustomization_overlay" "istio_install" {
   resources = [
@@ -154,7 +118,7 @@ module "istio_install" {
   source = "./modules/kust"
   build  = data.kustomization_overlay.istio_install
   depends_on = [
-    helm_release.external_dns
+    module.istio_namespace
   ]
 }
 
@@ -206,32 +170,20 @@ data:
     oauth2:
       skipApprovalScreen: false
     enablePasswordDB: true
-    staticPasswords: []
-    # - email: user@example.com
-    #   hash: $2y$12$4K/VkmDd1q1Orb3xAt82zu8gk7Ad6ReFR4LCP9UeYE90NLiN9Df72
-    #   # https://github.com/dexidp/dex/pull/1601/commits
-    #   # FIXME: Use hashFromEnv instead
-    #   username: user
-    #   userID: "15841185641784"
+    staticPasswords:
+    - email: user@example.com
+      hash: $2y$12$4K/VkmDd1q1Orb3xAt82zu8gk7Ad6ReFR4LCP9UeYE90NLiN9Df72
+      # https://github.com/dexidp/dex/pull/1601/commits
+      # FIXME: Use hashFromEnv instead
+      username: user
+      userID: "15841185641784"
     staticClients:
     # https://github.com/dexidp/dex/pull/1664
     - idEnv: OIDC_CLIENT_ID
       redirectURIs: ["/authservice/oidc/callback"]
       name: 'Dex Login Application'
       secretEnv: OIDC_CLIENT_SECRET
-    connectors:
-    - type: github
-      id: github
-      name: GitHub
-      config:
-        clientID: ${var.github.client_id}
-        clientSecret: ${var.github.client_secret}
-        redirectURI: ${local.base_url}/dex/callback
-        orgs:
-        - name: ${var.github.org}
-        loadAllGroups: false
-        teamNameField: slug
-        useLoginAsID: true
+    connectors: []
 EOF
   }
 }

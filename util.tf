@@ -116,8 +116,3 @@ variable "enable_external_dns" {
   type    = bool
   default = true
 }
-
-variable "aws_region" {
-  type    = string
-  default = "eu-west-1"
-}
