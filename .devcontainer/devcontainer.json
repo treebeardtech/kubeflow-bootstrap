@@ -1,0 +1,88 @@
+{
+  "postCreateCommand": "make post-create",
+  "postStartCommand": "make post-start",
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "python.pythonPath": "/usr/local/bin/python"
+      },
+      "extensions": [
+        "ms-python.python",
+        "mutantdino.resourcemonitor",
+        "github.copilot",
+        "github.copilot-chat"
+      ]
+    }
+  },
+  "build": {
+    "dockerfile": "Dockerfile",
+    "target": "devcontainer",
+    "context": "..",
+    "args": {
+      "VARIANT": "3.11",
+      "INSTALL_NODE": "true",
+      "NODE_VERSION": "18.7"
+    }
+  },
+  "runArgs": [ // maybe remove this
+    "--network=host",
+  ],
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/cloudflared:1": {},
+    "ghcr.io/devcontainers/features/go:1": {
+    },
+    "ghcr.io/devcontainers/features/aws-cli": {
+      "version": "2.6.3"
+    },
+    "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
+      "omzPlugins": "zsh-syntax-highlighting zsh-autosuggestions"
+    },
+    "ghcr.io/devcontainers-contrib/features/starship-homebrew:1": {},
+    "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {
+      "version": "2.59.0"
+    },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.6.2"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers-contrib/features/kind:1": {},
+    "ghcr.io/devcontainers-contrib/features/packer-asdf:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "1.25.6"
+    },
+    "ghcr.io/rio/features/k3d:1": {},
+    // "ghcr.io/devcontainers/features/nix:1": {},
+    "ghcr.io/devcontainers-contrib/features/infracost:1": {
+      "version": "0.10.30"
+    },
+    "ghcr.io/dhoeric/features/google-cloud-cli:1": {
+    },
+    "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+    },
+    "ghcr.io/rio/features/k9s:1": {
+    },
+    "ghcr.io/devcontainers-contrib/features/vercel-cli:1": {
+    },
+  },
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    // "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.zsh_history,target=/home/vscode/.zsh_history,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.zshrc,target=/home/vscode/.zshrc,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.zshenv,target=/home/vscode/.zshenv,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.terraform.d,target=/home/vscode/.terraform.d,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/infracost,target=/home/vscode/.config/infracost,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/gcloud,target=/home/vscode/.config/gcloud,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/starship.toml,target=/home/vscode/.config/starship.toml,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,consistency=cached",
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+  ]
+}
