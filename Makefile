@@ -10,10 +10,8 @@ post-start:
 	./scripts/setup-krew.sh
 
 docs:
-	terraform-docs markdown ./modules/treebeardkf > ./modules/treebeardkf/README.md
-	go install github.com/norwoodj/helm-docs/cmd/helm-docs@latest
-	helm-docs
+	terraform-docs markdown . > ./README.md
 
 fmt:
-	terraform fmt **/*modules
+	terraform fmt .
 .PHONY: build
