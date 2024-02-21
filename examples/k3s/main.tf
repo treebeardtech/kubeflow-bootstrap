@@ -14,29 +14,26 @@ terraform {
       version = "~> 2.25.2"
     }
   }
-  backend "kubernetes" {
-    secret_suffix = "state"
-    config_path   = "~/.kube/dev3.yaml"
+  backend "local" {
   }
 }
 
-variable "kubeconfig_path" {
+variable "kubeconfig" {
   type    = string
-  default = "~/.kube/dev3.yaml"
 }
 
 provider "kustomization" {
-  kubeconfig_path = var.kubeconfig_path
+  kubeconfig_path = var.kubeconfig
 }
 
 provider "helm" {
   kubernetes {
-    config_path = var.kubeconfig_path
+    config_path = var.kubeconfig
   }
 }
 
 provider "kubernetes" {
-  config_path = var.kubeconfig_path
+  config_path = var.kubeconfig
 }
 
 module "treebeardkf" {
