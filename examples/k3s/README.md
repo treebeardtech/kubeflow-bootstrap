@@ -6,7 +6,9 @@ This example will help you try Treebeard Kubeflow in your development environmen
 
 * 2 cpus and 16G memory in your dev environment (local or via SSH)
 * Higher limits for file handlers (this gets reset on system restart)
+    
     ```sh
+    # Note that these must be run outside of a container
     sudo sysctl fs.inotify.max_user_instances=1280
     sudo sysctl fs.inotify.max_user_watches=655360
     ```
@@ -17,9 +19,10 @@ This example will help you try Treebeard Kubeflow in your development environmen
     docker run -it --rm hello-world
     ```
 
-* A recent terraform version e.g. v1.6.2
-* A recent helm e.g. v3.14.1
-* A recent k3d version e.g. v5.6.0
+* some CLI tools on your PATH
+  * A recent terraform version e.g. v1.6.2: `terraform -version`
+  * A recent helm e.g. v3.14.1: `helm version`
+  * A recent k3d version e.g. v5.6.0 `k3d --version`
 
 ### Optional Pre-reqs
 
@@ -39,6 +42,7 @@ First, let's setup a single node k3d cluster:
 
 ```sh
 export KUBECONFIG=~/.kube/demo.yaml
+rm $KUBECONFIG # remove if exists from previous attempts
 k3d cluster create demo
 ```
 
@@ -49,6 +53,13 @@ kubectl get nodes
 ```
 
 ### 2. Install Treebeard Kubeflow
+
+Clone this example into your development environment
+
+```sh
+git clone -b v0.0.3 --recurse-submodules https://github.com/treebeardtech/terraform-kubernetes-kubeflow.git
+cd terraform-kubernetes-kubeflow/examples/k3s
+```
 
 Initialise the terraform environment
 
@@ -84,3 +95,9 @@ Try creating a Jupyter Notebook server with 0.1 CPU via the web UI.
 This shows you how you can start developing Treebeard Kubeflow into your infrastructure.
 
 Customisation and deployment for your team is another matter and will be discussed in subsequent tutorials.
+
+## Cleanup
+
+```sh
+k3d cluster delete demo
+```
