@@ -36,3 +36,5 @@ terraform.rc
 examples/**/*.lock.hcl
 
 scratch
+
+tfout.log
