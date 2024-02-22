@@ -1,3 +1,11 @@
+# Kubeflow Terraform EKS Example
+
+* We recommend deploying the eks cluster alone then adding kubeflow
+* When eks is ready you can use the aws CLI to setup kubectl
+    ```sh
+    aws eks update-kubeconfig --name cluster --region us-east-1
+    ```
+
 ## Requirements
 
 | Name | Version |

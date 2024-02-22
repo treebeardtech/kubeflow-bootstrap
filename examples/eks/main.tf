@@ -55,7 +55,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.2"
 
-  name                    = "kubesky-eks-dev-vpc"
+  name                    = "kubeflow-vpc"
   cidr                    = local.cloud_cidr
   map_public_ip_on_launch = true
 
