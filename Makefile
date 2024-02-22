@@ -11,7 +11,10 @@ post-start:
 
 docs:
 	terraform-docs markdown . > ./README.md
+	terraform-docs markdown examples/k3s > examples/k3s/README.md
+	terraform-docs markdown examples/eks > examples/eks/README.md
+	terraform-docs markdown examples/aks > examples/aks/README.md
 
 fmt:
-	terraform fmt .
+	terraform fmt . modules/* examples/*
 .PHONY: build

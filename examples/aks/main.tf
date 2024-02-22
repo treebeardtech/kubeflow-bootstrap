@@ -48,7 +48,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.cluster_ca_certificate)
 }
 
-# Helm provider configuration
 provider "helm" {
   kubernetes {
     host                   = azurerm_kubernetes_cluster.aks.kube_config.0.host
@@ -62,11 +61,11 @@ provider "kustomization" {
   kubeconfig_raw = azurerm_kubernetes_cluster.aks.kube_config_raw
 }
 
-# module "treebeardkf" {
-#   source = "../.."
-#   hostname    = "kf.example.com"
-#   protocol    = "https://"
-#   port        = ""
-#   enable_kuberay       = false
-#   enable_mlflow        = false
-# }
+module "treebeardkf" {
+  source         = "../.."
+  hostname       = "kf.example.com"
+  protocol       = "https://"
+  port           = ""
+  enable_kuberay = false
+  enable_mlflow  = false
+}

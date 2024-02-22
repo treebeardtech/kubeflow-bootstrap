@@ -19,7 +19,7 @@ terraform {
 }
 
 variable "kubeconfig" {
-  type    = string
+  type = string
 }
 
 provider "kustomization" {
@@ -37,10 +37,10 @@ provider "kubernetes" {
 }
 
 module "treebeardkf" {
-  source = "../.."
-  hostname    = "kf.example.com"
-  protocol    = "https://"
-  port        = ""
-  enable_kuberay       = false
-  enable_mlflow        = false
+  source         = "../.."
+  hostname       = "kf.example.com"
+  protocol       = "https://"
+  port           = ""
+  enable_kuberay = false
+  enable_mlflow  = false
 }

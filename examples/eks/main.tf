@@ -93,11 +93,11 @@ module "eks" {
       cidr_blocks = ["0.0.0.0/0"]
     },
     istio_injection_webhook = {
-      description                = "Allow istio injection"
-      protocol                   = "tcp"
-      from_port                  = "15017"
-      to_port                    = "15017"
-      type                       = "ingress"
+      description                   = "Allow istio injection"
+      protocol                      = "tcp"
+      from_port                     = "15017"
+      to_port                       = "15017"
+      type                          = "ingress"
       source_cluster_security_group = true
     }
   }
@@ -116,8 +116,8 @@ provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
   exec {
-    command = "aws"
-    api_version="client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    api_version = "client.authentication.k8s.io/v1beta1"
     args = [
       "--region",
       var.aws_region,
@@ -127,7 +127,7 @@ provider "kubernetes" {
       module.eks.cluster_name
     ]
     env = {
-      name = "AWS_PROFILE"
+      name  = "AWS_PROFILE"
       value = var.aws_profile
     }
   }
@@ -138,8 +138,8 @@ provider "helm" {
     host                   = module.eks.cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
     exec {
-      command = "aws"
-      api_version="client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      api_version = "client.authentication.k8s.io/v1beta1"
       args = [
         "--region",
         var.aws_region,
@@ -149,7 +149,7 @@ provider "helm" {
         module.eks.cluster_name
       ]
       env = {
-        name = "AWS_PROFILE"
+        name  = "AWS_PROFILE"
         value = var.aws_profile
       }
     }
@@ -161,9 +161,9 @@ provider "kustomization" {
 }
 
 module "iam_eks_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.34.0"
-  role_name = "ebs-csi"
+  source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version               = "5.34.0"
+  role_name             = "ebs-csi"
   attach_ebs_csi_policy = true
   oidc_providers = {
     main = {
@@ -186,12 +186,12 @@ resource "kubernetes_annotations" "default-storageclass" {
   }
 }
 
-resource helm_release ebs_csi_driver {
-  name = "aws-ebs-csi-driver"
-  chart = "aws-ebs-csi-driver"
+resource "helm_release" "ebs_csi_driver" {
+  name       = "aws-ebs-csi-driver"
+  chart      = "aws-ebs-csi-driver"
   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
-  namespace = "kube-system"
-  version = "2.28.1"
+  namespace  = "kube-system"
+  version    = "2.28.1"
   values = [
     <<EOF
 controller:
@@ -206,25 +206,11 @@ storageClasses:
   ]
 }
 
-# module "eks_blueprints_addons" {
-#   source = "aws-ia/eks-blueprints-addons/aws"
-#   version = "~> 1.0" #ensure to update this to the latest/desired version
-
-#   cluster_name      = module.eks.cluster_name
-#   cluster_endpoint  = module.eks.cluster_endpoint
-#   cluster_version   = module.eks.cluster_version
-#   oidc_provider_arn = module.eks.oidc_provider_arn
-
-#   eks_addons = {
-
-#   }
-# }
-
 module "treebeardkf" {
-  source = "../.."
-  hostname    = "kf.example.com"
-  protocol    = "https://"
-  port        = ""
-  enable_kuberay       = false
-  enable_mlflow        = false
+  source         = "../.."
+  hostname       = "kf.example.com"
+  protocol       = "https://"
+  port           = ""
+  enable_kuberay = false
+  enable_mlflow  = false
 }
