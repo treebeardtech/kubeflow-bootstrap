@@ -1,3 +1,71 @@
+<div align="center">
+  <h1>Kubeflow Terraform Modules</h1>
+
+Terraform module which creates a Kubeflow instance in a Kubernetes cluster
+
+<a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/kubernetes/0.0.3" style="background:none">
+  <img alt="dagster logo" src="docs/tkf.png" width="400" height="100%">
+</a>
+</div>
+---
+
+> [!Note]  
+> This repository is currently suitable for development environments only. Please report any problem you might have by opening a GitHub issue, feature requests welcome.
+
+## About this project
+
+This project simplifies the tasks of managing a Kubeflow instance in Terraform projects.
+
+Kubeflow provides a cloud-native AI platform which can be used to deploy applications in
+scientific computing, traditional machine learning, and generative AI.
+
+This module is primarily focussed on the notebook environment initially such that
+* Developers can deploy and access notebook instances
+* Notebook instances can use GPUs necessary for deep learning
+* This can be done across different cloud providers (ranging from individual VMs to managed services like Amazon's EKS)
+
+## Getting Started
+
+We recommend trying out this module in a development environment first.
+
+To do so, follow the [k3s tutorial](https://github.com/treebeardtech/terraform-kubernetes-kubeflow/tree/main/examples).
+
+## Guides
+
+### Add Kubeflow to your Terraform module
+
+```hcl
+# resource or data for your k8s cluster
+...
+
+# Initialize provisioners
+provider "kubernetes" {
+  ...
+}
+
+provider "helm" {
+  ...
+}
+
+provider "kustomization" {
+  ...
+}
+
+# Call Kubeflow module
+module "treebeardkf" {
+  source         = "../.."
+  hostname       = "kf.example.com"
+  protocol       = "https://"
+  port           = ""
+  enable_kuberay = false
+  enable_mlflow  = false
+}
+```
+
+## Architecture
+
+This module is built on top of the official [Kubeflow Manifests repo](https://github.com/kubeflow/manifests) which contains _Kustomizations_ for the various components of Kubeflow.
+
 ## Requirements
 
 | Name | Version |
