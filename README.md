@@ -31,6 +31,9 @@ To do so, follow the [k3s tutorial](https://github.com/treebeardtech/terraform-k
 
 ## Guides
 
+In order to integrate Kubeflow with your production systems there are some changes you 
+may want to make:
+
 ### Add Kubeflow to your Terraform module
 
 ```hcl
@@ -68,6 +71,23 @@ You can incrementally add Kubeflow to your K8s cluster by installing the terrafo
 Some considerations:
 1. If you are calling this Terraform module from your own module, pass in a string to the `completed` variable in order to manage Kubeflow *after* changes to your other resources. (Note that `depends_on` does not work with this module)
 2. If you already have Istio and Cert Manager installed, you will need to ensure Kubeflow works with them. See [examples/k3s-existing-istio](examples/k3s-existing-istio) for a configuration that we have tested like this.
+
+### Enable Single-Sign-On (SSO)
+
+
+
+### Make Kubeflow available securely on a network using HTTPS
+
+
+
+### Host your Kubeflow on a domain name using DNS
+
+This is best done by using the external DNS operator.
+
+If you are new to external DNS, follow the [docs](https://kubernetes-sigs.github.io/external-dns/v0.14.0/) for setting up a deployment, then
+use [this guide](https://kubernetes-sigs.github.io/external-dns/v0.14.0/tutorials/istio/) to connect external DNS to the istio gateway *service* for your Kubeflow deployment.
+
+### Create Profiles for your users
 
 ### Teardown
 

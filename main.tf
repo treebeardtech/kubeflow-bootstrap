@@ -15,6 +15,149 @@ terraform {
   }
 }
 
+variable "enable_istio_ingressgateway_loadbalancer" {
+  type    = bool
+  default = false
+}
+
+variable "dex_config" {
+  type = object({
+    oauth2 = object({
+      skipApprovalScreen = bool
+    })
+    enablePasswordDB = bool
+    staticPasswords = list(object({
+      email    = string
+      hash     = string
+      username = string
+      userID   = string
+    }))
+    staticClients = list(object({
+      idEnv        = string
+      redirectURIs = list(string)
+      name         = string
+      secretEnv    = string
+    }))
+    connectors = list(object({
+      type   = string
+      id     = string
+      name   = string
+      config = object({
+        clientID       = string
+        clientSecret   = string
+        redirectURI    = string
+        orgs           = list(object({
+          name = string
+        }))
+        loadAllGroups  = bool
+        teamNameField  = string
+        useLoginAsID   = bool
+      })
+    }))
+  })
+  default = {
+    oauth2 = {
+      skipApprovalScreen = false
+    }
+    enablePasswordDB = true
+    staticPasswords = []
+    staticClients = [
+      {
+        idEnv        = "OIDC_CLIENT_ID"
+        redirectURIs = ["/authservice/oidc/callback"]
+        name         = "Dex Login Application"
+        secretEnv    = "OIDC_CLIENT_SECRET"
+      }
+    ]
+    connectors = [
+      {
+        type = "github"
+        id   = "github"
+        name = "GitHub"
+        config = {
+          clientID      = ""
+          clientSecret  = ""
+          redirectURI   = ""
+          orgs          = [
+            {
+              name = ""
+            }
+          ]
+          loadAllGroups = false
+          teamNameField = "slug"
+          useLoginAsID  = true
+        }
+      }
+    ]
+  }
+}
+
+variable "profile_configuration" {
+  type = object({
+    users = list(object({
+      id    = string
+      email = string
+    }))
+    groups = list(object({
+      id    = string
+      users = list(string)
+    }))
+    profiles = list(object({
+      name    = string
+      members = list(object({
+        group  = string
+        access = object({
+          role             = string
+          notebooksAccess  = bool
+        })
+      }))
+    }))
+  })
+  default = {
+    users = [
+      { id = "user-1", email = "user1@example.com" },
+      { id = "user-2", email = "user2@example.com" },
+      { id = "user-3", email = "user3@example.com" }
+    ],
+    groups = [
+      { id = "team-1--admins", users = ["user-1"] },
+      { id = "team-1--users", users = ["user-1", "user-2", "user-3"] }
+    ],
+    profiles = [
+      {
+        name = "team-1",
+        members = [
+          {
+            group = "team-1--users",
+            access = { role = "edit", notebooksAccess = true }
+          }
+        ]
+      },
+      {
+        name = "team-1-prod",
+        members = [
+          {
+            group = "team-1--admins",
+            access = { role = "edit", notebooksAccess = true }
+          },
+          {
+            group = "team-1--users",
+            access = { role = "view", notebooksAccess = false }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+variable "issuer_spec" {
+  type = string
+}
+
+# variable "extra_manifests" {
+#   type = list(string)
+# }
+
 variable "completed" {
   type    = string
   default = false
@@ -118,28 +261,25 @@ data "kustomization_overlay" "istio_install" {
   ]
 
 
-  #   dynamic "patches" {
-  #     for_each = var.enable_external_dns ? [1] : []
-  #     content {
-  #       target {
-  #         kind      = "Service"
-  #         name      = "istio-ingressgateway"
-  #         namespace = "istio-system"
-  #       }
-  #       patch = <<EOF
-  # apiVersion: v1
-  # kind: Service
-  # metadata:
-  #   name: istio-ingressgateway
-  #   namespace: istio-system
-  #   annotations:
-  #     external-dns.alpha.kubernetes.io/hostname: ${var.hostname}
-  #     external-dns.alpha.kubernetes.io/ttl: "60" #optional
-  # spec:
-  #   type: LoadBalancer
-  # EOF
-  #     }
-  # }
+    dynamic "patches" {
+      for_each = var.enable_istio_ingressgateway_loadbalancer ? [1] : []
+      content {
+        target {
+          kind      = "Service"
+          name      = "istio-ingressgateway"
+          namespace = "istio-system"
+        }
+        patch = <<EOF
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: istio-ingressgateway
+    namespace: istio-system
+  spec:
+    type: LoadBalancer
+  EOF
+      }
+  }
 }
 
 module "istio_install" {
