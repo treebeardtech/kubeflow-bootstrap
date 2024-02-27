@@ -10,10 +10,10 @@ post-start:
 	./scripts/setup-krew.sh
 
 docs:
-	terraform-docs markdown . > ./README.md
-	terraform-docs markdown examples/k3s > examples/k3s/README.md
-	terraform-docs markdown examples/eks > examples/eks/README.md
-	terraform-docs markdown examples/aks > examples/aks/README.md
+	terraform-docs markdown . > ./README.md.new
+	terraform-docs markdown examples/k3s > examples/k3s/README.md.new
+	terraform-docs markdown examples/eks > examples/eks/README.md.new
+	terraform-docs markdown examples/aks > examples/aks/README.md.new
 
 fmt:
 	terraform fmt . modules/* examples/*
