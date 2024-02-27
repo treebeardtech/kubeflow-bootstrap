@@ -167,11 +167,15 @@ This module is built on top of the official [Kubeflow Manifests repo](https://gi
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_completed"></a> [completed](#input\_completed) | n/a | `string` | `false` | no |
+| <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | n/a | `bool` | `true` | no |
 | <a name="input_enable_external_dns"></a> [enable\_external\_dns](#input\_enable\_external\_dns) | n/a | `bool` | `true` | no |
 | <a name="input_enable_external_secrets"></a> [enable\_external\_secrets](#input\_enable\_external\_secrets) | n/a | `bool` | `false` | no |
 | <a name="input_enable_gatekeeper"></a> [enable\_gatekeeper](#input\_enable\_gatekeeper) | n/a | `bool` | `false` | no |
 | <a name="input_enable_gpu_operator"></a> [enable\_gpu\_operator](#input\_enable\_gpu\_operator) | n/a | `bool` | `false` | no |
+| <a name="input_enable_istio_base"></a> [enable\_istio\_base](#input\_enable\_istio\_base) | n/a | `bool` | `true` | no |
 | <a name="input_enable_istio_resources"></a> [enable\_istio\_resources](#input\_enable\_istio\_resources) | Enable istio resources for clusters with pre-existing istio | `bool` | `true` | no |
+| <a name="input_enable_istiod"></a> [enable\_istiod](#input\_enable\_istiod) | n/a | `bool` | `true` | no |
 | <a name="input_enable_kserve"></a> [enable\_kserve](#input\_enable\_kserve) | n/a | `bool` | `false` | no |
 | <a name="input_enable_kubeflow_pipelines"></a> [enable\_kubeflow\_pipelines](#input\_enable\_kubeflow\_pipelines) | n/a | `bool` | `false` | no |
 | <a name="input_enable_kuberay"></a> [enable\_kuberay](#input\_enable\_kuberay) | n/a | `bool` | `false` | no |
