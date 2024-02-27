@@ -14,5 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update -y && sudo apt-get install -y \
   iputils-ping \
   traceroute \
-  kmod
-ENV PATH="/home/vscode/.local/bin/:$PATH"
+  kmod \
+  vim
+  ENV PATH="/home/vscode/.local/bin/:$PATH"
+ENV EDITOR=vim
