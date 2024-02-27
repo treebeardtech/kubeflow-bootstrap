@@ -37,13 +37,13 @@ provider "kubernetes" {
 }
 
 resource "helm_release" "cert-manager" {
-  name       = "cert-manager"
-  namespace  = "cert-manager"
-  chart      = "cert-manager"
-  repository = "https://charts.jetstack.io"
-  version    = "1.14.3"
+  name             = "cert-manager"
+  namespace        = "cert-manager"
+  chart            = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  version          = "1.14.3"
   create_namespace = true
-  depends_on = []
+  depends_on       = []
   values = [
     <<EOF
     installCRDs: true
@@ -52,11 +52,11 @@ resource "helm_release" "cert-manager" {
 }
 
 resource "helm_release" "istio_base" {
-  name       = "istio-base"
-  namespace  = "istio-system"
-  chart      = "base"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  version    = "1.18.7"
+  name             = "istio-base"
+  namespace        = "istio-system"
+  chart            = "base"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  version          = "1.18.7"
   create_namespace = true
   depends_on = [
     helm_release.cert-manager
@@ -68,11 +68,11 @@ resource "helm_release" "istio_base" {
 }
 
 resource "helm_release" "istiod" {
-  name       = "istiod"
-  namespace  = "istio-system"
-  chart      = "istiod"
-  repository = "https://istio-release.storage.googleapis.com/charts"
-  version    = "1.18.7"
+  name             = "istiod"
+  namespace        = "istio-system"
+  chart            = "istiod"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  version          = "1.18.7"
   create_namespace = true
   depends_on = [
     helm_release.istio_base
@@ -103,16 +103,16 @@ resource "helm_release" "istio_ingressgateway" {
 }
 
 module "treebeardkf" {
-  source         = "../.."
-  hostname       = "kf.example.com"
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
-  enable_istio_base = false
-  enable_istiod  = false
+  source                 = "../.."
+  hostname               = "kf.example.com"
+  protocol               = "https://"
+  port                   = ""
+  enable_kuberay         = false
+  enable_mlflow          = false
+  enable_istio_base      = false
+  enable_istiod          = false
   enable_istio_resources = true
-  enable_cert_manager = false
+  enable_cert_manager    = false
   depends_on = [
     helm_release.istio_base,
     helm_release.istiod,
