@@ -15,6 +15,11 @@ terraform {
   }
 }
 
+variable "completed" {
+  type = string
+  default = false
+}
+
 variable "hostname" {
   type    = string
   default = "localhost"
@@ -62,7 +67,8 @@ module "kubeflow_issuer" {
   source = "./modules/kust"
   build  = data.kustomization_build.kubeflow_issuer
   depends_on = [
-    module.cert_manager
+    module.cert_manager,
+    var.completed
   ]
 }
 
@@ -163,7 +169,8 @@ module "oidc_authservice" {
   source = "./modules/kust"
   build  = data.kustomization_overlay.oidc_authservice
   depends_on = [
-    module.istio_install
+    module.istio_install,
+    var.completed
   ]
 }
 
@@ -215,7 +222,8 @@ module "dex" {
   source = "./modules/kust"
   build  = data.kustomization_overlay.dex
   depends_on = [
-    module.istio_install
+    module.istio_install,
+    module.oidc_authservice
   ]
 }
 

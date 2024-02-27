@@ -5,6 +5,9 @@ resource "kubernetes_namespace" "tkf_system" {
       "admission.gatekeeper.sh/ignore" = "no-self-managing" # this gets added by gatekeeper otherwise
     }
   }
+  depends_on = [
+    var.completed
+  ]
 }
 
 variable "enable_gatekeeper" {

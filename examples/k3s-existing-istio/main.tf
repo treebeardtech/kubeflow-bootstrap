@@ -102,6 +102,19 @@ resource "helm_release" "istio_ingressgateway" {
   ]
 }
 
+# resource "time_sleep" "wait_30_seconds" {
+#   depends_on = [
+#     helm_release.istio_ingressgateway
+#   ]
+#   create_duration = "30s"
+# }
+
+resource null_resource "completed" {
+  depends_on = [
+    helm_release.istio_ingressgateway
+  ]
+}
+
 module "treebeardkf" {
   source                 = "../.."
   hostname               = "kf.example.com"
@@ -113,9 +126,5 @@ module "treebeardkf" {
   enable_istiod          = false
   enable_istio_resources = true
   enable_cert_manager    = false
-  depends_on = [
-    helm_release.istio_base,
-    helm_release.istiod,
-    helm_release.istio_ingressgateway
-  ]
+  completed = null_resource.completed.id
 }
