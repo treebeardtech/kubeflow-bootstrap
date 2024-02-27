@@ -16,7 +16,7 @@ terraform {
 }
 
 variable "completed" {
-  type = string
+  type    = string
   default = false
 }
 

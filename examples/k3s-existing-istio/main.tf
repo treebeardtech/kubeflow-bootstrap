@@ -109,7 +109,7 @@ resource "helm_release" "istio_ingressgateway" {
 #   create_duration = "30s"
 # }
 
-resource null_resource "completed" {
+resource "null_resource" "completed" {
   depends_on = [
     helm_release.istio_ingressgateway
   ]
@@ -126,5 +126,5 @@ module "treebeardkf" {
   enable_istiod          = false
   enable_istio_resources = true
   enable_cert_manager    = false
-  completed = null_resource.completed.id
+  completed              = null_resource.completed.id
 }
