@@ -39,19 +39,19 @@ variable "dex_config" {
       secretEnv    = string
     }))
     connectors = list(object({
-      type   = string
-      id     = string
-      name   = string
+      type = string
+      id   = string
+      name = string
       config = object({
-        clientID       = string
-        clientSecret   = string
-        redirectURI    = string
-        orgs           = list(object({
+        clientID     = string
+        clientSecret = string
+        redirectURI  = string
+        orgs = list(object({
           name = string
         }))
-        loadAllGroups  = bool
-        teamNameField  = string
-        useLoginAsID   = bool
+        loadAllGroups = bool
+        teamNameField = string
+        useLoginAsID  = bool
       })
     }))
   })
@@ -60,7 +60,7 @@ variable "dex_config" {
       skipApprovalScreen = false
     }
     enablePasswordDB = true
-    staticPasswords = []
+    staticPasswords  = []
     staticClients = [
       {
         idEnv        = "OIDC_CLIENT_ID"
@@ -75,10 +75,10 @@ variable "dex_config" {
         id   = "github"
         name = "GitHub"
         config = {
-          clientID      = ""
-          clientSecret  = ""
-          redirectURI   = ""
-          orgs          = [
+          clientID     = ""
+          clientSecret = ""
+          redirectURI  = ""
+          orgs = [
             {
               name = ""
             }
@@ -103,12 +103,12 @@ variable "profile_configuration" {
       users = list(string)
     }))
     profiles = list(object({
-      name    = string
+      name = string
       members = list(object({
-        group  = string
+        group = string
         access = object({
-          role             = string
-          notebooksAccess  = bool
+          role            = string
+          notebooksAccess = bool
         })
       }))
     }))
@@ -128,7 +128,7 @@ variable "profile_configuration" {
         name = "team-1",
         members = [
           {
-            group = "team-1--users",
+            group  = "team-1--users",
             access = { role = "edit", notebooksAccess = true }
           }
         ]
@@ -137,11 +137,11 @@ variable "profile_configuration" {
         name = "team-1-prod",
         members = [
           {
-            group = "team-1--admins",
+            group  = "team-1--admins",
             access = { role = "edit", notebooksAccess = true }
           },
           {
-            group = "team-1--users",
+            group  = "team-1--users",
             access = { role = "view", notebooksAccess = false }
           }
         ]
@@ -261,15 +261,15 @@ data "kustomization_overlay" "istio_install" {
   ]
 
 
-    dynamic "patches" {
-      for_each = var.enable_istio_ingressgateway_loadbalancer ? [1] : []
-      content {
-        target {
-          kind      = "Service"
-          name      = "istio-ingressgateway"
-          namespace = "istio-system"
-        }
-        patch = <<EOF
+  dynamic "patches" {
+    for_each = var.enable_istio_ingressgateway_loadbalancer ? [1] : []
+    content {
+      target {
+        kind      = "Service"
+        name      = "istio-ingressgateway"
+        namespace = "istio-system"
+      }
+      patch = <<EOF
   apiVersion: v1
   kind: Service
   metadata:
@@ -278,7 +278,7 @@ data "kustomization_overlay" "istio_install" {
   spec:
     type: LoadBalancer
   EOF
-      }
+    }
   }
 }
 

@@ -18,13 +18,13 @@ terraform {
   }
 }
 
-variable host {
+variable "host" {
 }
 
-variable cert_email_owner {
+variable "cert_email_owner" {
 }
 
-variable hosted_zone_id {
+variable "hosted_zone_id" {
 }
 
 data "aws_availability_zones" "available" {}
@@ -217,9 +217,9 @@ storageClasses:
 ## DNS Setup
 
 module "external_dns_role" {
-  source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version               = "5.34.0"
-  role_name             = "external-dns"
+  source                     = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version                    = "5.34.0"
+  role_name                  = "external-dns"
   attach_external_dns_policy = true
   oidc_providers = {
     main = {
@@ -230,12 +230,12 @@ module "external_dns_role" {
 }
 
 resource "helm_release" "external_dns" {
-  name       = "external-dns"
-  chart      = "external-dns"
-  repository = "https://kubernetes-sigs.github.io/external-dns/"
-  namespace  = "external-dns"
+  name             = "external-dns"
+  chart            = "external-dns"
+  repository       = "https://kubernetes-sigs.github.io/external-dns/"
+  namespace        = "external-dns"
   create_namespace = true
-  version    = "1.14.0"
+  version          = "1.14.0"
   values = [
     <<-EOF
     sources:
@@ -258,9 +258,9 @@ resource "helm_release" "external_dns" {
 ## HTTPS Setup
 
 module "cert_manager_role" {
-  source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version               = "5.34.0"
-  role_name             = "cert-manager"
+  source                     = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version                    = "5.34.0"
+  role_name                  = "cert-manager"
   attach_cert_manager_policy = true
   oidc_providers = {
     main = {
@@ -277,7 +277,7 @@ resource "helm_release" "cert_manager" {
   repository       = "https://charts.jetstack.io"
   version          = "1.12.8"
   create_namespace = true
-  depends_on       = [
+  depends_on = [
     helm_release.external_dns
   ]
   values = [
@@ -296,9 +296,9 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "helm_release" "issuer" {
-  name             = "issuer"
-  namespace        = "cert-manager"
-  chart       = "${path.module}/issuer"
+  name      = "issuer"
+  namespace = "cert-manager"
+  chart     = "${path.module}/issuer"
   values = [
     <<EOF
     certEmailOwner: ${var.cert_email_owner}
@@ -394,19 +394,19 @@ variable "dex_config" {
       secretEnv    = string
     }))
     connectors = list(object({
-      type   = string
-      id     = string
-      name   = string
+      type = string
+      id   = string
+      name = string
       config = object({
-        clientID       = string
-        clientSecret   = string
-        redirectURI    = string
-        orgs           = list(object({
+        clientID     = string
+        clientSecret = string
+        redirectURI  = string
+        orgs = list(object({
           name = string
         }))
-        loadAllGroups  = bool
-        teamNameField  = string
-        useLoginAsID   = bool
+        loadAllGroups = bool
+        teamNameField = string
+        useLoginAsID  = bool
       })
     }))
   })
@@ -415,7 +415,7 @@ variable "dex_config" {
       skipApprovalScreen = false
     }
     enablePasswordDB = true
-    staticPasswords = []
+    staticPasswords  = []
     staticClients = [
       {
         idEnv        = "OIDC_CLIENT_ID"
@@ -430,10 +430,10 @@ variable "dex_config" {
         id   = "github"
         name = "GitHub"
         config = {
-          clientID      = ""
-          clientSecret  = ""
-          redirectURI   = ""
-          orgs          = [
+          clientID     = ""
+          clientSecret = ""
+          redirectURI  = ""
+          orgs = [
             {
               name = ""
             }
@@ -460,12 +460,12 @@ variable "profile_configuration" {
       users = list(string)
     }))
     profiles = list(object({
-      name    = string
+      name = string
       members = list(object({
-        group  = string
+        group = string
         access = object({
-          role             = string
-          notebooksAccess  = bool
+          role            = string
+          notebooksAccess = bool
         })
       }))
     }))
@@ -485,7 +485,7 @@ variable "profile_configuration" {
         name = "team-1",
         members = [
           {
-            group = "team-1--users",
+            group  = "team-1--users",
             access = { role = "edit", notebooksAccess = true }
           }
         ]
@@ -494,11 +494,11 @@ variable "profile_configuration" {
         name = "team-1-prod",
         members = [
           {
-            group = "team-1--admins",
+            group  = "team-1--admins",
             access = { role = "edit", notebooksAccess = true }
           },
           {
-            group = "team-1--users",
+            group  = "team-1--users",
             access = { role = "view", notebooksAccess = false }
           }
         ]
@@ -507,24 +507,24 @@ variable "profile_configuration" {
   }
 }
 
-resource null_resource "completed" {
+resource "null_resource" "completed" {
   depends_on = [
     helm_release.istio_ingressgateway
   ]
 }
 
 module "treebeardkf" {
-  source         = "../.."
-  hostname       = var.host
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
+  source                 = "../.."
+  hostname               = var.host
+  protocol               = "https://"
+  port                   = ""
+  enable_kuberay         = false
+  enable_mlflow          = false
   enable_istio_base      = false
   enable_istiod          = false
   enable_istio_resources = true
   enable_cert_manager    = false
-  dex_config = var.dex_config
-  profile_configuration = var.profile_configuration
-  completed = null_resource.completed.id
+  dex_config             = var.dex_config
+  profile_configuration  = var.profile_configuration
+  completed              = null_resource.completed.id
 }
