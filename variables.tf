@@ -11,7 +11,12 @@ variable "dependency" {
 
 variable "hostname" {
   type    = string
-  default = "localhost"
+  default = "*"
+}
+
+variable enable_https {
+  type    = bool
+  default = false
 }
 
 variable "enable_cert_manager" {

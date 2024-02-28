@@ -38,9 +38,6 @@ provider "kubernetes" {
 
 module "treebeardkf" {
   source         = "../.."
-  hostname       = "kf.example.com"
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
+  enable_https   = true
+  hostname = "kubeflow.example.com"
 }

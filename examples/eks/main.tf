@@ -156,8 +156,13 @@ provider "helm" {
   }
 }
 
+variable "kubeconfig" {
+  description = "Path to the kubeconfig file"
+  type        = string
+}
+
 provider "kustomization" {
-  kubeconfig_path = "/home/vscode/.kube/eks.yaml"
+  kubeconfig_raw = file(var.kubeconfig)
 }
 
 module "iam_eks_role" {
@@ -206,11 +211,15 @@ storageClasses:
   ]
 }
 
+variable "enable_treebeardkf" {
+  description = "Enable Treebeard"
+  type        = bool
+  default     = false
+}
+
 module "treebeardkf" {
+  count                  = var.enable_treebeardkf ? 1 : 0
   source         = "../.."
   hostname       = "kf.example.com"
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
+  enable_https = true
 }

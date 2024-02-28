@@ -61,11 +61,15 @@ provider "kustomization" {
   kubeconfig_raw = azurerm_kubernetes_cluster.aks.kube_config_raw
 }
 
+variable "enable_treebeardkf" {
+  description = "Enable Treebeard"
+  type        = bool
+  default     = false
+}
+
 module "treebeardkf" {
+  count                  = var.enable_treebeardkf ? 1 : 0
   source         = "../.."
   hostname       = "kf.example.com"
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
+  enable_https = true
 }

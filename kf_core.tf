@@ -1,3 +1,49 @@
+locals {
+  cert_resource = var.enable_https ? yamlencode({
+    apiVersion: "cert-manager.io/v1",
+    kind: "Certificate",
+    metadata: {
+      name: "gateway-cert",
+      namespace: "istio-system"
+    },
+    spec: {
+      commonName: var.hostname,
+      dnsNames: [var.hostname]
+      issuerRef: {
+        kind: "Issuer",
+        name: "treebeard-issuer"
+      }
+      secretName: "gateway-cert"
+    }
+  }) : ""
+
+  gateway_patch = yamlencode({
+    apiVersion: "networking.istio.io/v1alpha3",
+    kind: "Gateway",
+    metadata: {
+      name: "kubeflow-gateway",
+      namespace: "kubeflow",
+    },
+    spec: {
+      selector: {
+        istio: "ingressgateway",
+      },
+      servers: [{
+        hosts: [var.hostname],
+        port: {
+          name: var.enable_https ? "https" : "http",
+          number: var.enable_https ? 443 : 80,
+          protocol: var.enable_https ? "HTTPS" : "HTTP",
+        },
+        tls: var.enable_https ? {
+          credentialName: "gateway-cert",
+          mode: "SIMPLE",
+        } : null,
+      }],
+    },
+  })
+}
+
 data "kustomization_build" "kubeflow_namespace" {
   path = "${path.module}/submodules/manifests/common/kubeflow-namespace/base"
 }
@@ -27,48 +73,13 @@ data "kustomization_overlay" "kubeflow_istio_resources" {
   resources = [
     "${path.module}/overlays/istio-resources"
   ]
-  patches {
-    patch = <<EOF
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: gateway-cert
-  namespace: istio-system
-spec:
-  commonName: ${var.hostname}
-  dnsNames:
-    - ${var.hostname}
-EOF
-  }
 
   patches {
-    patch = <<EOF
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: kubeflow-gateway
-  namespace: kubeflow
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-    - hosts:
-        - ${var.hostname}
-      port:
-        name: https
-        number: 443
-        protocol: HTTPS
-      tls:
-        credentialName: gateway-cert
-        mode: SIMPLE
-    # enable for port forwarding to work with HTTP
-    # - hosts:
-    #     - '*'
-    #   port:
-    #     name: http
-    #     number: 80
-    #     protocol: HTTP
-EOF
+    patch = local.gateway_patch
+  }
+  
+  patches {
+    patch = local.cert_resource
   }
 }
 
