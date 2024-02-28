@@ -14,7 +14,7 @@ variable "hostname" {
   default = "*"
 }
 
-variable enable_https {
+variable "enable_https" {
   type    = bool
   default = false
 }

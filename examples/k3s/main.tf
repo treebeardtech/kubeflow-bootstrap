@@ -37,7 +37,7 @@ provider "kubernetes" {
 }
 
 module "treebeardkf" {
-  source         = "../.."
-  enable_https   = true
-  hostname = "kubeflow.example.com"
+  source       = "../.."
+  enable_https = true
+  hostname     = "kubeflow.example.com"
 }

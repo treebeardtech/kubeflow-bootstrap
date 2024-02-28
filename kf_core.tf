@@ -1,43 +1,43 @@
 locals {
   cert_resource = var.enable_https ? yamlencode({
-    apiVersion: "cert-manager.io/v1",
-    kind: "Certificate",
-    metadata: {
-      name: "gateway-cert",
-      namespace: "istio-system"
+    apiVersion : "cert-manager.io/v1",
+    kind : "Certificate",
+    metadata : {
+      name : "gateway-cert",
+      namespace : "istio-system"
     },
-    spec: {
-      commonName: var.hostname,
-      dnsNames: [var.hostname]
-      issuerRef: {
-        kind: "Issuer",
-        name: "treebeard-issuer"
+    spec : {
+      commonName : var.hostname,
+      dnsNames : [var.hostname]
+      issuerRef : {
+        kind : "Issuer",
+        name : "treebeard-issuer"
       }
-      secretName: "gateway-cert"
+      secretName : "gateway-cert"
     }
   }) : ""
 
   gateway_patch = yamlencode({
-    apiVersion: "networking.istio.io/v1alpha3",
-    kind: "Gateway",
-    metadata: {
-      name: "kubeflow-gateway",
-      namespace: "kubeflow",
+    apiVersion : "networking.istio.io/v1alpha3",
+    kind : "Gateway",
+    metadata : {
+      name : "kubeflow-gateway",
+      namespace : "kubeflow",
     },
-    spec: {
-      selector: {
-        istio: "ingressgateway",
+    spec : {
+      selector : {
+        istio : "ingressgateway",
       },
-      servers: [{
-        hosts: [var.hostname],
-        port: {
-          name: var.enable_https ? "https" : "http",
-          number: var.enable_https ? 443 : 80,
-          protocol: var.enable_https ? "HTTPS" : "HTTP",
+      servers : [{
+        hosts : [var.hostname],
+        port : {
+          name : var.enable_https ? "https" : "http",
+          number : var.enable_https ? 443 : 80,
+          protocol : var.enable_https ? "HTTPS" : "HTTP",
         },
-        tls: var.enable_https ? {
-          credentialName: "gateway-cert",
-          mode: "SIMPLE",
+        tls : var.enable_https ? {
+          credentialName : "gateway-cert",
+          mode : "SIMPLE",
         } : null,
       }],
     },
@@ -77,7 +77,7 @@ data "kustomization_overlay" "kubeflow_istio_resources" {
   patches {
     patch = local.gateway_patch
   }
-  
+
   patches {
     patch = local.cert_resource
   }

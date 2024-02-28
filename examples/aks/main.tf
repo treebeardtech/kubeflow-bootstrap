@@ -68,8 +68,8 @@ variable "enable_treebeardkf" {
 }
 
 module "treebeardkf" {
-  count                  = var.enable_treebeardkf ? 1 : 0
-  source         = "../.."
-  hostname       = "kf.example.com"
+  count        = var.enable_treebeardkf ? 1 : 0
+  source       = "../.."
+  hostname     = "kf.example.com"
   enable_https = true
 }
