@@ -17,7 +17,7 @@ resource "helm_release" "istio_base" {
 resource "helm_release" "issuer" {
   name      = "issuer"
   namespace = "istio-system"
-  chart     = "${path.module}/issuer"
+  chart     = "${path.module}/charts/issuer"
   values = [
     <<EOF
     certEmailOwner: ${var.cert_email_owner}
