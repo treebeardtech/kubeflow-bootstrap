@@ -1,6 +1,3 @@
-
-## knative
-
 data "kustomization_overlay" "knative_serving" {
   count = var.enable_kserve ? 1 : 0
   resources = [

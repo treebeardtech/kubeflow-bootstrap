@@ -1,7 +1,3 @@
-
-
-## kubeflow namespace
-
 data "kustomization_build" "kubeflow_namespace" {
   path = "${path.module}/submodules/manifests/common/kubeflow-namespace/base"
 }
@@ -14,8 +10,6 @@ module "kubeflow_namespace" {
   ]
 }
 
-## kubeflow roles
-
 data "kustomization_build" "kubeflow_roles" {
   path = "${path.module}/submodules/manifests/common/kubeflow-roles/base"
 }
@@ -27,8 +21,6 @@ module "kubeflow_roles" {
     module.kubeflow_namespace
   ]
 }
-
-## kubeflow istio resources
 
 data "kustomization_overlay" "kubeflow_istio_resources" {
   count = var.enable_istio_resources ? 1 : 0
