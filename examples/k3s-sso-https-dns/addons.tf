@@ -149,6 +149,7 @@ resource "null_resource" "core_addons" {
   }
 
   depends_on = [
+    helm_release.ebs_csi_driver,
     helm_release.cert_manager
   ]
 }
