@@ -169,9 +169,9 @@ provider "kustomization" {
 }
 
 resource "null_resource" "cluster_ready" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
+  # triggers = {
+  #   always_run = "${timestamp()}"
+  # }
 
   provisioner "local-exec" {
     command = "echo 'Cluster is ready!'"
@@ -322,9 +322,9 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "null_resource" "core_addons" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
+  # triggers = {
+  #   always_run = "${timestamp()}"
+  # }
 
   provisioner "local-exec" {
     when = destroy
@@ -403,9 +403,9 @@ resource "helm_release" "istio_ingressgateway" {
 }
 
 resource "null_resource" "istio" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
+  # triggers = {
+  #   always_run = "${timestamp()}"
+  # }
 
   provisioner "local-exec" {
     command = "echo 'Istio is ready!'"
