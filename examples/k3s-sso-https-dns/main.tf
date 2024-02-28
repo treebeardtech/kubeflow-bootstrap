@@ -327,8 +327,8 @@ resource "null_resource" "core_addons" {
   # }
 
   provisioner "local-exec" {
-    when = destroy
-    command = "echo 'Waiting for addons to cleanup DNS/Loadbalancers' && sleep 60" 
+    when    = destroy
+    command = "echo 'Waiting for addons to cleanup DNS/Loadbalancers' && sleep 60"
   }
 
   depends_on = [
@@ -428,12 +428,12 @@ variable "enable_treebeardkf" {
 }
 
 module "treebeardkf" {
-  count = var.enable_treebeardkf ? 1 : 0
+  count                  = var.enable_treebeardkf ? 1 : 0
   source                 = "../.."
   hostname               = var.host
   enable_istio_base      = false
   enable_istiod          = false
   enable_istio_resources = true
   enable_cert_manager    = false
-  dependency              = null_resource.istio.id
+  dependency             = null_resource.istio.id
 }
