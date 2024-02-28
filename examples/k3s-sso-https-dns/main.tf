@@ -168,6 +168,20 @@ provider "kustomization" {
   kubeconfig_path = "/home/vscode/.kube/eks.yaml"
 }
 
+resource "null_resource" "cluster_ready" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "echo 'Cluster is ready!'"
+  }
+  depends_on = [
+    module.vpc,
+    module.eks
+  ]
+}
+
 module "ebs_csi_role" {
   source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version               = "5.34.0"
@@ -179,6 +193,9 @@ module "ebs_csi_role" {
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
+  depends_on = [
+    null_resource.cluster_ready
+  ]
 }
 
 resource "kubernetes_annotations" "default-storageclass" {
@@ -192,6 +209,9 @@ resource "kubernetes_annotations" "default-storageclass" {
   annotations = {
     "storageclass.kubernetes.io/is-default-class" = "false"
   }
+  depends_on = [
+    null_resource.cluster_ready
+  ]
 }
 
 resource "helm_release" "ebs_csi_driver" {
@@ -212,6 +232,9 @@ storageClasses:
     storageclass.kubernetes.io/is-default-class: "true"
     EOF
   ]
+  depends_on = [
+    null_resource.cluster_ready
+  ]
 }
 
 ## DNS Setup
@@ -227,6 +250,9 @@ module "external_dns_role" {
       namespace_service_accounts = ["external-dns:external-dns"]
     }
   }
+  depends_on = [
+    null_resource.cluster_ready
+  ]
 }
 
 resource "helm_release" "external_dns" {
@@ -251,7 +277,7 @@ resource "helm_release" "external_dns" {
     EOF
   ]
   depends_on = [
-    module.external_dns_role
+    null_resource.cluster_ready
   ]
 }
 
@@ -295,6 +321,7 @@ resource "helm_release" "cert_manager" {
   ]
 }
 
+
 resource "helm_release" "issuer" {
   name      = "issuer"
   namespace = "cert-manager"
@@ -310,17 +337,20 @@ resource "helm_release" "issuer" {
   ]
 }
 
-# data "kustomization_build" "issuer" {
-#   path  = "${path.module}/issuer"
-# }
+resource "null_resource" "core_addons" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
-# module "issuer" {
-#   source = "../../modules/kust"
-#   build  = data.kustomization_build.issuer
-#   depends_on = [
-#     helm_release.cert_manager
-#   ]
-# }
+  provisioner "local-exec" {
+    when = destroy
+    command = "echo 'Waiting for addons to cleanup DNS/Loadbalancers' && sleep 60" 
+  }
+
+  depends_on = [
+    helm_release.issuer
+  ]
+}
 
 resource "helm_release" "istio_base" {
   name             = "istio-base"
@@ -329,12 +359,12 @@ resource "helm_release" "istio_base" {
   repository       = "https://istio-release.storage.googleapis.com/charts"
   version          = "1.18.7"
   create_namespace = true
-  depends_on = [
-    helm_release.issuer
-  ]
   values = [
     <<EOF
     EOF
+  ]
+  depends_on = [
+    null_resource.core_addons
   ]
 }
 
@@ -345,12 +375,12 @@ resource "helm_release" "istiod" {
   repository       = "https://istio-release.storage.googleapis.com/charts"
   version          = "1.18.7"
   create_namespace = true
-  depends_on = [
-    helm_release.istio_base
-  ]
   values = [
     <<EOF
     EOF
+  ]
+  depends_on = [
+    helm_release.istio_base
   ]
 }
 
@@ -360,9 +390,6 @@ resource "helm_release" "istio_ingressgateway" {
   chart      = "gateway"
   repository = "https://istio-release.storage.googleapis.com/charts"
   version    = "1.18.7"
-  depends_on = [
-    helm_release.istiod
-  ]
   values = [
     <<EOF
     service:
@@ -370,6 +397,22 @@ resource "helm_release" "istio_ingressgateway" {
     serviceAccount:
       name: istio-ingressgateway-service-account
     EOF
+  ]
+  depends_on = [
+    helm_release.istiod
+  ]
+}
+
+resource "null_resource" "istio" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "echo 'Istio is ready!'"
+  }
+  depends_on = [
+    helm_release.istio_ingressgateway
   ]
 }
 
@@ -513,7 +556,14 @@ resource "null_resource" "completed" {
   ]
 }
 
+variable "enable_treebeardkf" {
+  description = "Enable Treebeard KF"
+  type        = bool
+  default     = false
+}
+
 module "treebeardkf" {
+  count = var.enable_treebeardkf ? 1 : 0
   source                 = "../.."
   hostname               = var.host
   protocol               = "https://"
@@ -526,5 +576,5 @@ module "treebeardkf" {
   enable_cert_manager    = false
   dex_config             = var.dex_config
   profile_configuration  = var.profile_configuration
-  completed              = null_resource.completed.id
+  dependency              = null_resource.istio.id
 }

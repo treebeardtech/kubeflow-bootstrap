@@ -158,9 +158,9 @@ variable "profile_configuration" {
 #   type = list(string)
 # }
 
-variable "completed" {
+variable "dependency" {
   type    = string
-  default = false
+  default = "null"
 }
 
 variable "hostname" {
@@ -198,7 +198,7 @@ module "cert_manager" {
   source = "./modules/kust"
   build  = one(data.kustomization_build.cert_manager)
   depends_on = [
-    helm_release.gpu_operator
+    var.dependency
   ]
 }
 
@@ -211,7 +211,7 @@ module "kubeflow_issuer" {
   build  = data.kustomization_build.kubeflow_issuer
   depends_on = [
     module.cert_manager,
-    var.completed
+    var.dependency
   ]
 }
 
@@ -310,7 +310,7 @@ module "oidc_authservice" {
   build  = data.kustomization_overlay.oidc_authservice
   depends_on = [
     module.istio_install,
-    var.completed
+    var.dependency
   ]
 }
 
