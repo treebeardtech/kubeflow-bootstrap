@@ -321,22 +321,6 @@ resource "helm_release" "cert_manager" {
   ]
 }
 
-
-resource "helm_release" "issuer" {
-  name      = "issuer"
-  namespace = "cert-manager"
-  chart     = "${path.module}/issuer"
-  values = [
-    <<EOF
-    certEmailOwner: ${var.cert_email_owner}
-    hostedZoneId: ${var.hosted_zone_id}
-    EOF
-  ]
-  depends_on = [
-    helm_release.cert_manager
-  ]
-}
-
 resource "null_resource" "core_addons" {
   triggers = {
     always_run = "${timestamp()}"
@@ -348,7 +332,7 @@ resource "null_resource" "core_addons" {
   }
 
   depends_on = [
-    helm_release.issuer
+    helm_release.cert_manager
   ]
 }
 
@@ -368,6 +352,21 @@ resource "helm_release" "istio_base" {
   ]
 }
 
+resource "helm_release" "issuer" {
+  name      = "issuer"
+  namespace = "istio-system"
+  chart     = "${path.module}/issuer"
+  values = [
+    <<EOF
+    certEmailOwner: ${var.cert_email_owner}
+    hostedZoneId: ${var.hosted_zone_id}
+    EOF
+  ]
+  depends_on = [
+    helm_release.istio_base
+  ]
+}
+
 resource "helm_release" "istiod" {
   name             = "istiod"
   namespace        = "istio-system"
@@ -380,7 +379,7 @@ resource "helm_release" "istiod" {
     EOF
   ]
   depends_on = [
-    helm_release.istio_base
+    helm_release.issuer
   ]
 }
 
@@ -416,140 +415,6 @@ resource "null_resource" "istio" {
   ]
 }
 
-## OIDC Setup
-
-variable "dex_config" {
-  type = object({
-    oauth2 = object({
-      skipApprovalScreen = bool
-    })
-    enablePasswordDB = bool
-    staticPasswords = list(object({
-      email    = string
-      hash     = string
-      username = string
-      userID   = string
-    }))
-    staticClients = list(object({
-      idEnv        = string
-      redirectURIs = list(string)
-      name         = string
-      secretEnv    = string
-    }))
-    connectors = list(object({
-      type = string
-      id   = string
-      name = string
-      config = object({
-        clientID     = string
-        clientSecret = string
-        redirectURI  = string
-        orgs = list(object({
-          name = string
-        }))
-        loadAllGroups = bool
-        teamNameField = string
-        useLoginAsID  = bool
-      })
-    }))
-  })
-  default = {
-    oauth2 = {
-      skipApprovalScreen = false
-    }
-    enablePasswordDB = true
-    staticPasswords  = []
-    staticClients = [
-      {
-        idEnv        = "OIDC_CLIENT_ID"
-        redirectURIs = ["/authservice/oidc/callback"]
-        name         = "Dex Login Application"
-        secretEnv    = "OIDC_CLIENT_SECRET"
-      }
-    ]
-    connectors = [
-      {
-        type = "github"
-        id   = "github"
-        name = "GitHub"
-        config = {
-          clientID     = ""
-          clientSecret = ""
-          redirectURI  = ""
-          orgs = [
-            {
-              name = ""
-            }
-          ]
-          loadAllGroups = false
-          teamNameField = "slug"
-          useLoginAsID  = true
-        }
-      }
-    ]
-  }
-}
-
-## Authorization Setup
-
-variable "profile_configuration" {
-  type = object({
-    users = list(object({
-      id    = string
-      email = string
-    }))
-    groups = list(object({
-      id    = string
-      users = list(string)
-    }))
-    profiles = list(object({
-      name = string
-      members = list(object({
-        group = string
-        access = object({
-          role            = string
-          notebooksAccess = bool
-        })
-      }))
-    }))
-  })
-  default = {
-    users = [
-      { id = "user-1", email = "user1@example.com" },
-      { id = "user-2", email = "user2@example.com" },
-      { id = "user-3", email = "user3@example.com" }
-    ],
-    groups = [
-      { id = "team-1--admins", users = ["user-1"] },
-      { id = "team-1--users", users = ["user-1", "user-2", "user-3"] }
-    ],
-    profiles = [
-      {
-        name = "team-1",
-        members = [
-          {
-            group  = "team-1--users",
-            access = { role = "edit", notebooksAccess = true }
-          }
-        ]
-      },
-      {
-        name = "team-1-prod",
-        members = [
-          {
-            group  = "team-1--admins",
-            access = { role = "edit", notebooksAccess = true }
-          },
-          {
-            group  = "team-1--users",
-            access = { role = "view", notebooksAccess = false }
-          }
-        ]
-      }
-    ]
-  }
-}
-
 resource "null_resource" "completed" {
   depends_on = [
     helm_release.istio_ingressgateway
@@ -566,15 +431,9 @@ module "treebeardkf" {
   count = var.enable_treebeardkf ? 1 : 0
   source                 = "../.."
   hostname               = var.host
-  protocol               = "https://"
-  port                   = ""
-  enable_kuberay         = false
-  enable_mlflow          = false
   enable_istio_base      = false
   enable_istiod          = false
   enable_istio_resources = true
   enable_cert_manager    = false
-  dex_config             = var.dex_config
-  profile_configuration  = var.profile_configuration
   dependency              = null_resource.istio.id
 }
