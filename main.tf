@@ -150,9 +150,9 @@ variable "profile_configuration" {
   }
 }
 
-variable "issuer_spec" {
-  type = string
-}
+# variable "issuer_spec" {
+#   type = string
+# }
 
 # variable "extra_manifests" {
 #   type = list(string)
@@ -463,24 +463,49 @@ data "kustomization_overlay" "kubeflow_istio_resources" {
   resources = [
     "${path.module}/overlays/istio-resources"
   ]
-  #   patches {
-  #     target {
-  #       kind      = "Certificate"
-  #       name      = "gateway-cert"
-  #       namespace = "istio-system"
-  #     }
-  #     patch = <<EOF
-  # apiVersion: cert-manager.io/v1
-  # kind: Certificate
-  # metadata:
-  #   name: gateway-cert
-  #   namespace: istio-system
-  # spec:
-  #   commonName: ${var.hostname}
-  #   dnsNames:
-  #     - ${var.hostname}
-  # EOF
-  #   }
+  patches {
+    patch = <<EOF
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gateway-cert
+  namespace: istio-system
+spec:
+  commonName: ${var.hostname}
+  dnsNames:
+    - ${var.hostname}
+EOF
+  }
+
+  patches {
+    patch = <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: kubeflow-gateway
+  namespace: kubeflow
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - ${var.hostname}
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        credentialName: gateway-cert
+        mode: SIMPLE
+    # enable for port forwarding to work with HTTP
+    # - hosts:
+    #     - '*'
+    #   port:
+    #     name: http
+    #     number: 80
+    #     protocol: HTTP
+EOF
+  }
 }
 
 module "kubeflow_istio_resources" {

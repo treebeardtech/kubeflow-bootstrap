@@ -25,4 +25,10 @@ docs-rm-new:
 
 fmt:
 	terraform fmt . modules/* examples/*
-.PHONY: build
+
+.PHONY: k3d-create
+k3d-create:
+	k3d cluster create dev \
+		-p "80:80@loadbalancer" \
+		-p "443:443@loadbalancer" \
+		--k3s-arg '--disable=traefik@server:0'

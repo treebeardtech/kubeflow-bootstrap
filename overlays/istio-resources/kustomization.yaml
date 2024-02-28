@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
 - ../../submodules/manifests/common/istio-1-17/kubeflow-istio-resources/base
 - cert.yaml
-# patches: # only needed when using TLS loadbalancer
-# - path: patches/resources.yaml
+patches: # only needed when using TLS loadbalancer
+- path: patches/resources.yaml
