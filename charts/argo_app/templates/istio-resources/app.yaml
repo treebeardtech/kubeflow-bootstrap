@@ -34,8 +34,6 @@ spec:
                 credentialName: gateway-cert
                 mode: SIMPLE
               {{- end }}
-        credentialName: gateway-cert
-        mode: SIMPLE
 operation:
   sync:
     syncStrategy:

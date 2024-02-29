@@ -39,3 +39,15 @@ variable "enable_istio_resources" {
   default     = true
   description = "Enable istio resources for clusters with pre-existing istio"
 }
+
+variable "enable_example_profile" {
+  type    = bool
+  default = true
+}
+
+variable "user_password" {
+  type        = string
+  description = "The password for the user"
+  default = "12341234"
+  sensitive = true
+}

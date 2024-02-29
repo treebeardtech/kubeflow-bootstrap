@@ -19,6 +19,7 @@ resource "helm_release" "dex" {
     repoURL: https://github.com/kubeflow/manifests
     path: common/dex/overlays/istio
     targetRevision: 776d4f4
+    password: ${bcrypt(var.user_password)}
     EOF
   ]
   depends_on = [

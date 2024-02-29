@@ -135,6 +135,7 @@ resource "helm_release" "volumes_web_app" {
 }
 
 resource "helm_release" "profile" {
+  count     = var.enable_example_profile == true ? 1 : 0
   name      = "profile"
   namespace = "kubeflow"
   chart     = "${path.module}/charts/profile"

@@ -72,7 +72,7 @@ Some considerations:
 1. If you are calling this Terraform module from your own module, pass in a string to the `completed` variable in order to manage Kubeflow *after* changes to your other resources. (Note that `depends_on` does not work with this module)
 2. If you already have Istio and Cert Manager installed, you will need to ensure Kubeflow works with them. See [examples/k3s-existing-istio](examples/k3s-existing-istio) for a configuration that we have tested like this.
 
-### Enable Single-Sign-On (SSO)
+### Set a new password
 
 
 
@@ -94,6 +94,15 @@ use [this guide](https://kubernetes-sigs.github.io/external-dns/v0.14.0/tutorial
 1. Manually remove any manually created Kubeflow resources, e.g. Notebook Servers and Volumes
 2. Remove the terraform module, e.g. with `terraform destroy` if you have installed directly from CLI
 3. Clean up remaining resources, e.g. Istio leaves behind some secrets that can prevent successful re-installation. 
+
+## Troubleshooting
+
+## Reconfiguration challenges
+
+Moving the deployment between different states of configuration can be challenging
+due to the dependencies between components in the cluster.
+
+If you have made a change to a dependency such as istio, or an auth component such as dex, it can be a good idea to re-create pods such that they re-initialise. This can be done by scaling to 0 then back up again, or simply deleting a pod managed by a deployment.
 
 ## Architecture
 
