@@ -1,8 +1,8 @@
 
 resource "helm_release" "central_dashboard" {
-  name       = "centraldashboard"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "centraldashboard"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     module.kubeflow_istio_resources,
   ]
@@ -14,12 +14,12 @@ resource "helm_release" "central_dashboard" {
     targetRevision: 776d4f4
     EOF
   ]
-} 
+}
 
 resource "helm_release" "admission_webhook" {
-  name       = "admission-webhook"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "admission-webhook"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     helm_release.central_dashboard
   ]
@@ -31,12 +31,12 @@ resource "helm_release" "admission_webhook" {
     targetRevision: 776d4f4
     EOF
   ]
-} 
+}
 
 resource "helm_release" "notebook_controller" {
-  name       = "notebook-controller"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "notebook-controller"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     helm_release.admission_webhook
   ]
@@ -48,12 +48,12 @@ resource "helm_release" "notebook_controller" {
     targetRevision: 776d4f4
     EOF
   ]
-} 
+}
 
 resource "helm_release" "jupyter_web_app" {
-  name       = "jupyter-web-app"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "jupyter-web-app"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     helm_release.notebook_controller
   ]
@@ -68,9 +68,9 @@ resource "helm_release" "jupyter_web_app" {
 }
 
 resource "helm_release" "pvc_viewer_controller" {
-  name       = "pvcviewer-controller"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "pvcviewer-controller"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     helm_release.jupyter_web_app
   ]
@@ -85,9 +85,9 @@ resource "helm_release" "pvc_viewer_controller" {
 }
 
 resource "helm_release" "profiles_kfam" {
-  name       = "profiles-kfam"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "profiles-kfam"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     helm_release.pvc_viewer_controller
   ]
@@ -102,9 +102,9 @@ resource "helm_release" "profiles_kfam" {
 }
 
 resource "helm_release" "volumes_web_app" {
-  name       = "volumes-web-app"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/argo_app"
+  name      = "volumes-web-app"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/argo_app"
   depends_on = [
     helm_release.profiles_kfam
   ]
@@ -119,9 +119,9 @@ resource "helm_release" "volumes_web_app" {
 }
 
 resource "helm_release" "kubeflow_profile" {
-  name       = "kubeflow-profile"
-  namespace  = "argo-cd"
-  chart      = "${path.module}/charts/profile"
+  name      = "kubeflow-profile"
+  namespace = "argo-cd"
+  chart     = "${path.module}/charts/profile"
   depends_on = [
     helm_release.volumes_web_app
   ]
