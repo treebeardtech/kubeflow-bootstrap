@@ -48,6 +48,6 @@ variable "enable_example_profile" {
 variable "user_password" {
   type        = string
   description = "The password for the user"
-  default = "12341234"
-  sensitive = true
+  default     = "12341234"
+  sensitive   = true
 }
