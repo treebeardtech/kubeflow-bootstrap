@@ -4,7 +4,6 @@
 |------|---------|
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.25.2 |
-| <a name="requirement_kustomization"></a> [kustomization](#requirement\_kustomization) | ~> 0.9.5 |
 
 ## Providers
 

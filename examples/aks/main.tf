@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    kustomization = {
-      source  = "kbst/kustomization"
-      version = "~> 0.9.5"
-    }
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.12.1"
@@ -55,10 +51,6 @@ provider "helm" {
     client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.client_key)
     cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.cluster_ca_certificate)
   }
-}
-
-provider "kustomization" {
-  kubeconfig_raw = azurerm_kubernetes_cluster.aks.kube_config_raw
 }
 
 variable "enable_treebeardkf" {
