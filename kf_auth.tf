@@ -13,8 +13,7 @@ resource "helm_release" "oidc_authservice" {
     EOF
   ]
   depends_on = [
-    module.istio_install,
-    var.dependency
+    null_resource.kf_dependencies_end,
   ]
 }
 

@@ -1,10 +1,19 @@
+resource "null_resource" "kf_apps_start" {
+  provisioner "local-exec" {
+    command = "echo '⏳ Installing Kubeflow apps...'"
+  }
+
+  depends_on = [
+    null_resource.kf_core_end
+  ]
+}
 
 resource "helm_release" "central_dashboard" {
   name      = "centraldashboard"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    module.kubeflow_istio_resources,
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -21,7 +30,7 @@ resource "helm_release" "admission_webhook" {
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    helm_release.central_dashboard
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -38,7 +47,7 @@ resource "helm_release" "notebook_controller" {
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    helm_release.admission_webhook
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -55,7 +64,7 @@ resource "helm_release" "jupyter_web_app" {
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    helm_release.notebook_controller
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -72,7 +81,7 @@ resource "helm_release" "pvc_viewer_controller" {
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    helm_release.jupyter_web_app
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -89,7 +98,7 @@ resource "helm_release" "profiles_kfam" {
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    helm_release.pvc_viewer_controller
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -106,7 +115,7 @@ resource "helm_release" "volumes_web_app" {
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
   depends_on = [
-    helm_release.profiles_kfam
+    null_resource.kf_apps_start
   ]
   values = [
     <<EOF
@@ -118,15 +127,36 @@ resource "helm_release" "volumes_web_app" {
   ]
 }
 
-resource "helm_release" "kubeflow_profile" {
-  name      = "kubeflow-profile"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/profile"
+# resource "helm_release" "profile" {
+#   name      = "profile"
+#   namespace = "argo-cd"
+#   chart     = "${path.module}/charts/argo_app"
+#   depends_on = [
+#     null_resource.kf_apps_start
+#   ]
+#   values = [
+#     <<EOF
+#     name: profile
+#     repoURL: https://github.com/kubeflow/manifests
+#     path: apps/profiles/upstream/samples
+#     targetRevision: 776d4f4
+#     EOF
+#   ]
+# }
+
+resource "null_resource" "kf_apps_end" {
+  provisioner "local-exec" {
+    command = "echo '✅ Kubeflow apps installed'"
+  }
+
   depends_on = [
-    helm_release.volumes_web_app
-  ]
-  values = [
-    <<EOF
-EOF
+    helm_release.central_dashboard,
+    helm_release.admission_webhook,
+    helm_release.notebook_controller,
+    helm_release.jupyter_web_app,
+    helm_release.pvc_viewer_controller,
+    helm_release.profiles_kfam,
+    helm_release.volumes_web_app,
+    # helm_release.profile
   ]
 }

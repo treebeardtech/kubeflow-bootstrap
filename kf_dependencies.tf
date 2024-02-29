@@ -1,13 +1,42 @@
 
-resource "helm_release" "argo_cd" {
-  name             = "argo-cd"
-  namespace        = "argo-cd"
-  chart            = "argo-cd"
-  repository       = "https://argoproj.github.io/argo-helm"
-  version          = "6.4.1"
-  create_namespace = true
+resource "null_resource" "kf_dependencies_start" {
+  provisioner "local-exec" {
+    command = "echo '⏳ Installing Kubeflow dependencies...'"
+  }
+
   depends_on = [
     var.dependency
+  ]
+}
+
+resource "helm_release" "cert_manager" {
+  count = var.enable_cert_manager ? 1 : 0
+  name             = "cert-manager"
+  namespace        = "cert-manager"
+  chart            = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  version          = "1.14.3"
+  create_namespace = true
+  depends_on       = [
+    null_resource.kf_dependencies_start
+  ]
+  values = [
+    <<EOF
+    installCRDs: true
+    EOF
+  ]
+}
+
+resource "helm_release" "istio_base" {
+  count = var.enable_istio_base ? 1 : 0
+  name             = "istio-base"
+  namespace        = "istio-system"
+  chart            = "base"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  version          = "1.18.7"
+  create_namespace = true
+  depends_on = [
+    helm_release.cert_manager
   ]
   values = [
     <<EOF
@@ -15,97 +44,86 @@ resource "helm_release" "argo_cd" {
   ]
 }
 
-
-data "kustomization_build" "cert_manager" {
-  count = var.enable_cert_manager ? 1 : 0
-  path  = "${path.module}/submodules/manifests/common/cert-manager/cert-manager/base"
-}
-
-module "cert_manager" {
-  count  = var.enable_cert_manager ? 1 : 0
-  source = "./modules/kust"
-  build  = one(data.kustomization_build.cert_manager)
-  depends_on = [
-    helm_release.argo_cd
-  ]
-}
-
-data "kustomization_build" "kubeflow_issuer" {
-  path = "${path.module}/submodules/manifests/common/cert-manager/kubeflow-issuer/base"
-}
-
-module "kubeflow_issuer" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.kubeflow_issuer
-  depends_on = [
-    module.cert_manager,
-    var.dependency
-  ]
-}
-
-
-data "kustomization_build" "istio_crds" {
-  count = var.enable_istio_base ? 1 : 0
-  path  = "${path.module}/submodules/manifests/common/istio-1-17/istio-crds/base"
-}
-
-module "istio_crds" {
-  count  = var.enable_istio_base ? 1 : 0
-  source = "./modules/kust"
-  build  = one(data.kustomization_build.istio_crds)
-  depends_on = [
-    module.kubeflow_issuer
-  ]
-}
-
-data "kustomization_build" "istio_namespace" {
-  count = var.enable_istio_base ? 1 : 0
-  path  = "${path.module}/submodules/manifests/common/istio-1-17/istio-namespace/base"
-}
-
-module "istio_namespace" {
-  count  = var.enable_istio_base ? 1 : 0
-  source = "./modules/kust"
-  build  = one(data.kustomization_build.istio_namespace)
-  depends_on = [
-    module.istio_crds
-  ]
-}
-
-
-data "kustomization_overlay" "istio_install" {
+resource "helm_release" "istiod" {
   count = var.enable_istiod ? 1 : 0
-  resources = [
-    "${path.module}/overlays/istio-install"
+  name             = "istiod"
+  namespace        = "istio-system"
+  chart            = "istiod"
+  repository       = "https://istio-release.storage.googleapis.com/charts"
+  version          = "1.18.7"
+  create_namespace = true
+  depends_on = [
+    helm_release.istio_base
   ]
-
-
-  dynamic "patches" {
-    for_each = var.enable_istio_ingressgateway_loadbalancer ? [1] : []
-    content {
-      target {
-        kind      = "Service"
-        name      = "istio-ingressgateway"
-        namespace = "istio-system"
-      }
-      patch = <<EOF
-  apiVersion: v1
-  kind: Service
-  metadata:
-    name: istio-ingressgateway
-    namespace: istio-system
-  spec:
-    type: LoadBalancer
-  EOF
-    }
-  }
+  values = [
+    <<EOF
+    EOF
+  ]
 }
 
-module "istio_install" {
-  count  = var.enable_istiod ? 1 : 0
-  source = "./modules/kust"
-  build  = one(data.kustomization_overlay.istio_install)
+resource "helm_release" "cluster_issuer" {
+  name      = "kubeflow-profile"
+  namespace = "cert-manager"
+  chart     = "${path.module}/charts/issuer"
+  values = [
+    <<EOF
+EOF
+  ]
   depends_on = [
-    module.istio_namespace
+    helm_release.cert_manager
+  ]
+}
+
+resource "helm_release" "istio_ingressgateway" {
+  count = var.enable_istiod ? 1 : 0
+  name       = "istio-ingressgateway"
+  namespace  = "istio-system"
+  chart      = "gateway"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  version    = "1.18.7"
+  depends_on = [
+    helm_release.istiod,
+    helm_release.cluster_issuer
+  ]
+  values = [
+    <<EOF
+    service:
+      type: ClusterIP
+    serviceAccount:
+      name: istio-ingressgateway-service-account
+    EOF
+  ]
+}
+
+resource "helm_release" "argo_cd" {
+  count = var.enable_argocd ? 1 : 0
+
+  name             = "argo-cd"
+  namespace        = "argo-cd"
+  chart            = "argo-cd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  version          = "6.4.1"
+  create_namespace = true
+  depends_on = [
+    null_resource.kf_dependencies_start
+  ]
+  values = [
+    <<EOF
+    EOF
+  ]
+}
+
+resource "null_resource" "kf_dependencies_end" {
+  provisioner "local-exec" {
+    command = "echo '✅ Kubeflow dependencies installed'"
+  }
+
+  depends_on = [
+    helm_release.cert_manager,
+    helm_release.istio_base,
+    helm_release.istiod,
+    helm_release.istio_ingressgateway,
+    helm_release.argo_cd,
+    helm_release.cluster_issuer
   ]
 }

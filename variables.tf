@@ -19,6 +19,11 @@ variable "enable_https" {
   default = false
 }
 
+variable "enable_argocd" {
+  type    = bool
+  default = true
+}
+
 variable "enable_cert_manager" {
   type    = bool
   default = true

@@ -1,10 +1,6 @@
 
 terraform {
   required_providers {
-    kustomization = {
-      source  = "kbst/kustomization"
-      version = "~> 0.9.5"
-    }
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.12.1"
@@ -20,10 +16,6 @@ terraform {
 
 variable "kubeconfig" {
   type = string
-}
-
-provider "kustomization" {
-  kubeconfig_path = var.kubeconfig
 }
 
 provider "helm" {
@@ -101,13 +93,6 @@ resource "helm_release" "istio_ingressgateway" {
     EOF
   ]
 }
-
-# resource "time_sleep" "wait_30_seconds" {
-#   depends_on = [
-#     helm_release.istio_ingressgateway
-#   ]
-#   create_duration = "30s"
-# }
 
 resource "null_resource" "completed" {
   depends_on = [
