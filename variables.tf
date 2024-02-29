@@ -39,11 +39,6 @@ variable "enable_istiod" {
   default = true
 }
 
-variable "enable_tensorboard" {
-  type    = bool
-  default = false
-}
-
 variable "enable_istio_resources" {
   type        = bool
   default     = true

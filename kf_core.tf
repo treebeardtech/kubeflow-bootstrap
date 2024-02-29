@@ -16,32 +16,6 @@ locals {
       secretName : "gateway-cert"
     }
   }) : ""
-
-  gateway_patch = yamlencode({
-    apiVersion : "networking.istio.io/v1alpha3",
-    kind : "Gateway",
-    metadata : {
-      name : "kubeflow-gateway",
-      namespace : "kubeflow",
-    },
-    spec : {
-      selector : {
-        istio : "ingressgateway",
-      },
-      servers : [{
-        hosts : [var.hostname],
-        port : {
-          name : var.enable_https ? "https" : "http",
-          number : var.enable_https ? 443 : 80,
-          protocol : var.enable_https ? "HTTPS" : "HTTP",
-        },
-        tls : var.enable_https ? {
-          credentialName : "gateway-cert",
-          mode : "SIMPLE",
-        } : null,
-      }],
-    },
-  })
 }
 
 resource "null_resource" "kf_core_start" {
@@ -138,6 +112,8 @@ resource "helm_release" "kubeflow_istio_resources" {
     repoURL: https://github.com/kubeflow/manifests
     path: common/istio-1-17/kubeflow-istio-resources/base
     targetRevision: 776d4f4
+    hostname: '${var.hostname}'
+    enableHttps: "false"
     EOF
   ]
   depends_on = [
