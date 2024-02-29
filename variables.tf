@@ -1,9 +1,3 @@
-
-variable "enable_istio_ingressgateway_loadbalancer" {
-  type    = bool
-  default = false
-}
-
 variable "dependency" {
   type    = string
   default = "null"
