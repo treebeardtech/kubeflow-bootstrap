@@ -1,10 +1,6 @@
 
 terraform {
   required_providers {
-    kustomization = {
-      source  = "kbst/kustomization"
-      version = "~> 0.9.5"
-    }
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.12.1"
@@ -22,10 +18,6 @@ variable "kubeconfig" {
   type = string
 }
 
-provider "kustomization" {
-  kubeconfig_path = var.kubeconfig
-}
-
 provider "helm" {
   kubernetes {
     config_path = var.kubeconfig
@@ -38,6 +30,4 @@ provider "kubernetes" {
 
 module "treebeardkf" {
   source       = "../.."
-  enable_https = true
-  hostname     = "kubeflow.example.com"
 }
