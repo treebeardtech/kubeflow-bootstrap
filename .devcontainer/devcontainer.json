@@ -68,6 +68,8 @@
     },
     "ghcr.io/devcontainers-contrib/features/istioctl:1": {
     },
+    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {
+    },
   },
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",

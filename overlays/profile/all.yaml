@@ -1,8 +1,0 @@
-apiVersion: kubeflow.org/v1
-kind: Profile
-metadata:
-  name: prod
-spec:
-  owner:
-    kind: User
-  resourceQuotaSpec: {}

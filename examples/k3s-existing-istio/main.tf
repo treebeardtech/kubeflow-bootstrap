@@ -117,14 +117,9 @@ resource "null_resource" "completed" {
 
 module "treebeardkf" {
   source                 = "../.."
-  hostname               = "kf.example.com"
-  protocol               = "https://"
-  port                   = ""
-  enable_kuberay         = false
-  enable_mlflow          = false
   enable_istio_base      = false
   enable_istiod          = false
   enable_istio_resources = true
   enable_cert_manager    = false
-  completed              = null_resource.completed.id
+  dependency             = null_resource.completed.id
 }

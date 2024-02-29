@@ -1,118 +1,132 @@
 
-data "kustomization_build" "central_dashboard" {
-  path = "${path.module}/overlays/centraldashboard"
-}
-
-module "central_dashboard" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.central_dashboard
+resource "helm_release" "central_dashboard" {
+  name       = "centraldashboard"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.models_web_app,
     module.kubeflow_istio_resources,
-    module.kubeflow_pipelines,
-    module.kserve
   ]
-}
+  values = [
+    <<EOF
+    name: centraldashboard
+    repoURL: https://github.com/kubeflow/manifests
+    path: apps/centraldashboard/upstream/overlays/kserve
+    targetRevision: 776d4f4
+    EOF
+  ]
+} 
 
-data "kustomization_build" "admission_webhook" {
-  path = "${path.module}/submodules/manifests/apps/admission-webhook/upstream/overlays/cert-manager"
-}
-
-module "admission_webhook" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.admission_webhook
+resource "helm_release" "admission_webhook" {
+  name       = "admission-webhook"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.central_dashboard
+    helm_release.central_dashboard
   ]
-}
+  values = [
+    <<EOF
+    name: admission-webhook
+    repoURL: https://github.com/kubeflow/manifests
+    path: apps/admission-webhook/upstream/overlays/cert-manager
+    targetRevision: 776d4f4
+    EOF
+  ]
+} 
 
-data "kustomization_build" "notebook_controller" {
-  path = "${path.module}/submodules/manifests/apps/jupyter/notebook-controller/upstream/overlays/kubeflow"
-}
-
-module "notebook_controller" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.notebook_controller
+resource "helm_release" "notebook_controller" {
+  name       = "notebook-controller"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.admission_webhook
+    helm_release.admission_webhook
   ]
-}
+  values = [
+    <<EOF
+    name: notebook-controller
+    repoURL: https://github.com/kubeflow/manifests
+    path: apps/jupyter/notebook-controller/upstream/overlays/kubeflow
+    targetRevision: 776d4f4
+    EOF
+  ]
+} 
 
-data "kustomization_build" "jupyter_web_app" {
-  path = "${path.module}/submodules/manifests/apps/jupyter/jupyter-web-app/upstream/overlays/istio"
-}
-
-module "jupyter_web_app" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.jupyter_web_app
+resource "helm_release" "jupyter_web_app" {
+  name       = "jupyter-web-app"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.notebook_controller
+    helm_release.notebook_controller
+  ]
+  values = [
+    <<EOF
+    name: jupyter-web-app
+    repoURL: https://github.com/kubeflow/manifests
+    path: apps/jupyter/jupyter-web-app/upstream/overlays/istio
+    targetRevision: 776d4f4
+    EOF
   ]
 }
 
-data "kustomization_build" "pvc_viewer_controller" {
-  path = "${path.module}/submodules/manifests/apps/pvcviewer-controller/upstream/default"
-}
-
-module "pvc_viewer_controller" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.pvc_viewer_controller
+resource "helm_release" "pvc_viewer_controller" {
+  name       = "pvcviewer-controller"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.jupyter_web_app
+    helm_release.jupyter_web_app
+  ]
+  values = [
+    <<EOF
+    name: pvcviewer-controller
+    repoURL: https://github.com/kubeflow/manifests
+    path: pps/pvcviewer-controller/upstream/default
+    targetRevision: 776d4f4
+    EOF
   ]
 }
 
-data "kustomization_build" "profiles_kfam" {
-  path = "${path.module}/submodules/manifests/apps/profiles/upstream/overlays/kubeflow"
-}
-
-module "profiles_kfam" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.profiles_kfam
+resource "helm_release" "profiles_kfam" {
+  name       = "profiles-kfam"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.pvc_viewer_controller
+    helm_release.pvc_viewer_controller
+  ]
+  values = [
+    <<EOF
+    name: profiles-kfam
+    repoURL: https://github.com/kubeflow/manifests
+    path: apps/profiles/upstream/overlays/kubeflow
+    targetRevision: 776d4f4
+    EOF
   ]
 }
 
-data "kustomization_build" "volumes_web_app" {
-  path = "${path.module}/submodules/manifests/apps/volumes-web-app/upstream/overlays/istio"
-}
-
-module "volumes_web_app" {
-  source = "./modules/kust"
-  build  = data.kustomization_build.volumes_web_app
+resource "helm_release" "volumes_web_app" {
+  name       = "volumes-web-app"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/argo_app"
   depends_on = [
-    module.profiles_kfam
+    helm_release.profiles_kfam
+  ]
+  values = [
+    <<EOF
+    name: volumes-web-app
+    repoURL: https://github.com/kubeflow/manifests
+    path: apps/volumes-web-app/upstream/overlays/istio
+    targetRevision: 776d4f4
+    EOF
   ]
 }
 
-data "kustomization_overlay" "kubeflow_profile" {
-  resources = [
-    "${path.module}/overlays/profile"
+resource "helm_release" "kubeflow_profile" {
+  name       = "kubeflow-profile"
+  namespace  = "argo-cd"
+  chart      = "${path.module}/charts/profile"
+  depends_on = [
+    helm_release.volumes_web_app
   ]
-
-  patches {
-    target {
-      kind = "Profile"
-      name = "prod"
-    }
-    patch = <<EOF
-apiVersion: kubeflow.org/v1
-kind: Profile
-metadata:
-  name: prod
-spec:
-  owner:
-    kind: User
-    name: user@example.com
+  values = [
+    <<EOF
 EOF
-  }
-}
-
-module "kubeflow_profile" {
-  source = "./modules/kust"
-  build  = data.kustomization_overlay.kubeflow_profile
-  depends_on = [
-    module.profiles_kfam
   ]
 }

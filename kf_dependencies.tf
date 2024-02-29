@@ -1,4 +1,21 @@
 
+resource "helm_release" "argo_cd" {
+  name       = "argo-cd"
+  namespace  = "argo-cd"
+  chart      = "argo-cd"
+  repository = "https://argoproj.github.io/argo-helm"
+  version    = "6.4.1"
+  create_namespace = true
+  depends_on = [
+    var.dependency
+  ]
+  values = [
+    <<EOF
+    EOF
+  ]
+}
+
+
 data "kustomization_build" "cert_manager" {
   count = var.enable_cert_manager ? 1 : 0
   path  = "${path.module}/submodules/manifests/common/cert-manager/cert-manager/base"
@@ -9,7 +26,7 @@ module "cert_manager" {
   source = "./modules/kust"
   build  = one(data.kustomization_build.cert_manager)
   depends_on = [
-    var.dependency
+    helm_release.argo_cd
   ]
 }
 

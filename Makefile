@@ -32,3 +32,7 @@ k3d-create:
 		-p "80:80@loadbalancer" \
 		-p "443:443@loadbalancer" \
 		--k3s-arg '--disable=traefik@server:0'
+
+.PHONY: k3d-delete
+k3d-delete:
+	k3d cluster delete dev
