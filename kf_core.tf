@@ -1,23 +1,3 @@
-locals {
-  cert_resource = var.enable_https ? yamlencode({
-    apiVersion : "cert-manager.io/v1",
-    kind : "Certificate",
-    metadata : {
-      name : "gateway-cert",
-      namespace : "istio-system"
-    },
-    spec : {
-      commonName : var.hostname,
-      dnsNames : [var.hostname]
-      issuerRef : {
-        kind : "Issuer",
-        name : "treebeard-issuer"
-      }
-      secretName : "gateway-cert"
-    }
-  }) : ""
-}
-
 resource "null_resource" "kf_core_start" {
   provisioner "local-exec" {
     command = "echo '⏳ Installing Kubeflow core...'"
