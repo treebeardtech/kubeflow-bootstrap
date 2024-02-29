@@ -53,6 +53,17 @@ resource "helm_release" "istiod" {
   ]
   values = [
     <<EOF
+pilot:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+global:
+  proxy:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
     EOF
   ]
 }
@@ -83,10 +94,17 @@ resource "helm_release" "istio_ingressgateway" {
   ]
   values = [
     <<EOF
-    service:
-      type: ClusterIP
-    serviceAccount:
-      name: istio-ingressgateway-service-account
+service:
+  type: ClusterIP
+serviceAccount:
+  name: istio-ingressgateway-service-account
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    cpu: 2000m
+    memory: 1024Mi
     EOF
   ]
 }
