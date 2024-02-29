@@ -1,8 +1,3 @@
-variable "dependency" {
-  type    = string
-  default = "null"
-}
-
 variable "hostname" {
   type    = string
   default = "*"

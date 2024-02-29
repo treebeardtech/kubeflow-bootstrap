@@ -3,8 +3,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Values.name }}
-  annotations:
-    test: "test"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

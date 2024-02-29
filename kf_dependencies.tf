@@ -3,10 +3,6 @@ resource "null_resource" "kf_dependencies_start" {
   provisioner "local-exec" {
     command = "echo '⏳ Installing Kubeflow dependencies...'"
   }
-
-  depends_on = [
-    var.dependency
-  ]
 }
 
 resource "helm_release" "cert_manager" {

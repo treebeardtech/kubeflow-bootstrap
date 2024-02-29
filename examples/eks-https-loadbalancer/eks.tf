@@ -129,10 +129,6 @@ provider "helm" {
   }
 }
 
-provider "kustomization" {
-  kubeconfig_path = "/home/vscode/.kube/eks.yaml"
-}
-
 resource "null_resource" "cluster_ready" {
   # triggers = {
   #   always_run = "${timestamp()}"
