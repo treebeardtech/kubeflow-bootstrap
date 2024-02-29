@@ -3,7 +3,7 @@ module "treebeardkf" {
   source                 = "../.."
   hostname               = var.host
   enable_https           = true
-  issuer_name = "treebeard-issuer"
+  issuer_name            = "treebeard-issuer"
   enable_istio_base      = false
   enable_istiod          = false
   enable_istio_resources = true
@@ -12,5 +12,5 @@ module "treebeardkf" {
     null_resource.cluster_ready,
     null_resource.core_addons,
     null_resource.istio
-]
+  ]
 }

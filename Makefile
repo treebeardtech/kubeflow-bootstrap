@@ -24,7 +24,7 @@ docs-rm-new:
 	rm -f examples/aks/README.md.new
 
 fmt:
-	terraform fmt . modules/* examples/*
+	terraform fmt . examples/*
 
 .PHONY: k3d-create
 k3d-create:
