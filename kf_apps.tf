@@ -78,7 +78,7 @@ resource "helm_release" "pvc_viewer_controller" {
     <<EOF
     name: pvcviewer-controller
     repoURL: https://github.com/kubeflow/manifests
-    path: pps/pvcviewer-controller/upstream/default
+    path: apps/pvcviewer-controller/upstream/default
     targetRevision: 776d4f4
     EOF
   ]

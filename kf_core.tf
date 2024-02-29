@@ -52,7 +52,7 @@ module "kubeflow_namespace" {
   source = "./modules/kust"
   build  = data.kustomization_build.kubeflow_namespace
   depends_on = [
-    module.dex
+    helm_release.dex
   ]
 }
 
