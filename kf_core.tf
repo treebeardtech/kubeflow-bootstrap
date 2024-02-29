@@ -58,6 +58,7 @@ resource "helm_release" "kubeflow_namespace" {
   name      = "kubeflow-namespace"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
+  wait_for_jobs = true
   values = [
     <<EOF
     name: kubeflow-namespace
@@ -66,12 +67,16 @@ resource "helm_release" "kubeflow_namespace" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_core_start
+  ]
 }
 
 resource "helm_release" "kubeflow_roles" {
   name      = "kubeflow-roles"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
+  wait_for_jobs = true
   values = [
     <<EOF
     name: kubeflow-roles
@@ -90,6 +95,7 @@ resource "helm_release" "kubeflow_istio_resources" {
   name      = "kubeflow-istio-resources"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
+  wait_for_jobs = true
   values = [
     <<EOF
     name: kubeflow-istio-resources

@@ -12,9 +12,7 @@ resource "helm_release" "central_dashboard" {
   name      = "centraldashboard"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: centraldashboard
@@ -23,15 +21,16 @@ resource "helm_release" "central_dashboard" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_apps_start
+  ]
 }
 
 resource "helm_release" "admission_webhook" {
   name      = "admission-webhook"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: admission-webhook
@@ -40,15 +39,16 @@ resource "helm_release" "admission_webhook" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_apps_start
+  ]
 }
 
 resource "helm_release" "notebook_controller" {
   name      = "notebook-controller"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: notebook-controller
@@ -57,15 +57,16 @@ resource "helm_release" "notebook_controller" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_apps_start
+  ]
 }
 
 resource "helm_release" "jupyter_web_app" {
   name      = "jupyter-web-app"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: jupyter-web-app
@@ -74,15 +75,16 @@ resource "helm_release" "jupyter_web_app" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_apps_start
+  ]
 }
 
 resource "helm_release" "pvc_viewer_controller" {
   name      = "pvcviewer-controller"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: pvcviewer-controller
@@ -91,15 +93,15 @@ resource "helm_release" "pvc_viewer_controller" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_apps_start
+  ]
 }
 
 resource "helm_release" "profiles_kfam" {
   name      = "profiles-kfam"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
   wait_for_jobs = true
   values = [
     <<EOF
@@ -109,15 +111,15 @@ resource "helm_release" "profiles_kfam" {
     targetRevision: 776d4f4
     EOF
   ]
+  depends_on = [
+    null_resource.kf_apps_start
+  ]
 }
 
 resource "helm_release" "volumes_web_app" {
   name      = "volumes-web-app"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
-  depends_on = [
-    null_resource.kf_apps_start
-  ]
   wait_for_jobs = true
   values = [
     <<EOF
@@ -126,6 +128,9 @@ resource "helm_release" "volumes_web_app" {
     path: apps/volumes-web-app/upstream/overlays/istio
     targetRevision: 776d4f4
     EOF
+  ]
+  depends_on = [
+    null_resource.kf_apps_start
   ]
 }
 

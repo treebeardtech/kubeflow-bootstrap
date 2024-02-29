@@ -46,3 +46,4 @@ spec:
       restartPolicy: Never
   backoffLimit: 1 # Number of retries before considering the Job failed
   activeDeadlineSeconds: 100
+  ttlSecondsAfterFinished: 30

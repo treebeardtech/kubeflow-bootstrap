@@ -4,6 +4,7 @@ resource "helm_release" "oidc_authservice" {
   name      = "oidc-authservice"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
+  wait_for_jobs = true
   values = [
     <<EOF
     name: oidc-authservice
@@ -21,6 +22,7 @@ resource "helm_release" "dex" {
   name      = "dex"
   namespace = "argo-cd"
   chart     = "${path.module}/charts/argo_app"
+  wait_for_jobs = true
   values = [
     <<EOF
     name: dex
