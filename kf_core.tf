@@ -9,9 +9,9 @@ resource "null_resource" "kf_core_start" {
 }
 
 resource "helm_release" "dex" {
-  name      = "dex"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "dex"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -27,9 +27,9 @@ resource "helm_release" "dex" {
 }
 
 resource "helm_release" "oidc_authservice" {
-  name      = "oidc-authservice"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "oidc-authservice"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -45,9 +45,9 @@ resource "helm_release" "oidc_authservice" {
 }
 
 resource "helm_release" "kubeflow_namespace" {
-  name      = "kubeflow-namespace"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "kubeflow-namespace"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -63,9 +63,9 @@ resource "helm_release" "kubeflow_namespace" {
 }
 
 resource "helm_release" "kubeflow_roles" {
-  name      = "kubeflow-roles"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "kubeflow-roles"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -81,10 +81,10 @@ resource "helm_release" "kubeflow_roles" {
 }
 
 resource "helm_release" "kubeflow_istio_resources" {
-  count  = var.enable_istio_resources ? 1 : 0
-  name      = "kubeflow-istio-resources"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  count         = var.enable_istio_resources ? 1 : 0
+  name          = "kubeflow-istio-resources"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF

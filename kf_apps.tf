@@ -9,9 +9,9 @@ resource "null_resource" "kf_apps_start" {
 }
 
 resource "helm_release" "central_dashboard" {
-  name      = "centraldashboard"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "centraldashboard"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -27,9 +27,9 @@ resource "helm_release" "central_dashboard" {
 }
 
 resource "helm_release" "admission_webhook" {
-  name      = "admission-webhook"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "admission-webhook"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -45,9 +45,9 @@ resource "helm_release" "admission_webhook" {
 }
 
 resource "helm_release" "notebook_controller" {
-  name      = "notebook-controller"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "notebook-controller"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -63,9 +63,9 @@ resource "helm_release" "notebook_controller" {
 }
 
 resource "helm_release" "jupyter_web_app" {
-  name      = "jupyter-web-app"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "jupyter-web-app"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -81,9 +81,9 @@ resource "helm_release" "jupyter_web_app" {
 }
 
 resource "helm_release" "pvc_viewer_controller" {
-  name      = "pvcviewer-controller"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "pvcviewer-controller"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -99,9 +99,9 @@ resource "helm_release" "pvc_viewer_controller" {
 }
 
 resource "helm_release" "profiles_kfam" {
-  name      = "profiles-kfam"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "profiles-kfam"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF
@@ -117,9 +117,9 @@ resource "helm_release" "profiles_kfam" {
 }
 
 resource "helm_release" "volumes_web_app" {
-  name      = "volumes-web-app"
-  namespace = "argo-cd"
-  chart     = "${path.module}/charts/argo_app"
+  name          = "volumes-web-app"
+  namespace     = "argo-cd"
+  chart         = "${path.module}/charts/argo_app"
   wait_for_jobs = true
   values = [
     <<EOF

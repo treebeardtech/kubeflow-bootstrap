@@ -10,14 +10,14 @@ resource "null_resource" "kf_dependencies_start" {
 }
 
 resource "helm_release" "cert_manager" {
-  count = var.enable_cert_manager ? 1 : 0
+  count            = var.enable_cert_manager ? 1 : 0
   name             = "cert-manager"
   namespace        = "cert-manager"
   chart            = "cert-manager"
   repository       = "https://charts.jetstack.io"
   version          = "1.14.3"
   create_namespace = true
-  depends_on       = [
+  depends_on = [
     null_resource.kf_dependencies_start
   ]
   values = [
@@ -28,7 +28,7 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "helm_release" "istio_base" {
-  count = var.enable_istio_base ? 1 : 0
+  count            = var.enable_istio_base ? 1 : 0
   name             = "istio-base"
   namespace        = "istio-system"
   chart            = "base"
@@ -45,7 +45,7 @@ resource "helm_release" "istio_base" {
 }
 
 resource "helm_release" "istiod" {
-  count = var.enable_istiod ? 1 : 0
+  count            = var.enable_istiod ? 1 : 0
   name             = "istiod"
   namespace        = "istio-system"
   chart            = "istiod"
@@ -75,7 +75,7 @@ EOF
 }
 
 resource "helm_release" "istio_ingressgateway" {
-  count = var.enable_istiod ? 1 : 0
+  count      = var.enable_istiod ? 1 : 0
   name       = "istio-ingressgateway"
   namespace  = "istio-system"
   chart      = "gateway"
@@ -119,18 +119,18 @@ resource "time_sleep" "wait" {
     helm_release.argo_cd,
   ]
 
-  create_duration = "10s"
+  create_duration  = "10s"
   destroy_duration = "10s"
 }
 
 resource "null_resource" "kf_dependencies_end" {
   provisioner "local-exec" {
-    when = create
+    when    = create
     command = "echo '✅ Kubeflow dependencies installed'"
   }
 
   provisioner "local-exec" {
-    when    = destroy # note, this only runs when the root module is destroyed
+    when = destroy # note, this only runs when the root module is destroyed
     # https://github.com/hashicorp/terraform/issues/13549
     command = "echo 'Tearing down kf_dependencies'"
   }

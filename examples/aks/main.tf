@@ -68,6 +68,6 @@ variable "enable_treebeardkf" {
 }
 
 module "treebeardkf" {
-  count        = var.enable_treebeardkf ? 1 : 0
-  source       = "../.."
+  count  = var.enable_treebeardkf ? 1 : 0
+  source = "../.."
 }

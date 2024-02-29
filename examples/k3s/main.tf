@@ -29,5 +29,5 @@ provider "kubernetes" {
 }
 
 module "treebeardkf" {
-  source       = "../.."
+  source = "../.."
 }

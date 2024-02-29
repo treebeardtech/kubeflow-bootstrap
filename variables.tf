@@ -20,8 +20,8 @@ variable "enable_https" {
 }
 
 variable "issuer_name" {
-  type    = string
-  default = "null"
+  type        = string
+  default     = "null"
   description = "Required if enable_https is true"
 }
 
