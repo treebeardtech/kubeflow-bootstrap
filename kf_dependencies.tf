@@ -118,6 +118,11 @@ resource "null_resource" "kf_dependencies_end" {
     command = "echo '✅ Kubeflow dependencies installed'"
   }
 
+  provisioner "local-exec" {
+    when    = destroy
+    command = "echo 'Tearing down kf_dependencies soon' && sleep 20s"
+  }
+
   depends_on = [
     helm_release.cert_manager,
     helm_release.istio_base,
