@@ -70,4 +70,8 @@ variable "enable_treebeardkf" {
 module "treebeardkf" {
   count  = var.enable_treebeardkf ? 1 : 0
   source = "../.."
+
+  depends_on = [
+    azurerm_kubernetes_cluster.aks
+  ]
 }
