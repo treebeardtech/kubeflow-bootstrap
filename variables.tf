@@ -19,6 +19,12 @@ variable "enable_https" {
   default = false
 }
 
+variable "issuer_name" {
+  type    = string
+  default = "null"
+  description = "Required if enable_https is true"
+}
+
 variable "enable_argocd" {
   type    = bool
   default = true

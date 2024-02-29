@@ -1,0 +1,17 @@
+{{- if eq .Values.name "kubeflow-istio-resources" }}
+{{- if eq .Values.enableHttps "true" }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gateway-cert
+  namespace: istio-system
+spec:
+  commonName: '{{ .Values.hostname }}'
+  dnsNames:
+    - '{{ .Values.hostname }}'
+  issuerRef:
+    kind: Issuer
+    name: '{{ .Values.issuerName }}'
+  secretName: gateway-cert
+{{- end }}
+{{- end }}

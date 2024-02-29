@@ -113,7 +113,8 @@ resource "helm_release" "kubeflow_istio_resources" {
     path: common/istio-1-17/kubeflow-istio-resources/base
     targetRevision: 776d4f4
     hostname: '${var.hostname}'
-    enableHttps: "false"
+    enableHttps: '${var.enable_https}'
+    issuerName: '${var.issuer_name}'
     EOF
   ]
   depends_on = [

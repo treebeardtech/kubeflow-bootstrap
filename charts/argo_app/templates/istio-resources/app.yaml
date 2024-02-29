@@ -24,7 +24,7 @@ spec:
             path: /spec/servers/0
             value:
               hosts:
-              - {{ .Values.hostname }}
+              - "{{ .Values.hostname }}"
               port:
                 name: {{ eq .Values.enableHttps "true" | ternary "https" "http" }}
                 number: {{ eq .Values.enableHttps "true" | ternary 443 80 }}
