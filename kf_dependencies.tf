@@ -113,17 +113,30 @@ resource "helm_release" "argo_cd" {
   ]
 }
 
+resource "time_sleep" "wait" {
+  depends_on = [
+    helm_release.istiod,
+    helm_release.argo_cd,
+  ]
+
+  create_duration = "10s"
+  destroy_duration = "10s"
+}
+
 resource "null_resource" "kf_dependencies_end" {
   provisioner "local-exec" {
+    when = create
     command = "echo '✅ Kubeflow dependencies installed'"
   }
 
   provisioner "local-exec" {
-    when    = destroy
-    command = "echo 'Tearing down kf_dependencies soon' && sleep 20s"
+    when    = destroy # note, this only runs when the root module is destroyed
+    # https://github.com/hashicorp/terraform/issues/13549
+    command = "echo 'Tearing down kf_dependencies'"
   }
 
   depends_on = [
+    time_sleep.wait,
     helm_release.cert_manager,
     helm_release.istio_base,
     helm_release.istiod,
