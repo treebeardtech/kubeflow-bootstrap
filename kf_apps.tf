@@ -100,6 +100,7 @@ resource "helm_release" "profiles_kfam" {
   depends_on = [
     null_resource.kf_apps_start
   ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: profiles-kfam
@@ -117,6 +118,7 @@ resource "helm_release" "volumes_web_app" {
   depends_on = [
     null_resource.kf_apps_start
   ]
+  wait_for_jobs = true
   values = [
     <<EOF
     name: volumes-web-app
@@ -127,22 +129,16 @@ resource "helm_release" "volumes_web_app" {
   ]
 }
 
-# resource "helm_release" "profile" {
-#   name      = "profile"
-#   namespace = "argo-cd"
-#   chart     = "${path.module}/charts/argo_app"
-#   depends_on = [
-#     null_resource.kf_apps_start
-#   ]
-#   values = [
-#     <<EOF
-#     name: profile
-#     repoURL: https://github.com/kubeflow/manifests
-#     path: apps/profiles/upstream/samples
-#     targetRevision: 776d4f4
-#     EOF
-#   ]
-# }
+resource "helm_release" "profile" {
+  name      = "profile"
+  namespace = "kubeflow"
+  chart     = "${path.module}/charts/profile"
+  values = [
+  ]
+  depends_on = [
+    helm_release.profiles_kfam
+  ]
+}
 
 resource "null_resource" "kf_apps_end" {
   provisioner "local-exec" {
@@ -157,6 +153,6 @@ resource "null_resource" "kf_apps_end" {
     helm_release.pvc_viewer_controller,
     helm_release.profiles_kfam,
     helm_release.volumes_web_app,
-    # helm_release.profile
+    helm_release.profile
   ]
 }
