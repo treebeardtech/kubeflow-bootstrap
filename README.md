@@ -1,11 +1,18 @@
 <div align="center">
   <h1>Kubeflow Terraform Modules</h1>
 
-Terraform module which creates a Kubeflow instance in a Kubernetes cluster
+  <p>Terraform module which creates a Kubeflow instance in a Kubernetes cluster</p>
 
-<a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/kubernetes/0.0.3" style="background:none">
-  <img alt="dagster logo" src="docs/tkf.png" width="400" height="100%">
-</a>
+  <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/kubernetes/0.0.3" style="background:none">
+    <img src="docs/tkf.png" width="400" height="100%">
+  </a>
+
+  <br />
+
+  <a target="_blank" href="https://discord.gg/QFjCpMjqRY">
+    <img src="https://img.shields.io/badge/chat-discord-blue?logo=discord&logoColor=white" />
+  </a>
+
 </div>
 
 > [!Note]  
@@ -28,6 +35,12 @@ This module is primarily focussed on the Jupyter notebook environment initially 
 We recommend trying out this module in a development environment first.
 
 To do so, follow the [k3s tutorial](examples/k3s).
+
+### 📺 [Youtube tutorial](https://www.youtube.com/watch?v=DtLLJqW6aG8)
+
+<a target="_blank" href="https://www.youtube.com/watch?v=DtLLJqW6aG8" style="background:none">
+  <img src="https://i3.ytimg.com/vi/91Kmsg7g5D8/maxresdefault.jpg" width="600" height="100%">
+</a>
 
 ## Guides
 
