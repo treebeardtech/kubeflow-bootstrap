@@ -9,16 +9,16 @@ Terraform module which creates a Kubeflow instance in a Kubernetes cluster
 </div>
 
 > [!Note]  
-> This repository is currently suitable for development environments only. Please report any problem you might have by opening a GitHub issue, feature requests welcome.
+> This project is currently in beta, we recommend forking/cloning it and using from source. Bug reports and feature requests are welcome.
 
 ## About this project
 
-This project simplifies the tasks of managing a Kubeflow instance in Terraform projects.
+This project simplifies the task of managing a Kubeflow instance with Terraform.
 
 Kubeflow provides a cloud-native AI platform which can be used to deploy applications in
 scientific computing, traditional machine learning, and generative AI.
 
-This module is primarily focussed on the notebook environment initially such that
+This module is primarily focussed on the Jupyter notebook environment initially such that
 * Developers can deploy and access notebook instances
 * Notebook instances can use GPUs necessary for deep learning
 * This can be done across different cloud providers (ranging from individual VMs to managed services like Amazon's EKS)
@@ -27,7 +27,7 @@ This module is primarily focussed on the notebook environment initially such tha
 
 We recommend trying out this module in a development environment first.
 
-To do so, follow the [k3s tutorial](https://github.com/treebeardtech/terraform-helm-kubeflow/tree/main/examples).
+To do so, follow the [k3s tutorial](examples/k3s).
 
 ## Guides
 
@@ -57,14 +57,13 @@ module "treebeardkf" {
 You can incrementally add Kubeflow to your K8s cluster by installing the terraform module.
 
 Some considerations:
-1. If you are calling this Terraform module from your own module, pass in a string to the `completed` variable in order to manage Kubeflow *after* changes to your other resources. (Note that `depends_on` does not work with this module)
+1. If you are calling this Terraform module from your own module, ensure you pass in resources to the `depends_on` field so that Kubeflow installs after they finish setup.
 2. If you already have Istio and Cert Manager installed, you will need to ensure Kubeflow works with them. See [examples/k3s-existing-istio](examples/k3s-existing-istio) for a configuration that we have tested like this.
 
 ### Set a new password
 
 The `user_password` variable allows you to set a non-default password. This is
 essential for deploying Kubeflow.
-
 
 ### Make Kubeflow available securely on a network using HTTPS
 
