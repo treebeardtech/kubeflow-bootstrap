@@ -114,7 +114,6 @@ This module is built on top of the official [Kubeflow Manifests repo](https://gi
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.12 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.25.2 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
 
@@ -122,7 +121,7 @@ This module is built on top of the official [Kubeflow Manifests repo](https://gi
 
 | Name | Version |
 |------|---------|
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.12 |
 | <a name="provider_null"></a> [null](#provider\_null) | >= 3.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
 

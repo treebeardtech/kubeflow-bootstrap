@@ -27,26 +27,25 @@
     }
   },
   "features": {
-    // "ghcr.io/devcontainers/features/terraform:1": {
-    //   "version": "1.6.2"
-    // },
-    // "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-    // "ghcr.io/devcontainers-contrib/features/kind:1": {},
-    // "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-    //   "version": "1.25.6"
-    // },
-    // "ghcr.io/rio/features/k3d:1": {},
-    // // "ghcr.io/devcontainers/features/nix:1": {},
-    // "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {
-    // },
-    // "ghcr.io/devcontainers/features/github-cli:1": {
-    // },
-    // "ghcr.io/rio/features/k9s:1": {
-    // },
-    // "ghcr.io/devcontainers-contrib/features/istioctl:1": {
-    // },
-    // "ghcr.io/devcontainers-contrib/features/argo-cd:1": {
-    // },
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.6.2"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+    "ghcr.io/devcontainers-contrib/features/kind:1": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "1.25.6"
+    },
+    "ghcr.io/rio/features/k3d:1": {},
+    "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+    },
+    "ghcr.io/rio/features/k9s:1": {
+    },
+    "ghcr.io/devcontainers-contrib/features/istioctl:1": {
+    },
+    "ghcr.io/devcontainers-contrib/features/argo-cd:1": {
+    },
   },
   "mounts": [
     // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",

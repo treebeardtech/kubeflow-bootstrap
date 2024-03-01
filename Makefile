@@ -23,7 +23,7 @@ docs-rm-new:
 	rm -f examples/k3s/README.md.new
 	rm -f examples/k3s-existing-istio/README.md.new
 	rm -f examples/aks/README.md.new
-	terraform-docs markdown examples/eks-https-loadbalancer > examples/eks-https-loadbalancer/README.md.new
+	rm -f examples/eks-https-loadbalancer/README.md.new
 
 fmt:
 	terraform fmt . examples/*
