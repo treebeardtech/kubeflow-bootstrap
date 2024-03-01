@@ -1,7 +1,7 @@
 apiVersion: kubeflow.org/v1
 kind: Profile
 metadata:
-  name: prod
+  name: example
 spec:
   owner:
     kind: User

@@ -25,5 +25,5 @@ spec:
           kubectl get -n $NAMESPACE app $APP_NAME -o json | jq '.status.operationState'
       restartPolicy: Never
   backoffLimit: 1
-  activeDeadlineSeconds: 45
+  activeDeadlineSeconds: 60
   ttlSecondsAfterFinished: 30

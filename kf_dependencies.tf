@@ -122,8 +122,10 @@ resource "helm_release" "argo_cd" {
     null_resource.kf_dependencies_start
   ]
   values = [
-    <<EOF
-    EOF
+<<EOF
+dex:
+  enabled: false
+EOF
   ]
 }
 
