@@ -4,8 +4,12 @@ This example will help you try Treebeard Kubeflow in your development environmen
 
 ## Pre-reqs:
 
-* 2 cpus and 16G memory in your dev environment (local or via SSH)
-* Higher limits for file handlers (this gets reset on system restart)
+> [!Note]  
+> The simplest environment setup may be to fork this repo and open it using github codespaces.
+
+
+* 2 cpus and 8G memory in your dev environment (local or via SSH)
+* _If you are running on a laptop/vm with docker_: Higher limits for file handlers (this gets reset on system restart)
     
     ```sh
     # Note that these must be run outside of a container
@@ -38,12 +42,14 @@ Some tools can make this process easier:
 
 ### 1. Setup Kubernetes
 
-First, let's setup a single node k3d cluster:
+Clone this repo (if not in codespaces) and use the makefile to setup kubernetes:
 
 ```sh
+git clone -b v0.1 https://github.com/treebeardtech/terraform-kubernetes-kubeflow.git
+cd terraform-kubernetes-kubeflow
 export KUBECONFIG=~/.kube/demo.yaml
 rm $KUBECONFIG # remove if exists from previous attempts
-k3d cluster create demo
+make k3d-create
 ```
 
 Once complete, verify the API server has started:
@@ -54,16 +60,10 @@ kubectl get nodes
 
 ### 2. Install Treebeard Kubeflow
 
-Clone this example into your development environment
-
-```sh
-git clone -b v0.0.3 --recurse-submodules https://github.com/treebeardtech/terraform-kubernetes-kubeflow.git
-cd terraform-kubernetes-kubeflow/examples/k3s
-```
-
 Initialise the terraform environment
 
 ```sh
+cd examples/k3s
 terraform init
 ```
 
@@ -83,6 +83,11 @@ kubectl port-forward  --namespace "istio-system" svc/istio-ingressgateway 8080:h
 
 then go to http://localhost:8080/ to see the login page
 
+### 4. Uninstall Kubeflow
+
+```sh
+terraform destroy -var kubeconfig=$KUBECONFIG
+```
 
 ## Usage
 
