@@ -1,7 +1,6 @@
 <div align="center">
-  <h1>Kubeflow Terraform Modules - run Jupyter in Kubernetes 🪐</h1>
-
-  <p>Terraform module which creates a Kubeflow instance in a Kubernetes cluster</p>
+  <h1>Kubeflow Terraform Modules</h1>
+  <p><b>Run Jupyter in Kubernetes 🪐</b></p>
 
   <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/kubernetes/0.0.3" style="background:none">
     <img src="docs/tkf.png" width="400" height="100%">
@@ -20,7 +19,7 @@
 
 ## About this project
 
-This project simplifies the task of managing a Kubeflow instance with Terraform.
+This project simplifies MLOps in Kubernetes by providing a Terraform module which creates a Kubeflow instance.
 
 Kubeflow provides a cloud-native AI platform which can be used to deploy applications in
 scientific computing, traditional machine learning, and generative AI.
