@@ -4,7 +4,7 @@
   <p>Terraform module which creates a Kubeflow instance in a Kubernetes cluster</p>
 
   <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/kubernetes/0.0.3" style="background:none">
-    <img alt="dagster logo" src="docs/tkf.png" width="400" height="100%">
+    <img src="docs/tkf.png" width="400" height="100%">
   </a>
 
   <br />
@@ -36,9 +36,11 @@ We recommend trying out this module in a development environment first.
 
 To do so, follow the [k3s tutorial](examples/k3s).
 
-### Video guide
+### 📺 [Youtube tutorial](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
-[https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+<a target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="background:none">
+  <img src="https://i3.ytimg.com/vi/91Kmsg7g5D8/maxresdefault.jpg" width="600" height="100%">
+</a>
 
 ## Guides
 
