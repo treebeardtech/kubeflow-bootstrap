@@ -1,0 +1,33 @@
+{{- if eq .Values.name "dex" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.name }}
+  annotations:
+    test: "test"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kubeflow
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: {{ .Values.path }}
+    repoURL: {{ .Values.repoURL }}
+    targetRevision: {{ .Values.targetRevision }}
+    kustomize:
+      patches:
+      - target:
+          kind: Secret
+          name: dex-passwords
+        patch: |-
+          - op: replace
+            path: /stringData/DEX_USER_PASSWORD
+            value: {{ .Values.password }}
+operation:
+  sync:
+    syncStrategy:
+      apply: {}
+{{- end }}
+

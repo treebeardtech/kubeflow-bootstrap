@@ -1,0 +1,41 @@
+{{- if eq .Values.name "kubeflow-istio-resources" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.name }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kubeflow
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: {{ .Values.path }}
+    repoURL: {{ .Values.repoURL }}
+    targetRevision: {{ .Values.targetRevision }}
+    kustomize:
+      patches:
+      - target:
+          kind: Gateway
+          name: kubeflow-gateway
+        patch: |-
+          - op: replace
+            path: /spec/servers/0
+            value:
+              hosts:
+              - "{{ .Values.hostname }}"
+              port:
+                name: {{ eq .Values.enableHttps "true" | ternary "https" "http" }}
+                number: {{ eq .Values.enableHttps "true" | ternary 443 80 }}
+                protocol: {{ eq .Values.enableHttps "true" | ternary "HTTPS" "HTTP" }}
+              {{- if eq .Values.enableHttps "true" }}
+              tls:
+                credentialName: gateway-cert
+                mode: SIMPLE
+              {{- end }}
+operation:
+  sync:
+    syncStrategy:
+      apply: {}
+{{- end }}

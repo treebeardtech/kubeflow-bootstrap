@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: treebeard-issuer
+spec:
+  # selfSigned: {}
+
+  acme:
+    email: {{ .Values.certEmailOwner | required "Please provide a valid email address" }}
+    preferredChain: ''
+    privateKeySecretRef:
+      name: treebeard-issuer-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+    - dns01:
+        route53:
+          region: us-east-1
+          hostedZoneID: {{ .Values.hostedZoneId | required "Please provide a valid hosted zone ID" }}

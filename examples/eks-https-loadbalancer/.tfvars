@@ -1,0 +1,5 @@
+host = "eks1.dev.treebeard.io"
+aws_profile = "treebeard-dev"
+aws_region = "us-east-1"
+cert_email_owner = "alex+dev@treebeard.io"
+hosted_zone_id = "Z00570851YIWRU2E633DM"

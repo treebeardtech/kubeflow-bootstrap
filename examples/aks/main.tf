@@ -1,9 +1,5 @@
 terraform {
   required_providers {
-    kustomization = {
-      source  = "kbst/kustomization"
-      version = "~> 0.9.5"
-    }
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.12.1"
@@ -57,15 +53,17 @@ provider "helm" {
   }
 }
 
-provider "kustomization" {
-  kubeconfig_raw = azurerm_kubernetes_cluster.aks.kube_config_raw
+variable "enable_treebeardkf" {
+  description = "Enable Treebeard"
+  type        = bool
+  default     = false
 }
 
 module "treebeardkf" {
-  source         = "../.."
-  hostname       = "kf.example.com"
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
+  count  = var.enable_treebeardkf ? 1 : 0
+  source = "../.."
+
+  depends_on = [
+    azurerm_kubernetes_cluster.aks
+  ]
 }
