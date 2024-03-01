@@ -40,27 +40,15 @@ may want to make:
 # resource or data for your k8s cluster
 ...
 
-# Initialize provisioners
-provider "kubernetes" {
-  ...
-}
+# Initialize provider
 
 provider "helm" {
-  ...
-}
-
-provider "kustomization" {
   ...
 }
 
 # Call Kubeflow module
 module "treebeardkf" {
   source         = "../.."
-  hostname       = "kf.example.com"
-  protocol       = "https://"
-  port           = ""
-  enable_kuberay = false
-  enable_mlflow  = false
 }
 ```
 
@@ -74,11 +62,13 @@ Some considerations:
 
 ### Set a new password
 
+The `user_password` variable allows you to set a non-default password. This is
+essential for deploying Kubeflow.
 
 
 ### Make Kubeflow available securely on a network using HTTPS
 
-
+Follow the [eks-https-loadbalancer](examples/eks-https-loadbalancer) example to see how you can setup an https loadbalancer for you Kubeflow deployment
 
 ### Host your Kubeflow on a domain name using DNS
 
@@ -87,7 +77,11 @@ This is best done by using the external DNS operator.
 If you are new to external DNS, follow the [docs](https://kubernetes-sigs.github.io/external-dns/v0.14.0/) for setting up a deployment, then
 use [this guide](https://kubernetes-sigs.github.io/external-dns/v0.14.0/tutorials/istio/) to connect external DNS to the istio gateway *service* for your Kubeflow deployment.
 
+The [eks-https-loadbalancer](examples/eks-https-loadbalancer) example also shows this.
+
 ### Create Profiles for your users
+
+Profiles are a Kubeflow abstraction that lets you securely isolate users from each other. See the [Kubeflow docs on profiles](https://www.kubeflow.org/docs/components/central-dash/profiles/)
 
 ### Teardown
 
