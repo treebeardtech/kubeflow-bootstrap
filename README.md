@@ -36,9 +36,9 @@ We recommend trying out this module in a development environment first.
 
 To do so, follow the [k3s tutorial](examples/k3s).
 
-### 📺 [Youtube tutorial](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+### 📺 [Youtube tutorial](https://www.youtube.com/watch?v=DtLLJqW6aG8)
 
-<a target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="background:none">
+<a target="_blank" href="https://www.youtube.com/watch?v=DtLLJqW6aG8" style="background:none">
   <img src="https://i3.ytimg.com/vi/91Kmsg7g5D8/maxresdefault.jpg" width="600" height="100%">
 </a>
 
