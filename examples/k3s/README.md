@@ -107,6 +107,8 @@ Customisation and deployment for your team is another matter and will be discuss
 k3d cluster delete demo
 ```
 
+**🚨 delete your codespace if you created one, they cost money based on how long they are running**
+
 ## Requirements
 
 | Name | Version |
