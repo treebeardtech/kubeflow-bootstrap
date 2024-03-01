@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Kubeflow Terraform Modules</h1>
+  <h1>Kubeflow Terraform Modules - run Jupyter in Kubernetes 🪐</h1>
 
   <p>Terraform module which creates a Kubeflow instance in a Kubernetes cluster</p>
 
