@@ -27,7 +27,7 @@ This module is primarily focussed on the notebook environment initially such tha
 
 We recommend trying out this module in a development environment first.
 
-To do so, follow the [k3s tutorial](https://github.com/treebeardtech/terraform-kubernetes-kubeflow/tree/main/examples).
+To do so, follow the [k3s tutorial](https://github.com/treebeardtech/terraform-helm-kubeflow/tree/main/examples).
 
 ## Guides
 

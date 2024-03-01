@@ -45,8 +45,8 @@ Some tools can make this process easier:
 Clone this repo (if not in codespaces) and use the makefile to setup kubernetes:
 
 ```sh
-git clone -b v0.1 https://github.com/treebeardtech/terraform-kubernetes-kubeflow.git
-cd terraform-kubernetes-kubeflow
+git clone https://github.com/treebeardtech/terraform-helm-kubeflow.git
+cd terraform-helm-kubeflow
 export KUBECONFIG=~/.kube/demo.yaml
 rm $KUBECONFIG # remove if exists from previous attempts
 make k3d-create
