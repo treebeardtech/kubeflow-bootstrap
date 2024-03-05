@@ -2,12 +2,14 @@
   <h1>Kubeflow Terraform Modules</h1>
   <p><b>Run Jupyter in Kubernetes 🪐</b></p>
 
-  <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm" style="background:none">
-    <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/3936f78f1ab1931737037d7744ef0e686fb94d30/docs/tkf.png" width="400" height="100%">
-  </a>
+  <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/3936f78f1ab1931737037d7744ef0e686fb94d30/docs/tkf.png" width="400" height="100%">
 
   <br />
 
+  
+  <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm/latest">
+    <img src="https://img.shields.io/badge/terraform-module-blue?logo=terraform" />
+  </a>
   <a target="_blank" href="https://discord.gg/QFjCpMjqRY">
     <img src="https://img.shields.io/badge/chat-discord-blue?logo=discord&logoColor=white" />
   </a>
