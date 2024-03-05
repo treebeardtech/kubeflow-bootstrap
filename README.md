@@ -2,8 +2,8 @@
   <h1>Kubeflow Terraform Modules</h1>
   <p><b>Run Jupyter in Kubernetes 🪐</b></p>
 
-  <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/kubernetes/0.0.3" style="background:none">
-    <img src="docs/tkf.png" width="400" height="100%">
+  <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm" style="background:none">
+    <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/3936f78f1ab1931737037d7744ef0e686fb94d30/docs/tkf.png" width="400" height="100%">
   </a>
 
   <br />
