@@ -1,62 +1,28 @@
-{{- if eq .Values.name "centraldashboard" }}
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: {{ .Values.name }}
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  destination:
-    namespace: kubeflow
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    path: {{ .Values.path }}
-    repoURL: {{ .Values.repoURL }}
-    targetRevision: {{ .Values.targetRevision }}
-    kustomize:
-      patches:
-      - target:
-          kind: ConfigMap
-          name: centraldashboard-config
-        patch: |-
-          - op: replace
-            path: /data/links
-            value: |
-              {
-                "menuLinks": [
-                  {
-                    "type": "item",
-                    "link": "/jupyter/",
-                    "text": "Notebooks",
-                    "icon": "book"
-                  },
-                  {
-                    "type": "item",
-                    "link": "/volumes/",
-                    "text": "Volumes",
-                    "icon": "device:storage"
-                  }
-                ],
-                "externalLinks": [ ],
-                  "quickLinks": [
-                    {
-                      "text": "Create a new Notebook server",
-                      "desc": "Notebook Servers",
-                      "link": "/jupyter/new?namespace=kubeflow"
-                    }
-                  ],
-                  "documentationItems": [
-                    {
-                      "text": "Getting Started with Kubeflow",
-                      "desc": "Get your machine-learning workflow up and running on Kubeflow",
-                      "link": "https://www.kubeflow.org/docs/started/getting-started/"
-                    }
-                  ]
-              }
-
-operation:
-  sync:
-    syncStrategy:
-      apply: {}
-{{- end }}
+# {{- if eq .Values.name "centraldashboard" }}
+# apiVersion: argoproj.io/v1alpha1
+# kind: ApplicationSet
+# metadata:
+#   name: cluster-addons
+#   namespace: argo-cd
+# spec:
+#   syncPolicy:
+#     preserveResourcesOnDeletion: true
+#   generators:
+#     - clusters: {}
+#   template:
+#     metadata:
+#       name: cluster-addons
+#     spec:
+#       project: default
+#       source:
+#         repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
+#         path: 'bootstrap/control-plane/addons'
+#         targetRevision: 'dev'
+#         directory:
+#           recurse: true
+#       destination:
+#         namespace: argo-cd
+#         name: 'in-cluster'
+      # syncPolicy:
+      #   automated: {}
+# {{- end }}
