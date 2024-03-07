@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps
+  name: apps2
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,12 +11,12 @@ spec:
     namespace: argo-cd
     server: 'https://kubernetes.default.svc'
   source:
-    path: apps
+    path: apps2
     repoURL: >-
       https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template
     targetRevision: dev
   sources: []
   project: default
-  syncPolicy:
-    automated:
-      prune: false
+  # syncPolicy:
+  #   automated:
+  #     prune: false
