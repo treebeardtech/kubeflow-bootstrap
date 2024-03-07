@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apps2
+  name: apps
   namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,13 +10,21 @@ spec:
     name: ''
     namespace: argo-cd
     server: 'https://kubernetes.default.svc'
-  source:
-    path: apps2
-    repoURL: >-
-      https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template
+  sources:
+  - repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
     targetRevision: dev
-  sources: []
+    ref: values
+  - path: '.'
+    repoURL: >-
+      https://github.com/treebeardtech/gitops-ai-infra
+    targetRevision: 'main'
+    helm:
+      ignoreMissingValueFiles: true
+      valueFiles:
+      - $values/some-dir/my-values-file.yaml # uncomment to use your own gitops values file
+      values: |
+        # pass in terraform outputs from cloud resources
+        # e.g. ARNs, node labels, etc.
   project: default
   # syncPolicy:
-  #   automated:
-  #     prune: false
+  #   automated: {}

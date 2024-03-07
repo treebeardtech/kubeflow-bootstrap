@@ -22,9 +22,6 @@ resource "helm_release" "argo_cd" {
   ]
   values = [
 <<EOF
-env:
-- name: ARGOCD_SYNC_WAVE_DELAY
-  value: "10"
 dex:
   enabled: false
 EOF
