@@ -1,22 +1,22 @@
-{{- $nameList := list "dex" "kubeflow-istio-resources" "centraldashboard" }}
-{{- if not (has .Values.name $nameList) }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Values.name }}
+  name: apps
+  namespace: argo-cd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: kubeflow
-    server: https://kubernetes.default.svc
-  project: default
+    name: ''
+    namespace: argo-cd
+    server: 'https://kubernetes.default.svc'
   source:
-    path: {{ .Values.path }}
-    repoURL: {{ .Values.repoURL }}
-    targetRevision: {{ .Values.targetRevision }}
-operation:
-  sync:
-    syncStrategy:
-      apply: {}
-{{- end }}
+    path: apps
+    repoURL: >-
+      https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template
+    targetRevision: dev
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
