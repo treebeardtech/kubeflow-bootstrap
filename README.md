@@ -13,7 +13,7 @@
     <img src="https://img.shields.io/badge/chat-discord-blue?logo=discord&logoColor=white" />
   </a>
 
-  <a target="_blank" href="https://artifacthub.io/packages/search?repo=treebeard-kubeflow">
+  <a target="_blank" href="https://artifacthub.io/packages/helm/treebeard-kubeflow/kubeflow-argo-apps">
     <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/treebeard-kubeflow" />
   </a>
 
