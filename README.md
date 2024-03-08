@@ -19,9 +19,6 @@
 
 </div>
 
-> [!Note]  
-> This project is currently in beta, we recommend forking/cloning it and using from source. Bug reports and feature requests are welcome.
-
 ## About this project
 
 This project simplifies MLOps in Kubernetes by providing a Terraform module which creates a Kubeflow instance.
