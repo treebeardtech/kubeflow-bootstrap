@@ -1,3 +1,0 @@
-apiVersion: v2
-name: kubeflow-argo-apps
-version: 0.1.0

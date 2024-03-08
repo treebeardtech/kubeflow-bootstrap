@@ -12,8 +12,7 @@
   <a target="_blank" href="https://discord.gg/QFjCpMjqRY">
     <img src="https://img.shields.io/badge/chat-discord-blue?logo=discord&logoColor=white" />
   </a>
-
-  <a target="_blank" href="https://artifacthub.io/packages/helm/treebeard-kubeflow/kubeflow-argo-apps">
+  <a target="_blank" href="https://artifacthub.io/packages/helm/treebeard-kubeflow/treebeard-kubeflow">
     <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/treebeard-kubeflow" />
   </a>
 
@@ -114,8 +113,8 @@ sources:
 #   targetRevision: dev
 #   ref: values
 - repoURL: ghcr.io/treebeardtech
-  targetRevision: 0.1-2024-03-08-T12-25-15
-  chart: kubeflow-argo-apps
+  targetRevision: 0.1-2024-03-08-T18-39-28
+  chart: treebeard-kubeflow
   helm:
     ignoreMissingValueFiles: true
     # valueFiles:
@@ -168,18 +167,18 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [helm_release.argo_bootstrap](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.argo_cd](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.kubeflow_bootstrap](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [null_resource.start](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_bootstrap_set"></a> [bootstrap\_set](#input\_bootstrap\_set) | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
+| <a name="input_bootstrap_set_sensitive"></a> [bootstrap\_set\_sensitive](#input\_bootstrap\_set\_sensitive) | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
+| <a name="input_bootstrap_values"></a> [bootstrap\_values](#input\_bootstrap\_values) | Extra values | `list(string)` | `[]` | no |
 | <a name="input_enable_argocd"></a> [enable\_argocd](#input\_enable\_argocd) | n/a | `bool` | `true` | no |
-| <a name="input_kubeflow_set"></a> [kubeflow\_set](#input\_kubeflow\_set) | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| <a name="input_kubeflow_set_sensitive"></a> [kubeflow\_set\_sensitive](#input\_kubeflow\_set\_sensitive) | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| <a name="input_kubeflow_values"></a> [kubeflow\_values](#input\_kubeflow\_values) | Extra values | `list(string)` | `[]` | no |
 
 ## Outputs
 
