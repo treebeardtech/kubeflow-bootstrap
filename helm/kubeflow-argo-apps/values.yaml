@@ -18,7 +18,7 @@ certManagerSpec:
       prune: false
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 istioBaseSpec:
   project: default
@@ -38,7 +38,7 @@ istioBaseSpec:
       prune: false
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 istiodSpec:
   project: default
@@ -69,7 +69,7 @@ istiodSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 gatewaySpec:
   project: default
@@ -100,7 +100,7 @@ gatewaySpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 dexSpec:
   project: default
@@ -115,7 +115,7 @@ dexSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 oidcAuthServiceSpec:
   project: default
@@ -130,7 +130,7 @@ oidcAuthServiceSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 kubeflowNamespaceSpec:
   project: default
@@ -145,7 +145,7 @@ kubeflowNamespaceSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 istioResourcesSpec:
   project: default
@@ -160,7 +160,7 @@ istioResourcesSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 kubeflowRolesSpec:
   project: default
@@ -175,7 +175,7 @@ kubeflowRolesSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 admissionWebhookSpec:
   project: default
@@ -190,7 +190,7 @@ admissionWebhookSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 centralDashboardSpec:
   project: default
@@ -245,7 +245,7 @@ centralDashboardSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 jupyterWebAppSpec:
   project: default
@@ -260,7 +260,7 @@ jupyterWebAppSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 notebookControllerSpec:
   project: default
@@ -275,7 +275,7 @@ notebookControllerSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 profilesSpec:
   project: default
@@ -290,7 +290,7 @@ profilesSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 pvcViewerControllerSpec:
   project: default
@@ -305,7 +305,7 @@ pvcViewerControllerSpec:
     automated:
       prune: false
     syncOptions:
-      - ServerSideApply=true  # Big CRDs.
+      - ServerSideApply=true
 
 volumesWebApp:
   enabled: true
@@ -322,4 +322,4 @@ volumesWebApp:
       automated:
         prune: false
       syncOptions:
-        - ServerSideApply=true  # Big CRDs.
+        - ServerSideApply=true
