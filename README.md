@@ -114,7 +114,7 @@ sources:
 #   targetRevision: dev
 #   ref: values
 - repoURL: ghcr.io/treebeardtech
-  targetRevision: 0.1-2024-03-08-T12-25-15
+  targetRevision: 0.1-2024-03-08-T18-39-28
   chart: treebeard-kubeflow
   helm:
     ignoreMissingValueFiles: true
