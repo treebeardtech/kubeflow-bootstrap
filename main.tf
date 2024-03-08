@@ -28,25 +28,12 @@ EOF
   ]
 }
 
-locals {
-  user_vals = "\n${var.kubeflow_values[0]}"
-  top_level_values = [
-    <<EOF
-treebeardKubeflow:
-  repoURL: ${var.treebeard_kubeflow_dependency["repoURL"]}
-  targetRevision: ${var.treebeard_kubeflow_dependency["targetRevision"]}
-  chart: ${var.treebeard_kubeflow_dependency["chart"]}
-  values: ${indent(4, local.user_vals)}
-EOF
-  ]
-}
-
-resource "helm_release" "kubeflow_apps" {
-  name          = "kubeflow-apps"
+resource "helm_release" "kubeflow_bootstrap" {
+  name          = "kubeflow-bootstrap"
   namespace     = "argocd"
   chart         = "${path.module}/helm/kubeflow-bootstrap"
   wait_for_jobs = true
-  values        = concat(local.top_level_values)
+  values = var.kubeflow_values
 
   dynamic "set" {
     iterator = item
@@ -67,12 +54,8 @@ resource "helm_release" "kubeflow_apps" {
       value = item.value.value
     }
   }
+
   depends_on = [
-    null_resource.start,
     helm_release.argo_cd
   ]
-}
-
-output "top_level_values" {
-  value = local.top_level_values
 }

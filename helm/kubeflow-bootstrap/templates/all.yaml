@@ -1,30 +1,51 @@
+# derived from https://artifacthub.io/packages/helm/argo/argocd-apps/1.6.2?modal=template&template=applications.yaml
+{{- with .Values }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: 000-treebeard-kubeflow
-  namespace: argocd
+  {{- with .additionalAnnotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  {{- with .additionalLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  name: {{ .name }}
+  {{- with .namespace }}
+  namespace: {{ . }}
+  {{- end }}
+  {{- with .finalizers }}
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  destination:
-    name: ''
-    namespace: argocd
-    server: 'https://kubernetes.default.svc'
+  project: {{ .project }}
+  {{- with .source }}
+  source:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .sources }}
   sources:
-  # - repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
-  #   targetRevision: dev
-  #   ref: values
-  - chart: {{ .Values.treebeardKubeflow.chart }}
-    repoURL: {{ .Values.treebeardKubeflow.repoURL }}
-    targetRevision: {{ .Values.treebeardKubeflow.targetRevision }}
-    helm:
-      ignoreMissingValueFiles: true
-      # valueFiles:
-      # - $values/some-dir/my-values-file.yaml # uncomment to use your own gitops values file
-      values: |
-        # pass in terraform outputs from cloud resources
-        # e.g. ARNs, node labels, etc.
-        {{ .Values.treebeardKubeflow.values | toYaml | nindent 8 }}
-  project: default
-  # syncPolicy:
-  #   automated: {}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  destination:
+    {{- toYaml .destination | nindent 4 }}
+  {{- with .syncPolicy }}
+  syncPolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .revisionHistoryLimit }}
+  revisionHistoryLimit: {{ . }}
+  {{- end }}
+  {{- with .ignoreDifferences }}
+  ignoreDifferences:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .info }}
+  info:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

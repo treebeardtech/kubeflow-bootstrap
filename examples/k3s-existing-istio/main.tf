@@ -104,33 +104,19 @@ module "treebeardkf" {
   source = "../.."
   kubeflow_values = [
     <<EOF
-certManager:
-  enabled: false
-istioBase:
-  enabled: false
-istiod:
-  enabled: false
-# istioResources:
-#   spec:
-#     source:
-#       kustomize:
-#         patches:
-#         - target:
-#             kind: Gateway
-#             name: kubeflow-gateway
-#           patch: |-
-#             - op: replace
-#               path: /spec/servers/0
-#               value:
-#                 hosts:
-#                 - kf.example.com
-#                 port:
-#                   name: https
-#                   number: 443
-#                   protocol: HTTPS
-#                 tls:
-#                   credentialName: gateway-cert
-#                   mode: SIMPLE
+sources:
+- repoURL: ghcr.io/treebeardtech
+  targetRevision: 0.1-2024-03-08-T12-25-15
+  chart: kubeflow-argo-apps
+  helm:
+    ignoreMissingValueFiles: true
+    values: |
+      certManager:
+        enabled: false
+      istioBase:
+        enabled: false
+      istiod:
+        enabled: false
 EOF
   ]
   depends_on = [

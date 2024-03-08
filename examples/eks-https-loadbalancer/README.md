@@ -52,6 +52,7 @@
 | <a name="input_enable_treebeardkf"></a> [enable\_treebeardkf](#input\_enable\_treebeardkf) | Enable Treebeard KF | `bool` | `false` | no |
 | <a name="input_host"></a> [host](#input\_host) | n/a | `any` | n/a | yes |
 | <a name="input_hosted_zone_id"></a> [hosted\_zone\_id](#input\_hosted\_zone\_id) | n/a | `any` | n/a | yes |
+| <a name="input_password"></a> [password](#input\_password) | password for user@example.com | `any` | n/a | yes |
 
 ## Outputs
 

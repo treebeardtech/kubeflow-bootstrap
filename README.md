@@ -99,11 +99,37 @@ The [eks-https-loadbalancer](examples/eks-https-loadbalancer) example also shows
 
 Profiles are a Kubeflow abstraction that lets you securely isolate users from each other. See the [Kubeflow docs on profiles](https://www.kubeflow.org/docs/components/central-dash/profiles/)
 
+### Manage your instance with GitOps
+
+Lots of the config used to define your Kubeflow instance has has no dependency on
+Terraform resource outputs such as role ARNs.
+
+These may best be stored in a git repo and referenced using Argo's [multiple sources feature](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/)
+
+Using this approach you can invoke this terraform module (or the underlying bootstrap helm chart) with config like the following that combines injected values with values from a git repo:
+
+```yaml
+sources:
+# - repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
+#   targetRevision: dev
+#   ref: values
+- repoURL: ghcr.io/treebeardtech
+  targetRevision: 0.1-2024-03-08-T12-25-15
+  chart: kubeflow-argo-apps
+  helm:
+    ignoreMissingValueFiles: true
+    # valueFiles:
+    # - $values/some-dir/my-values-file.yaml # use your own gitops values file
+    values: |
+      # pass in terraform outputs from cloud resources
+      # e.g. ARNs, node labels, etc.
+```
+
 ### Teardown
 
 1. Manually remove any manually created Kubeflow resources, e.g. Notebook Servers and Volumes
 2. Remove the terraform module, e.g. with `terraform destroy` if you have installed directly from CLI
-3. Clean up remaining resources, e.g. Istio leaves behind some secrets that can prevent successful re-installation. 
+3. Clean up remaining resources, e.g. Istio leaves behind some secrets that can prevent successful re-installation. You may also want to clear out CRDs, persistent volumes and namespaces
 
 ## Troubleshooting
 
@@ -133,7 +159,6 @@ This module is built on top of the official [Kubeflow Manifests repo](https://gi
 |------|---------|
 | <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.12 |
 | <a name="provider_null"></a> [null](#provider\_null) | >= 3.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | >= 0.9 |
 
 ## Modules
 
@@ -143,47 +168,18 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [helm_release.admission_webhook](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.argo_cd](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.central_dashboard](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.cert_manager](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.cluster_issuer](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.dex](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.istio_base](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.istio_ingressgateway](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.istiod](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.jupyter_web_app](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.kubeflow_istio_resources](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.kubeflow_namespace](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.kubeflow_roles](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.notebook_controller](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.oidc_authservice](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.profile](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.profiles_kfam](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.pvc_viewer_controller](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.volumes_web_app](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [null_resource.kf_apps_end](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.kf_apps_start](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.kf_core_end](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.kf_core_start](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.kf_dependencies_end](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.kf_dependencies_start](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [time_sleep.wait](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [helm_release.kubeflow_bootstrap](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [null_resource.start](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_enable_argocd"></a> [enable\_argocd](#input\_enable\_argocd) | n/a | `bool` | `true` | no |
-| <a name="input_enable_cert_manager"></a> [enable\_cert\_manager](#input\_enable\_cert\_manager) | n/a | `bool` | `true` | no |
-| <a name="input_enable_example_profile"></a> [enable\_example\_profile](#input\_enable\_example\_profile) | n/a | `bool` | `true` | no |
-| <a name="input_enable_https"></a> [enable\_https](#input\_enable\_https) | n/a | `bool` | `false` | no |
-| <a name="input_enable_istio_base"></a> [enable\_istio\_base](#input\_enable\_istio\_base) | n/a | `bool` | `true` | no |
-| <a name="input_enable_istio_resources"></a> [enable\_istio\_resources](#input\_enable\_istio\_resources) | Enable istio resources for clusters with pre-existing istio | `bool` | `true` | no |
-| <a name="input_enable_istiod"></a> [enable\_istiod](#input\_enable\_istiod) | n/a | `bool` | `true` | no |
-| <a name="input_hostname"></a> [hostname](#input\_hostname) | n/a | `string` | `"*"` | no |
-| <a name="input_issuer_name"></a> [issuer\_name](#input\_issuer\_name) | Required if enable\_https is true | `string` | `"null"` | no |
-| <a name="input_user_password"></a> [user\_password](#input\_user\_password) | The password for the user | `string` | `"12341234"` | no |
+| <a name="input_kubeflow_set"></a> [kubeflow\_set](#input\_kubeflow\_set) | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
+| <a name="input_kubeflow_set_sensitive"></a> [kubeflow\_set\_sensitive](#input\_kubeflow\_set\_sensitive) | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
+| <a name="input_kubeflow_values"></a> [kubeflow\_values](#input\_kubeflow\_values) | Extra values | `list(string)` | `[]` | no |
 
 ## Outputs
 
