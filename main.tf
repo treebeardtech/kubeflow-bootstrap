@@ -11,8 +11,8 @@ resource "null_resource" "start" {
 resource "helm_release" "argo_cd" {
   count = var.enable_argocd ? 1 : 0
 
-  name             = "argo-cd"
-  namespace        = "argo-cd"
+  name             = "argocd"
+  namespace        = "argocd"
   chart            = "argo-cd"
   repository       = "https://argoproj.github.io/argo-helm"
   version          = "6.4.1"
@@ -30,7 +30,7 @@ EOF
 
 resource "helm_release" "kubeflow_apps" {
   name          = "kubeflow-apps"
-  namespace     = "argo-cd"
+  namespace     = "argocd"
   chart         = "${path.module}/helm/argo_app"
   wait_for_jobs = true
   values = [

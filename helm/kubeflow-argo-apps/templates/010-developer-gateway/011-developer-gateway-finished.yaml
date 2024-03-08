@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: 011-core-finished
-  namespace: argo-cd
+  namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "11"
 spec:
