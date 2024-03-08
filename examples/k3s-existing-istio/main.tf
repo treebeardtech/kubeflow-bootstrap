@@ -102,9 +102,17 @@ resource "null_resource" "completed" {
 
 module "treebeardkf" {
   source                 = "../.."
-  enable_istio_base      = false
-  enable_istiod          = false
-  enable_istio_resources = true
-  enable_cert_manager    = false
-  dependency             = null_resource.completed.id
+  kubeflow_values = [
+<<EOF
+certManager:
+  enabled: false
+istioBase:
+  enabled: false
+istiod:
+  enabled: false
+EOF
+  ]
+  depends_on = [
+    null_resource.completed
+  ]
 }

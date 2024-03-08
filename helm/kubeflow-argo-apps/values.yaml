@@ -1,75 +1,81 @@
-certManagerSpec:
-  project: default
-  sources:
-    - chart: 'cert-manager'
-      repoURL: https://charts.jetstack.io
-      targetRevision: "1.14.3"
-      helm:
-        releaseName: "cert-manager"
-        ignoreMissingValueFiles: true
-        valueFiles: []
-        values: |
-          installCRDs: true
-  destination:
-    namespace: 'cert-manager'
-    name: 'in-cluster'
-  syncPolicy:
-    automated:
-      prune: false
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+certManager:
+  enabled: true
+  spec:
+    project: default
+    sources:
+      - chart: 'cert-manager'
+        repoURL: https://charts.jetstack.io
+        targetRevision: "1.14.3"
+        helm:
+          releaseName: "cert-manager"
+          ignoreMissingValueFiles: true
+          valueFiles: []
+          values: |
+            installCRDs: true
+    destination:
+      namespace: 'cert-manager'
+      name: 'in-cluster'
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
 
-istioBaseSpec:
-  project: default
-  sources:
-    - chart: 'base'
-      repoURL: 'https://istio-release.storage.googleapis.com/charts'
-      targetRevision: "1.18.7"
-      helm:
-        releaseName: "istio-base"
-        ignoreMissingValueFiles: true
-        valueFiles: []
-  destination:
-    namespace: 'istio-system'
-    name: 'in-cluster'
-  syncPolicy:
-    automated:
-      prune: false
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+istioBase:
+  enabled: true
+  spec:
+    project: default
+    sources:
+      - chart: 'base'
+        repoURL: 'https://istio-release.storage.googleapis.com/charts'
+        targetRevision: "1.18.7"
+        helm:
+          releaseName: "istio-base"
+          ignoreMissingValueFiles: true
+          valueFiles: []
+    destination:
+      namespace: 'istio-system'
+      name: 'in-cluster'
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
 
-istiodSpec:
-  project: default
-  sources:
-    - chart: 'istiod'
-      repoURL: 'https://istio-release.storage.googleapis.com/charts'
-      targetRevision: "1.18.7"
-      helm:
-        releaseName: "istiod"
-        ignoreMissingValueFiles: true
-        valueFiles: []
-        values: |
-          pilot:
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-          global:
-            proxy:
+istiod:
+  enabled: true
+  spec:
+    project: default
+    sources:
+      - chart: 'istiod'
+        repoURL: 'https://istio-release.storage.googleapis.com/charts'
+        targetRevision: "1.18.7"
+        helm:
+          releaseName: "istiod"
+          ignoreMissingValueFiles: true
+          valueFiles: []
+          values: |
+            pilot:
               resources:
                 requests:
                   cpu: 10m
-                  memory: 64Mi
-  destination:
-    namespace: 'istio-system'
-    name: 'in-cluster'
-  syncPolicy:
-    automated:
-      prune: false
-    syncOptions:
-      - ServerSideApply=true
+                  memory: 128Mi
+            global:
+              proxy:
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 64Mi
+    destination:
+      namespace: 'istio-system'
+      name: 'in-cluster'
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
 
 gatewaySpec:
   project: default

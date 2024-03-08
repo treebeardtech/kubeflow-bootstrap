@@ -28,17 +28,45 @@ EOF
   ]
 }
 
+locals {
+  user_vals = "\n${var.kubeflow_values[0]}"
+  default_values = [
+<<EOF
+treebeardKubeflow:
+  repoURL: "ghcr.io/treebeardtech"
+  targetRevision: 0.1-2024-03-08-T09-50-04
+  chart: 'kubeflow-argo-apps'
+  values: ${indent(4, local.user_vals)}
+EOF
+  ]
+}
+
 resource "helm_release" "kubeflow_apps" {
   name          = "kubeflow-apps"
   namespace     = "argocd"
   chart         = "${path.module}/helm/kubeflow-bootstrap"
   wait_for_jobs = true
-  values = [
-<<EOF
-repoURL: https://github.com/kubeflow/manifests
-targetRevision: dev
-EOF
-  ]
+  values                     = concat(local.default_values)
+
+  dynamic "set" {
+    iterator = item
+    for_each = var.kubeflow_set == null ? [] : var.kubeflow_set
+
+    content {
+      name  = item.value.name
+      value = item.value.value
+    }
+  }
+
+  dynamic "set_sensitive" {
+    iterator = item
+    for_each = var.kubeflow_set_sensitive == null ? [] : var.kubeflow_set_sensitive
+
+    content {
+      name  = item.value.path
+      value = item.value.value
+    }
+  }
   depends_on = [
     null_resource.start,
     helm_release.argo_cd
