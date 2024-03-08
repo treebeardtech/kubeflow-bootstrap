@@ -104,6 +104,13 @@ module "treebeardkf" {
   source = "../.."
   kubeflow_values = [
     <<EOF
+sources:
+- repoURL: ghcr.io/treebeardtech
+  targetRevision: 0.1-2024-03-08-T12-25-15
+  chart: kubeflow-argo-apps
+  helm:
+    ignoreMissingValueFiles: true
+    values: |
       certManager:
         enabled: false
       istioBase:

@@ -99,11 +99,37 @@ The [eks-https-loadbalancer](examples/eks-https-loadbalancer) example also shows
 
 Profiles are a Kubeflow abstraction that lets you securely isolate users from each other. See the [Kubeflow docs on profiles](https://www.kubeflow.org/docs/components/central-dash/profiles/)
 
+### Manage your instance with GitOps
+
+Lots of the config used to define your Kubeflow instance has has no dependency on
+Terraform resource outputs such as role ARNs.
+
+These may best be stored in a git repo and referenced using Argo's [multiple sources feature](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/)
+
+Using this approach you can invoke this terraform module (or the underlying bootstrap helm chart) with config like the following that combines injected values with values from a git repo:
+
+```yaml
+sources:
+# - repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
+#   targetRevision: dev
+#   ref: values
+- repoURL: ghcr.io/treebeardtech
+  targetRevision: 0.1-2024-03-08-T12-25-15
+  chart: kubeflow-argo-apps
+  helm:
+    ignoreMissingValueFiles: true
+    # valueFiles:
+    # - $values/some-dir/my-values-file.yaml # use your own gitops values file
+    values: |
+      # pass in terraform outputs from cloud resources
+      # e.g. ARNs, node labels, etc.
+```
+
 ### Teardown
 
 1. Manually remove any manually created Kubeflow resources, e.g. Notebook Servers and Volumes
 2. Remove the terraform module, e.g. with `terraform destroy` if you have installed directly from CLI
-3. Clean up remaining resources, e.g. Istio leaves behind some secrets that can prevent successful re-installation. 
+3. Clean up remaining resources, e.g. Istio leaves behind some secrets that can prevent successful re-installation. You may also want to clear out CRDs, persistent volumes and namespaces
 
 ## Troubleshooting
 
