@@ -3,11 +3,12 @@ SHELLOPTS := $(if $(SHELLOPTS),$(SHELLOPTS):, )xtrace pipefail errexit nounset
 .PHONY: post-create
 post-create:
 	@echo "post-create"
+	brew install helm-docs
+	./scripts/setup-krew.sh
 
 .PHONY: post-start
 post-start:
 	@echo "post-start"
-	./scripts/setup-krew.sh
 
 .PHONY: docs
 docs:
@@ -38,3 +39,16 @@ k3d-create:
 .PHONY: k3d-delete
 k3d-delete:
 	k3d cluster delete dev
+
+TIMESTAMP := $(shell date -u "+%Y-%m-%d-T%H-%M-%S")
+VERSION := 0.1-$(TIMESTAMP)
+
+build-kf-apps:
+	rm -rf helm/kubeflow-argo-apps-*.tgz
+	helm package helm/kubeflow-argo-apps -d helm --version $(VERSION)
+
+push-kf-apps: build-kf-apps
+	helm push helm/kubeflow-argo-apps-*.tgz oci://ghcr.io/treebeardtech
+
+helm-repo-login:
+	echo $(GHCR_PAT) | docker login ghcr.io -u alex-treebeard --password-stdin

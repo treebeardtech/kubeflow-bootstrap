@@ -101,10 +101,39 @@ resource "null_resource" "completed" {
 }
 
 module "treebeardkf" {
-  source                 = "../.."
-  enable_istio_base      = false
-  enable_istiod          = false
-  enable_istio_resources = true
-  enable_cert_manager    = false
-  dependency             = null_resource.completed.id
+  source = "../.."
+  kubeflow_values = [
+    <<EOF
+certManager:
+  enabled: false
+istioBase:
+  enabled: false
+istiod:
+  enabled: false
+# istioResources:
+#   spec:
+#     source:
+#       kustomize:
+#         patches:
+#         - target:
+#             kind: Gateway
+#             name: kubeflow-gateway
+#           patch: |-
+#             - op: replace
+#               path: /spec/servers/0
+#               value:
+#                 hosts:
+#                 - kf.example.com
+#                 port:
+#                   name: https
+#                   number: 443
+#                   protocol: HTTPS
+#                 tls:
+#                   credentialName: gateway-cert
+#                   mode: SIMPLE
+EOF
+  ]
+  depends_on = [
+    null_resource.completed
+  ]
 }

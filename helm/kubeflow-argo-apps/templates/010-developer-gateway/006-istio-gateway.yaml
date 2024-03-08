@@ -1,0 +1,12 @@
+{{ if .Values.gateway.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 006-gateway
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ .Values.gateway.spec | toYaml | indent 2 }}
+{{- end -}}

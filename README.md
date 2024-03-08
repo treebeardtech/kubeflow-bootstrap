@@ -76,8 +76,11 @@ Some considerations:
 
 ### Set a new password
 
-The `user_password` variable allows you to set a non-default password. This is
-essential for deploying Kubeflow.
+It's critical to not use the default password for internet-facing deployments.
+
+See the See [examples/k3s-existing-istio](examples/k3s-existing-istio) for deployment with a non-default dex password (passed in via terraform CLI)
+
+Note that dex will only pick up new config at start -- you may have to restart the dex pod manually for a password change to take effect.
 
 ### Make Kubeflow available securely on a network using HTTPS
 

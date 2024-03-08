@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 000-treebeard-kubeflow
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: ''
+    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+  sources:
+  # - repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
+  #   targetRevision: dev
+  #   ref: values
+  - chart: {{ .Values.treebeardKubeflow.chart }}
+    repoURL: {{ .Values.treebeardKubeflow.repoURL }}
+    targetRevision: {{ .Values.treebeardKubeflow.targetRevision }}
+    helm:
+      ignoreMissingValueFiles: true
+      # valueFiles:
+      # - $values/some-dir/my-values-file.yaml # uncomment to use your own gitops values file
+      values: |
+        # pass in terraform outputs from cloud resources
+        # e.g. ARNs, node labels, etc.
+        {{ .Values.treebeardKubeflow.values | toYaml | nindent 8 }}
+  project: default
+  # syncPolicy:
+  #   automated: {}

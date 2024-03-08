@@ -1,17 +1,11 @@
-variable "hostname" {
-  type    = string
-  default = "*"
-}
-
-variable "enable_https" {
-  type    = bool
-  default = false
-}
-
-variable "issuer_name" {
-  type        = string
-  default     = "null"
-  description = "Required if enable_https is true"
+variable "treebeard_kubeflow_dependency" {
+  description = "Configuration for Treebeard Kubeflow helm"
+  type        = map(string)
+  default = {
+    repoURL        = "ghcr.io/treebeardtech"
+    targetRevision = "0.1-2024-03-08-T12-25-15"
+    chart          = "kubeflow-argo-apps"
+  }
 }
 
 variable "enable_argocd" {
@@ -19,35 +13,26 @@ variable "enable_argocd" {
   default = true
 }
 
-variable "enable_cert_manager" {
-  type    = bool
-  default = true
+variable "kubeflow_values" {
+  description = "Extra values"
+  type        = list(string)
+  default     = []
 }
 
-variable "enable_istio_base" {
-  type    = bool
-  default = true
+variable "kubeflow_set" {
+  description = "Value block with custom STRING values to be merged with the values yaml."
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = null
 }
 
-variable "enable_istiod" {
-  type    = bool
-  default = true
-}
-
-variable "enable_istio_resources" {
-  type        = bool
-  default     = true
-  description = "Enable istio resources for clusters with pre-existing istio"
-}
-
-variable "enable_example_profile" {
-  type    = bool
-  default = true
-}
-
-variable "user_password" {
-  type        = string
-  description = "The password for the user"
-  default     = "12341234"
-  sensitive   = true
+variable "kubeflow_set_sensitive" {
+  description = "Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff."
+  type = list(object({
+    path  = string
+    value = string
+  }))
+  default = null
 }

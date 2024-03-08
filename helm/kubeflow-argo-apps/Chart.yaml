@@ -1,3 +1,3 @@
 apiVersion: v2
-name: issuer
+name: kubeflow-argo-apps
 version: 0.1.0

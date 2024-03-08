@@ -1,0 +1,12 @@
+{{ if .Values.kubeflowNamespace.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 009-kubeflow-namespace
+  annotations:
+    argocd.argoproj.io/sync-wave: "9"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ .Values.kubeflowNamespace.spec | toYaml | indent 2 }}
+{{- end -}}
