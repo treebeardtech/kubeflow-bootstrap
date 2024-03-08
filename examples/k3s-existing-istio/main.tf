@@ -101,9 +101,9 @@ resource "null_resource" "completed" {
 }
 
 module "treebeardkf" {
-  source                 = "../.."
+  source = "../.."
   kubeflow_values = [
-<<EOF
+    <<EOF
 certManager:
   enabled: false
 istioBase:

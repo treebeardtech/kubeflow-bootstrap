@@ -21,7 +21,7 @@ resource "helm_release" "argo_cd" {
     null_resource.start
   ]
   values = [
-<<EOF
+    <<EOF
 dex:
   enabled: false
 EOF
@@ -31,7 +31,7 @@ EOF
 locals {
   user_vals = "\n${var.kubeflow_values[0]}"
   default_values = [
-<<EOF
+    <<EOF
 treebeardKubeflow:
   repoURL: "ghcr.io/treebeardtech"
   targetRevision: 0.1-2024-03-08-T09-50-04
@@ -46,7 +46,7 @@ resource "helm_release" "kubeflow_apps" {
   namespace     = "argocd"
   chart         = "${path.module}/helm/kubeflow-bootstrap"
   wait_for_jobs = true
-  values                     = concat(local.default_values)
+  values        = concat(local.default_values)
 
   dynamic "set" {
     iterator = item
