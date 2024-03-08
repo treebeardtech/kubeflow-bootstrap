@@ -38,3 +38,5 @@ examples/**/*.lock.hcl
 scratch
 
 tfout.log
+
+*tgz
