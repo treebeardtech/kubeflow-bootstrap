@@ -22,6 +22,7 @@ resource "helm_release" "issuer" {
     <<EOF
     certEmailOwner: ${var.cert_email_owner}
     hostedZoneId: ${var.hosted_zone_id}
+    hostname: ${var.host}
     EOF
   ]
   depends_on = [

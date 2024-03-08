@@ -34,7 +34,7 @@ locals {
     <<EOF
 treebeardKubeflow:
   repoURL: "ghcr.io/treebeardtech"
-  targetRevision: 0.1-2024-03-08-T09-50-04
+  targetRevision: 0.1-2024-03-08-T10-50-10
   chart: 'kubeflow-argo-apps'
   values: ${indent(4, local.user_vals)}
 EOF

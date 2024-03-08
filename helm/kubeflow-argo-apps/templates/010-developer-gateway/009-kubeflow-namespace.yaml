@@ -1,3 +1,4 @@
+{{ if .Values.kubeflowNamespace.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,4 +8,5 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-{{ .Values.kubeflowNamespaceSpec | toYaml | indent 2}}
+{{ .Values.kubeflowNamespace.spec | toYaml | indent 2 }}
+{{- end -}}

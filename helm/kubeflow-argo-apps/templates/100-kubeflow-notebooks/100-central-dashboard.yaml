@@ -1,3 +1,4 @@
+{{ if .Values.centralDashboard.enabled -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,4 +8,5 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "100"
 spec:
-{{ .Values.centralDashboardSpec | toYaml | indent 2 }}
+{{ .Values.centralDashboard.spec | toYaml | indent 2 }}
+{{- end -}}

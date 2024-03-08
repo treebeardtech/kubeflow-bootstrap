@@ -8,5 +8,5 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-{{ .Values.volumesWebApp.spec | toYaml | indent 2}}
+{{ .Values.volumesWebApp.spec | toYaml | indent 2 }}
 {{ end }}

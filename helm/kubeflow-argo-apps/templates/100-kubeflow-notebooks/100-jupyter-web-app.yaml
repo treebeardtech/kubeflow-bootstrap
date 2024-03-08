@@ -1,3 +1,4 @@
+{{ if .Values.jupyterWebApp.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,4 +8,5 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-{{ .Values.jupyterWebAppSpec | toYaml | indent 2}}
+{{ .Values.jupyterWebApp.spec | toYaml | indent 2 }}
+{{- end -}}

@@ -1,3 +1,4 @@
+{{ if .Values.istioResources.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -7,4 +8,5 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-{{ .Values.istioResourcesSpec | toYaml | indent 2}}
+{{ .Values.istioResources.spec | toYaml | indent 2 }}
+{{- end -}}

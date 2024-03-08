@@ -3,8 +3,6 @@ kind: Issuer
 metadata:
   name: treebeard-issuer
 spec:
-  # selfSigned: {}
-
   acme:
     email: {{ .Values.certEmailOwner | required "Please provide a valid email address" }}
     preferredChain: ''
