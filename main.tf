@@ -28,10 +28,10 @@ EOF
   ]
 }
 
-resource "helm_release" "kubeflow_bootstrap" {
-  name          = "kubeflow-bootstrap"
+resource "helm_release" "argo_bootstrap" {
+  name          = "argo-bootstrap"
   namespace     = "argocd"
-  chart         = "${path.module}/helm/kubeflow-bootstrap"
+  chart         = "${path.module}/helm/bootstrap"
   wait_for_jobs = true
   values = var.kubeflow_values
 
