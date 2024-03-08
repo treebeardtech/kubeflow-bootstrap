@@ -1,0 +1,325 @@
+certManagerSpec:
+  project: default
+  sources:
+    - chart: 'cert-manager'
+      repoURL: https://charts.jetstack.io
+      targetRevision: "1.14.3"
+      helm:
+        releaseName: "cert-manager"
+        ignoreMissingValueFiles: true
+        valueFiles: []
+        values: |
+          installCRDs: true
+  destination:
+    namespace: 'cert-manager'
+    name: 'in-cluster'
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true  # Big CRDs.
+
+istioBaseSpec:
+  project: default
+  sources:
+    - chart: 'base'
+      repoURL: 'https://istio-release.storage.googleapis.com/charts'
+      targetRevision: "1.18.7"
+      helm:
+        releaseName: "istio-base"
+        ignoreMissingValueFiles: true
+        valueFiles: []
+  destination:
+    namespace: 'istio-system'
+    name: 'in-cluster'
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true  # Big CRDs.
+
+istiodSpec:
+  project: default
+  sources:
+    - chart: 'istiod'
+      repoURL: 'https://istio-release.storage.googleapis.com/charts'
+      targetRevision: "1.18.7"
+      helm:
+        releaseName: "istiod"
+        ignoreMissingValueFiles: true
+        valueFiles: []
+        values: |
+          pilot:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+          global:
+            proxy:
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+  destination:
+    namespace: 'istio-system'
+    name: 'in-cluster'
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+gatewaySpec:
+  project: default
+  sources:
+    - chart: 'gateway'
+      repoURL: 'https://istio-release.storage.googleapis.com/charts'
+      targetRevision: "1.18.7"
+      helm:
+        releaseName: "istio-ingressgateway"
+        ignoreMissingValueFiles: true
+        valueFiles: []
+        values: |
+          service:
+            type: ClusterIP
+          serviceAccount:
+            name: istio-ingressgateway-service-account
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 2000m
+              memory: 1024Mi
+  destination:
+    namespace: 'istio-system'
+    name: 'in-cluster'
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+dexSpec:
+  project: default
+  source:
+    path: common/dex/overlays/istio
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+oidcAuthServiceSpec:
+  project: default
+  source:
+    path: common/oidc-client/oidc-authservice/base
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+kubeflowNamespaceSpec:
+  project: default
+  source:
+    path: common/kubeflow-namespace/base
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+istioResourcesSpec:
+  project: default
+  source:
+    path: common/istio-1-17/kubeflow-istio-resources/base
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+kubeflowRolesSpec:
+  project: default
+  source:
+    path: common/kubeflow-roles/base
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+admissionWebhookSpec:
+  project: default
+  source:
+    path: apps/admission-webhook/upstream/overlays/cert-manager
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+centralDashboardSpec:
+  project: default
+  source:
+    path: apps/centraldashboard/upstream/overlays/kserve
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+    kustomize:
+      patches:
+      - target:
+          kind: ConfigMap
+          name: centraldashboard-config
+        patch: |-
+          - op: replace
+            path: /data/links
+            value: |
+              {
+                "menuLinks": [
+                  {
+                    "type": "item",
+                    "link": "/jupyter/",
+                    "text": "Notebooks",
+                    "icon": "book"
+                  },
+                  {
+                    "type": "item",
+                    "link": "/volumes/",
+                    "text": "Volumes",
+                    "icon": "device:storage"
+                  }
+                ],
+                "externalLinks": [ ],
+                  "quickLinks": [
+                    {
+                      "text": "Create a new Notebook server",
+                      "desc": "Notebook Servers",
+                      "link": "/jupyter/new?namespace=kubeflow"
+                    }
+                  ],
+                  "documentationItems": [
+                    {
+                      "text": "Getting Started with Kubeflow",
+                      "desc": "Get your machine-learning workflow up and running on Kubeflow",
+                      "link": "https://www.kubeflow.org/docs/started/getting-started/"
+                    }
+                  ]
+              }
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+jupyterWebAppSpec:
+  project: default
+  source:
+    path: apps/jupyter/jupyter-web-app/upstream/overlays/istio
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+notebookControllerSpec:
+  project: default
+  source:
+    path: apps/jupyter/notebook-controller/upstream/overlays/kubeflow
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+profilesSpec:
+  project: default
+  source:
+    path: apps/profiles/upstream/overlays/kubeflow
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+pvcViewerControllerSpec:
+  project: default
+  source:
+    path: apps/pvcviewer-controller/upstream/default
+    repoURL: https://github.com/kubeflow/manifests
+    targetRevision: 776d4f4
+  destination:
+    namespace: argocd
+    name: in-cluster
+  syncPolicy:
+    automated:
+      prune: false
+    syncOptions:
+      - ServerSideApply=true  # Big CRDs.
+
+volumesWebApp:
+  enabled: true
+  spec:
+    project: default
+    source:
+      path: apps/volumes-web-app/upstream/overlays/istio
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true  # Big CRDs.

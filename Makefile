@@ -47,7 +47,7 @@ build-kf-apps:
 	rm -rf helm/kubeflow-argo-apps-*.tgz
 	helm package helm/kubeflow-argo-apps -d helm --version $(VERSION)
 
-push-kf-apps:
+push-kf-apps: build-kf-apps
 	helm push helm/kubeflow-argo-apps-*.tgz oci://ghcr.io/treebeardtech
 
 helm-repo-login:
