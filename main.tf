@@ -31,7 +31,7 @@ EOF
 resource "helm_release" "kubeflow_apps" {
   name          = "kubeflow-apps"
   namespace     = "argocd"
-  chart         = "${path.module}/helm/argo_app"
+  chart         = "${path.module}/helm/kubeflow-bootstrap"
   wait_for_jobs = true
   values = [
 <<EOF
