@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Treebeard Kubeflow</h1>
-  <p><b>scale Jupyter in Kubernetes 🪐</b></p>
+  <p><b>🪐 scale Jupyter in Kubernetes</b></p>
 
   <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/3936f78f1ab1931737037d7744ef0e686fb94d30/docs/tkf.png" width="400" height="100%">
 
