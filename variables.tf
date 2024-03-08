@@ -1,3 +1,13 @@
+variable "treebeard_kubeflow_dependency" {
+  description = "Configuration for Treebeard Kubeflow helm"
+  type        = map(string)
+  default = {
+    repoURL        = "ghcr.io/treebeardtech"
+    targetRevision = "0.1-2024-03-08-T12-25-15"
+    chart          = "kubeflow-argo-apps"
+  }
+}
+
 variable "enable_argocd" {
   type    = bool
   default = true

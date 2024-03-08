@@ -52,6 +52,20 @@ gateway:
               limits:
                 cpu: 2000m
                 memory: 1024Mi
+dex:
+  spec:
+    project: default
+    source:
+      kustomize:
+        patches:
+        - target:
+            kind: Secret
+            name: dex-passwords
+          patch: |-
+            - op: replace
+              path: /stringData/DEX_USER_PASSWORD
+              value: ${bcrypt(var.password)}
+
 EOF
   ]
   depends_on = [

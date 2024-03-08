@@ -1,3 +1,7 @@
+variable "password" {
+  sensitive   = true
+  description = "password for user@example.com"
+}
 
 variable "host" {
 }

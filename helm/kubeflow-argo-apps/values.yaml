@@ -353,3 +353,20 @@ volumesWebApp:
         prune: false
       syncOptions:
         - ServerSideApply=true
+
+exampleProfile:
+  enabled: true
+  spec:
+    project: default
+    source:
+      path: common/user-namespace/base
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
