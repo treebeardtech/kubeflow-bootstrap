@@ -115,7 +115,7 @@ sources:
 #   ref: values
 - repoURL: ghcr.io/treebeardtech
   targetRevision: 0.1-2024-03-08-T12-25-15
-  chart: kubeflow-argo-apps
+  chart: treebeard-kubeflow
   helm:
     ignoreMissingValueFiles: true
     # valueFiles:

@@ -105,9 +105,9 @@ module "treebeardkf" {
   kubeflow_values = [
     <<EOF
 sources:
-- repoURL: ghcr.io/treebeardtech
-  targetRevision: 0.1-2024-03-08-T12-25-15
-  chart: kubeflow-argo-apps
+- repoURL: ghcr.io/treebeardtech/helm
+  targetRevision: 0.1-2024-03-08-T18-39-28
+  chart: treebeard-kubeflow
   helm:
     ignoreMissingValueFiles: true
     values: |
