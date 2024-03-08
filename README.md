@@ -6,7 +6,6 @@
 
   <br />
 
-  
   <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm/latest">
     <img src="https://img.shields.io/badge/terraform-module-blue?logo=terraform" />
   </a>
