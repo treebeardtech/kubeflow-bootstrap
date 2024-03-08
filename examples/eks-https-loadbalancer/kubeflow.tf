@@ -30,6 +30,28 @@ istioResources:
                 tls:
                   credentialName: gateway-cert
                   mode: SIMPLE
+gateway:
+  spec:
+    sources:
+      - chart: 'gateway'
+        repoURL: 'https://istio-release.storage.googleapis.com/charts'
+        targetRevision: "1.18.7"
+        helm:
+          releaseName: "istio-ingressgateway"
+          ignoreMissingValueFiles: true
+          valueFiles: []
+          values: |
+            service:
+              type: LoadBalancer
+            serviceAccount:
+              name: istio-ingressgateway-service-account
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                cpu: 2000m
+                memory: 1024Mi
 EOF
   ]
   depends_on = [
