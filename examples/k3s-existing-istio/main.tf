@@ -102,7 +102,7 @@ resource "null_resource" "completed" {
 
 module "treebeardkf" {
   source = "../.."
-  kubeflow_values = [
+  bootstrap_values = [
     <<EOF
 sources:
 - repoURL: ghcr.io/treebeardtech/helm

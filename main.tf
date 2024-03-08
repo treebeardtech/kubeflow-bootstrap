@@ -33,11 +33,11 @@ resource "helm_release" "argo_bootstrap" {
   namespace     = "argocd"
   chart         = "${path.module}/helm/bootstrap"
   wait_for_jobs = true
-  values = var.kubeflow_values
+  values        = var.bootstrap_values
 
   dynamic "set" {
     iterator = item
-    for_each = var.kubeflow_set == null ? [] : var.kubeflow_set
+    for_each = var.bootstrap_set == null ? [] : var.bootstrap_set
 
     content {
       name  = item.value.name
@@ -47,7 +47,7 @@ resource "helm_release" "argo_bootstrap" {
 
   dynamic "set_sensitive" {
     iterator = item
-    for_each = var.kubeflow_set_sensitive == null ? [] : var.kubeflow_set_sensitive
+    for_each = var.bootstrap_set_sensitive == null ? [] : var.bootstrap_set_sensitive
 
     content {
       name  = item.value.path

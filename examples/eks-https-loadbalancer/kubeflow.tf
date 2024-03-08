@@ -1,7 +1,7 @@
 module "treebeardkf" {
   count  = var.enable_treebeardkf ? 1 : 0
   source = "../.."
-  kubeflow_values = [
+  bootstrap_values = [
     <<EOF
 sources:
 - repoURL: ghcr.io/treebeardtech/helm

@@ -176,10 +176,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_bootstrap_set"></a> [bootstrap\_set](#input\_bootstrap\_set) | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
+| <a name="input_bootstrap_set_sensitive"></a> [bootstrap\_set\_sensitive](#input\_bootstrap\_set\_sensitive) | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
+| <a name="input_bootstrap_values"></a> [bootstrap\_values](#input\_bootstrap\_values) | Extra values | `list(string)` | `[]` | no |
 | <a name="input_enable_argocd"></a> [enable\_argocd](#input\_enable\_argocd) | n/a | `bool` | `true` | no |
-| <a name="input_kubeflow_set"></a> [kubeflow\_set](#input\_kubeflow\_set) | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| <a name="input_kubeflow_set_sensitive"></a> [kubeflow\_set\_sensitive](#input\_kubeflow\_set\_sensitive) | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| <a name="input_kubeflow_values"></a> [kubeflow\_values](#input\_kubeflow\_values) | Extra values | `list(string)` | `[]` | no |
 
 ## Outputs
 
