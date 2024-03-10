@@ -27,9 +27,27 @@ spec:
   source:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .sources }}
   sources:
-    {{- toYaml . | nindent 4 }}
+  - repoURL: {{ .repoURL }}
+    targetRevision: {{ .targetRevision }}
+    chart: {{ .chart }}
+    helm:
+      {{- with .valuesObject }}
+      valuesObject:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .values }}
+      values:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .valueFiles }}
+      valueFiles:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- range .sources }}
+  - repoURL: {{ .repoURL }}
+    targetRevision: {{ .targetRevision }}
+    ref: {{ .ref }}
   {{- end }}
   destination:
     {{- toYaml .destination | nindent 4 }}

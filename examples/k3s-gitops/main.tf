@@ -5,10 +5,6 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2.12.1"
     }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2.25.2"
-    }
   }
   backend "local" {
   }
@@ -24,8 +20,8 @@ provider "helm" {
   }
 }
 
-provider "kubernetes" {
-  config_path = var.kubeconfig
+locals {
+  cert_manager_enabled = false
 }
 
 resource "helm_release" "cert-manager" {
@@ -104,13 +100,17 @@ module "treebeardkf" {
   source = "../.."
   bootstrap_values = [
     <<EOF
+sources:
+- repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
+  targetRevision: 2cc733d87a1a0b612c783c42fa570070f03d7150
+  ref: values
+valueFiles:
+# this value file should disabled istio (example of gitops config)
+- $values/gitops-example/values.yaml
 valuesObject:
+  # example of inline config where terraform vars can be injected
   certManager:
-    enabled: false
-  istioBase:
-    enabled: false
-  istiod:
-    enabled: false
+    enabled: ${local.cert_manager_enabled}
 EOF
   ]
   depends_on = [
