@@ -2,7 +2,7 @@
   <h1>Treebeard Kubeflow</h1>
   <p><b>🪐 scale Jupyter in Kubernetes</b></p>
 
-  <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/3936f78f1ab1931737037d7744ef0e686fb94d30/docs/tkf.png" width="400" height="100%">
+  <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/tkf.png" width="400" height="100%">
 
   <br />
 
@@ -29,6 +29,14 @@ This module is primarily focussed on the Jupyter notebook environment initially 
 * Developers can deploy and access notebook instances
 * Notebook instances can use GPUs necessary for deep learning
 * This can be done across different cloud providers (ranging from individual VMs to managed services like Amazon's EKS)
+
+## Architecture
+
+This module is built on top of the official [Kubeflow Manifests repo](https://github.com/kubeflow/manifests) which contains _Kustomizations_ for the various components of Kubeflow.
+
+We provide a terraform and helm-based interface for managing Kubeflow via GitOps
+
+<img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/arch.png" width="650" height="100%">
 
 ## Getting Started
 
@@ -105,24 +113,9 @@ Terraform resource outputs such as role ARNs.
 
 These may best be stored in a git repo and referenced using Argo's [multiple sources feature](https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/)
 
-Using this approach you can invoke this terraform module (or the underlying bootstrap helm chart) with config like the following that combines injected values with values from a git repo:
+Using this approach you can invoke this terraform module (or the underlying bootstrap helm chart) with config like the following that combines injected values with values from a git repo.
 
-```yaml
-sources:
-# - repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
-#   targetRevision: dev
-#   ref: values
-- repoURL: ghcr.io/treebeardtech
-  targetRevision: 0.1-2024-03-08-T18-39-28
-  chart: treebeard-kubeflow
-  helm:
-    ignoreMissingValueFiles: true
-    # valueFiles:
-    # - $values/some-dir/my-values-file.yaml # use your own gitops values file
-    values: |
-      # pass in terraform outputs from cloud resources
-      # e.g. ARNs, node labels, etc.
-```
+See the [gitops example](examples/k3s-gitops) for details.
 
 ### Teardown
 
@@ -138,10 +131,6 @@ Moving the deployment between different states of configuration can be challengi
 due to the dependencies between components in the cluster.
 
 If you have made a change to a dependency such as istio, or an auth component such as dex, it can be a good idea to re-create pods such that they re-initialise. This can be done by scaling to 0 then back up again, or simply deleting a pod managed by a deployment.
-
-## Architecture
-
-This module is built on top of the official [Kubeflow Manifests repo](https://github.com/kubeflow/manifests) which contains _Kustomizations_ for the various components of Kubeflow.
 
 ## Requirements
 
@@ -183,3 +172,7 @@ No modules.
 ## Outputs
 
 No outputs.
+
+## Not sure where to start?
+
+Open an issue or message us directly in [Discord](https://discord.gg/QFjCpMjqRY).
