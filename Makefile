@@ -43,11 +43,11 @@ k3d-delete:
 TIMESTAMP := $(shell date -u "+%Y-%m-%d-T%H-%M-%S")
 VERSION := 0.1-$(TIMESTAMP)
 
-build-kf-apps:
+build-chart:
 	rm -rf helm/treebeard-kubeflow-*.tgz
 	helm package helm/treebeard-kubeflow -d helm --version $(VERSION)
 
-push-kf-apps: build-kf-apps
+push-chart: build-chart
 	helm push helm/treebeard-kubeflow-*.tgz oci://ghcr.io/treebeardtech/helm
 
 helm-repo-login:

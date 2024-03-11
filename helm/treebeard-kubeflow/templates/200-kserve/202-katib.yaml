@@ -1,0 +1,12 @@
+{{ if .Values.katib.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 202-katib
+  annotations:
+    argocd.argoproj.io/sync-wave: "202"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ .Values.katib.spec | toYaml | indent 2 }}
+{{- end -}}

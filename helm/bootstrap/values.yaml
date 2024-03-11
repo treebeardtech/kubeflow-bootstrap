@@ -6,7 +6,7 @@ finalizers:
 - resources-finalizer.argocd.argoproj.io
 project: default
 repoURL: ghcr.io/treebeardtech/helm
-targetRevision: 0.1-2024-03-08-T18-39-28
+targetRevision: 0.1-2024-03-11-T13-18-50
 chart: treebeard-kubeflow
 destination:
   server: https://kubernetes.default.svc
