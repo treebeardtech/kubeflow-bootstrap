@@ -3,13 +3,13 @@ module "treebeardkf" {
   source = "../.."
   bootstrap_values = [
     <<EOF
-values: |
-  certManager:
-    enabled: false
-  istioBase:
-    enabled: false
-  istiod:
-    enabled: false
+sources:
+- repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
+  targetRevision: 1418a326e09628faf07626c5e6bfad80f7b3f8d9
+  ref: values
+valueFiles:
+- $values/gitops-example/eks-https-loadbalancer.yaml
+valuesObject:
   istioResources:
     spec:
       source:
@@ -31,28 +31,7 @@ values: |
                   tls:
                     credentialName: gateway-cert
                     mode: SIMPLE
-  gateway:
-    spec:
-      sources:
-        - chart: 'gateway'
-          repoURL: 'https://istio-release.storage.googleapis.com/charts'
-          targetRevision: "1.18.7"
-          helm:
-            releaseName: "istio-ingressgateway"
-            ignoreMissingValueFiles: true
-            valueFiles: []
-            values: |
-              service:
-                type: LoadBalancer
-              serviceAccount:
-                name: istio-ingressgateway-service-account
-              resources:
-                requests:
-                  cpu: 10m
-                  memory: 64Mi
-                limits:
-                  cpu: 2000m
-                  memory: 1024Mi
+
   dex:
     spec:
       project: default

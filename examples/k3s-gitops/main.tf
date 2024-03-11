@@ -111,6 +111,7 @@ valuesObject:
   # example of inline config where terraform vars can be injected
   certManager:
     enabled: ${local.cert_manager_enabled}
+# syncPolicy: null enable for debugging
 EOF
   ]
   depends_on = [
