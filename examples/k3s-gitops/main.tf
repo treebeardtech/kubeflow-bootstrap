@@ -101,12 +101,12 @@ module "treebeardkf" {
   bootstrap_values = [
     <<EOF
 sources:
-- repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
-  targetRevision: 2cc733d87a1a0b612c783c42fa570070f03d7150
+- repoURL: 'https://github.com/treebeardtech/treebeard-kubeflow-gitops'
+  targetRevision: 8e3369ac3720bd837f75d812b9ec9d5f9d135cef
   ref: values
 valueFiles:
 # this value file should disabled istio (example of gitops config)
-- $values/gitops-example/values.yaml
+- $values/clusters/k3s-gitops.yaml
 valuesObject:
   # example of inline config where terraform vars can be injected
   certManager:

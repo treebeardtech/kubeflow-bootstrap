@@ -4,11 +4,11 @@ module "treebeardkf" {
   bootstrap_values = [
     <<EOF
 sources:
-- repoURL: 'https://github.com/treebeardtech/gitops-bridge-argocd-control-plane-template'
-  targetRevision: 1418a326e09628faf07626c5e6bfad80f7b3f8d9
+- repoURL: 'https://github.com/treebeardtech/treebeard-kubeflow-gitops'
+  targetRevision: 8e3369ac3720bd837f75d812b9ec9d5f9d135cef
   ref: values
 valueFiles:
-- $values/gitops-example/eks-https-loadbalancer.yaml
+- $values/clusters/eks-https-loadbalancer.yaml
 valuesObject:
   istioResources:
     spec:
