@@ -1,5 +1,10 @@
 locals {
   start_message = "⏳ Installing Kubeflow..."
+  bootstrap_default = [
+    <<EOF
+targetRevision: 0.1-2024-03-11-T15-14-41
+EOF
+  ]
 }
 
 resource "null_resource" "start" {
@@ -33,7 +38,8 @@ resource "helm_release" "argo_bootstrap" {
   namespace     = "argocd"
   chart         = "${path.module}/helm/bootstrap"
   wait_for_jobs = true
-  values        = var.bootstrap_values
+  values        = concat(local.bootstrap_default, var.bootstrap_values)
+
 
   dynamic "set" {
     iterator = item

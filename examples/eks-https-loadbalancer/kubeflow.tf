@@ -4,74 +4,47 @@ module "treebeardkf" {
   bootstrap_values = [
     <<EOF
 sources:
-- repoURL: ghcr.io/treebeardtech/helm
-  targetRevision: 0.1-2024-03-08-T18-39-28
-  chart: treebeard-kubeflow
-  helm:
-    ignoreMissingValueFiles: true
-    values: |
-      certManager:
-        enabled: false
-      istioBase:
-        enabled: false
-      istiod:
-        enabled: false
-      istioResources:
-        spec:
-          source:
-            kustomize:
-              patches:
-              - target:
-                  kind: Gateway
-                  name: kubeflow-gateway
-                patch: |-
-                  - op: replace
-                    path: /spec/servers/0
-                    value:
-                      hosts:
-                      - ${var.host}
-                      port:
-                        name: https
-                        number: 443
-                        protocol: HTTPS
-                      tls:
-                        credentialName: gateway-cert
-                        mode: SIMPLE
-      gateway:
-        spec:
-          sources:
-            - chart: 'gateway'
-              repoURL: 'https://istio-release.storage.googleapis.com/charts'
-              targetRevision: "1.18.7"
-              helm:
-                releaseName: "istio-ingressgateway"
-                ignoreMissingValueFiles: true
-                valueFiles: []
-                values: |
-                  service:
-                    type: LoadBalancer
-                  serviceAccount:
-                    name: istio-ingressgateway-service-account
-                  resources:
-                    requests:
-                      cpu: 10m
-                      memory: 64Mi
-                    limits:
-                      cpu: 2000m
-                      memory: 1024Mi
-      dex:
-        spec:
-          project: default
-          source:
-            kustomize:
-              patches:
-              - target:
-                  kind: Secret
-                  name: dex-passwords
-                patch: |-
-                  - op: replace
-                    path: /stringData/DEX_USER_PASSWORD
-                    value: ${bcrypt(var.password)}
+- repoURL: 'https://github.com/treebeardtech/treebeard-kubeflow-gitops'
+  targetRevision: 8e3369ac3720bd837f75d812b9ec9d5f9d135cef
+  ref: values
+valueFiles:
+- $values/clusters/eks-https-loadbalancer.yaml
+valuesObject:
+  istioResources:
+    spec:
+      source:
+        kustomize:
+          patches:
+          - target:
+              kind: Gateway
+              name: kubeflow-gateway
+            patch: |-
+              - op: replace
+                path: /spec/servers/0
+                value:
+                  hosts:
+                  - ${var.host}
+                  port:
+                    name: https
+                    number: 443
+                    protocol: HTTPS
+                  tls:
+                    credentialName: gateway-cert
+                    mode: SIMPLE
+
+  dex:
+    spec:
+      project: default
+      source:
+        kustomize:
+          patches:
+          - target:
+              kind: Secret
+              name: dex-passwords
+            patch: |-
+              - op: replace
+                path: /stringData/DEX_USER_PASSWORD
+                value: ${bcrypt(var.password)}
 EOF
   ]
   depends_on = [

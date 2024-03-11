@@ -1,0 +1,12 @@
+{{ if .Values.modelsWebApp.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 201-models-web-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "201"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ .Values.modelsWebApp.spec | toYaml | indent 2 }}
+{{- end -}}

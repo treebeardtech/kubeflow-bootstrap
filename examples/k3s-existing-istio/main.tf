@@ -104,19 +104,13 @@ module "treebeardkf" {
   source = "../.."
   bootstrap_values = [
     <<EOF
-sources:
-- repoURL: ghcr.io/treebeardtech/helm
-  targetRevision: 0.1-2024-03-08-T18-39-28
-  chart: treebeard-kubeflow
-  helm:
-    ignoreMissingValueFiles: true
-    values: |
-      certManager:
-        enabled: false
-      istioBase:
-        enabled: false
-      istiod:
-        enabled: false
+valuesObject:
+  certManager:
+    enabled: false
+  istioBase:
+    enabled: false
+  istiod:
+    enabled: false
 EOF
   ]
   depends_on = [

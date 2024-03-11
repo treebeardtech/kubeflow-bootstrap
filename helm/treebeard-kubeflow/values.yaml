@@ -1,3 +1,5 @@
+debug: false
+
 certManager:
   enabled: true
   spec:
@@ -360,6 +362,246 @@ exampleProfile:
     project: default
     source:
       path: common/user-namespace/base
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+knativeServing:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: common/knative/knative-serving/overlays/gateways
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+      kustomize:
+        patches:
+        - target:
+            kind: Deployment
+            name: activator
+            namespace: knative-serving
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 15m
+        - target:
+            kind: Deployment
+            name: autoscaler
+            namespace: knative-serving
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 15m
+        - target:
+            kind: Deployment
+            name: domainmapping-webhook
+            namespace: knative-serving
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 15m
+        - target:
+            kind: Deployment
+            name: webhook
+            namespace: knative-serving
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 15m
+        - target:
+            kind: Deployment
+            name: controller
+            namespace: knative-serving
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 15m
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+clusterLocalGateway:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: common/istio-1-17/cluster-local-gateway/base
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+      kustomize:
+        patches:
+        - target:
+            kind: Deployment
+            name: cluster-local-gateway
+            namespace: istio-system
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 10m
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+kserve:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: contrib/kserve/kserve
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+      kustomize:
+        patches:
+        - target:
+            kind: Deployment
+            name: kserve-controller-manager
+            namespace: kubeflow
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 15m
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+katib:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: apps/katib/upstream/installs/katib-with-kubeflow
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+modelsWebApp:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: contrib/kserve/models-web-app/overlays/kubeflow
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+kubeflowPipelines:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+      kustomize:
+        patches:
+        - target:
+            kind: Deployment
+            name: ml-pipeline
+            namespace: kubeflow
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 10m
+        - target:
+            kind: Deployment
+            name: ml-pipeline-persistenceagent
+            namespace: kubeflow
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 10m
+        - target:
+            kind: Deployment
+            name: workflow-controller
+            namespace: kubeflow
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 10m
+        - target:
+            kind: Deployment
+            name: mysql
+            namespace: kubeflow
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 10m
+        - target:
+            kind: StatefulSet
+            name: metacontroller
+            namespace: kubeflow
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/requests/cpu
+              value: 10m
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+tensorboardController:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: apps/tensorboard/tensorboard-controller/upstream/overlays/kubeflow
+      repoURL: https://github.com/kubeflow/manifests
+      targetRevision: 776d4f4
+    destination:
+      namespace: argocd
+      name: in-cluster
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - ServerSideApply=true
+
+tensorboardsWebApp:
+  enabled: false
+  spec:
+    project: default
+    source:
+      path: apps/tensorboard/tensorboards-web-app/upstream/overlays/istio
       repoURL: https://github.com/kubeflow/manifests
       targetRevision: 776d4f4
     destination:

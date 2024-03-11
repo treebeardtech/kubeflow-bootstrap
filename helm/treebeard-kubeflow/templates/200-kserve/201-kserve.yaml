@@ -1,0 +1,12 @@
+{{ if .Values.kserve.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 201-kserve
+  annotations:
+    argocd.argoproj.io/sync-wave: "201"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ .Values.kserve.spec | toYaml | indent 2 }}
+{{- end -}}

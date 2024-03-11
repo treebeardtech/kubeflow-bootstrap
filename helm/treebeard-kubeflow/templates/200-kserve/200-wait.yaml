@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: 200-wait
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "200"
+spec:
+  template:
+    spec:
+      serviceAccount: argocd-server
+      containers:
+      - name: check-sync
+        image: bitnami/kubectl
+        command: ["/bin/sh","-c"]
+        args:
+        - |
+          echo waiting
+          date
+          sleep 20
+          echo done
+          date
+      restartPolicy: Never
+  backoffLimit: 1
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 30
