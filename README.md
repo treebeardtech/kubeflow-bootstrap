@@ -18,7 +18,7 @@
 
 </div>
 
-**As more applications migrate towards Kubernetes, and incorporate AI components, how do we keep operations consistent and simple?**
+**As both Kubernetes and AI usage grows, how do we keep operations consistent and simple?**
 
 ## About this project
 
