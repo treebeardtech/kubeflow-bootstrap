@@ -18,6 +18,8 @@
 
 </div>
 
+<br/>
+
 **As both Kubernetes and AI usage grows, how do we keep operations consistent and simple?**
 
 ## About this project
