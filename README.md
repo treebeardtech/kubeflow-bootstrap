@@ -1,26 +1,26 @@
 <div align="center">
-  <h1>Treebeard Kubeflow</h1>
-  <p><b>🪐 scale Jupyter in Kubernetes</b></p>
+  <h1>Kubeflow Helm</h1>
+  <p><b>🪐 1-click Kubeflow</b></p>
 
   <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/tkf.png" width="400" height="100%">
 
   <br />
 
+  <a target="_blank" href="https://artifacthub.io/packages/helm/kubeflow-helm/kubeflow-helm">
+    <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/kubeflow-helm" />
+  </a>
   <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm/latest">
     <img src="https://img.shields.io/badge/terraform-module-blue?logo=terraform" />
   </a>
   <a target="_blank" href="https://discord.gg/QFjCpMjqRY">
     <img src="https://img.shields.io/badge/chat-discord-blue?logo=discord&logoColor=white" />
   </a>
-  <a target="_blank" href="https://artifacthub.io/packages/helm/treebeard-kubeflow/treebeard-kubeflow">
-    <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/treebeard-kubeflow" />
-  </a>
 
 </div>
 
 ## About this project
 
-This project simplifies MLOps in Kubernetes by providing a Terraform module which creates a Kubeflow instance.
+This project simplifies MLOps in Kubernetes by providing Kubeflow in Helm and Terraform package formats. This allows scaling Kubeflow usage with the rest of your production systems.
 
 Kubeflow provides a cloud-native AI platform which can be used to deploy applications in
 scientific computing, traditional machine learning, and generative AI.
@@ -32,9 +32,15 @@ This module is primarily focussed on the Jupyter notebook environment initially 
 
 ## Architecture
 
-This module is built on top of the official [Kubeflow Manifests repo](https://github.com/kubeflow/manifests) which contains _Kustomizations_ for the various components of Kubeflow.
+This system is built on top of the official [Kubeflow Manifests repo](https://github.com/kubeflow/manifests) which contains _Kustomizations_ for the various components of Kubeflow.
 
-We provide a terraform and helm-based interface for managing Kubeflow via GitOps
+We provide a terraform and helm-based interface for managing Kubeflow via GitOps. Because Kubeflow is a collection of modular components, this project relies on ArgoCD for combining them.
+
+### Design Tenets
+
+1. Integrate with production systems that already use Terraform and Helm
+2. Embrace GitOps for Kubernetes resources on the popular ArgoCD project
+3. Enable adoption of cloud-native/AI tools beyond the scope of Kubeflow (e.g. Ray, MLFlow)
 
 <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/arch.png" width="650" height="100%">
 
@@ -131,48 +137,3 @@ Moving the deployment between different states of configuration can be challengi
 due to the dependencies between components in the cluster.
 
 If you have made a change to a dependency such as istio, or an auth component such as dex, it can be a good idea to re-create pods such that they re-initialise. This can be done by scaling to 0 then back up again, or simply deleting a pod managed by a deployment.
-
-## Requirements
-
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.12 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.0 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.12 |
-| <a name="provider_null"></a> [null](#provider\_null) | >= 3.0 |
-
-## Modules
-
-No modules.
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [helm_release.argo_bootstrap](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.argo_cd](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [null_resource.start](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-
-## Inputs
-
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_bootstrap_set"></a> [bootstrap\_set](#input\_bootstrap\_set) | Value block with custom STRING values to be merged with the values yaml. | <pre>list(object({<br>    name  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| <a name="input_bootstrap_set_sensitive"></a> [bootstrap\_set\_sensitive](#input\_bootstrap\_set\_sensitive) | Value block with custom sensitive values to be merged with the values yaml that won't be exposed in the plan's diff. | <pre>list(object({<br>    path  = string<br>    value = string<br>  }))</pre> | `null` | no |
-| <a name="input_bootstrap_values"></a> [bootstrap\_values](#input\_bootstrap\_values) | Extra values | `list(string)` | `[]` | no |
-| <a name="input_enable_argocd"></a> [enable\_argocd](#input\_enable\_argocd) | n/a | `bool` | `true` | no |
-
-## Outputs
-
-No outputs.
-
-## Not sure where to start?
-
-Open an issue or message us directly in [Discord](https://discord.gg/QFjCpMjqRY).
