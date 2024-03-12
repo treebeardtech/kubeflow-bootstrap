@@ -18,7 +18,10 @@
 
 </div>
 
+**As more applications migrate towards Kubernetes, and incorporate AI components, how do we keep operations consistent and simple?**
+
 ## About this project
+
 
 This project simplifies MLOps in Kubernetes by providing Kubeflow in Helm and Terraform package formats. This allows scaling Kubeflow usage with the rest of your production systems.
 
@@ -43,6 +46,10 @@ We provide a terraform and helm-based interface for managing Kubeflow via GitOps
 3. Enable adoption of cloud-native/AI tools beyond the scope of Kubeflow (e.g. Ray, MLFlow)
 
 <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/arch.png" width="650" height="100%">
+
+### System Requirements
+
+The default configuration of Kubeflow provided is designed to run on a cluster with 2cpus and 8G memory.
 
 ## Getting Started
 
