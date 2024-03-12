@@ -1,6 +1,6 @@
 # Run on K3d
 
-This example will help you try Treebeard Kubeflow in your development environment.
+This example will help you try Kubeflow Helm in your development environment.
 
 ## Pre-reqs:
 
@@ -58,7 +58,7 @@ Once complete, verify the API server has started:
 kubectl get nodes
 ```
 
-### 2. Install Treebeard Kubeflow
+### 2. Install Kubeflow Helm
 
 Initialise the terraform environment
 
@@ -97,7 +97,7 @@ Try creating a Jupyter Notebook server with 0.1 CPU via the web UI.
 
 ## Next steps?
 
-This shows you how you can start developing Treebeard Kubeflow into your infrastructure.
+This shows you how you can start developing Kubeflow Helm into your infrastructure.
 
 Customisation and deployment for your team is another matter and will be discussed in subsequent tutorials.
 
