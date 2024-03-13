@@ -16,5 +16,5 @@ RUN sudo apt-get update -y && sudo apt-get install -y \
   traceroute \
   kmod \
   vim
-  ENV PATH="/home/vscode/.local/bin/:$PATH"
+ENV PATH="/home/vscode/.local/bin/:$PATH"
 ENV EDITOR=vim
