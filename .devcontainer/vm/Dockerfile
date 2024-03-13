@@ -9,7 +9,7 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -U \
   'poetry==1.6.1' \
   'pre-commit==3.6.0' \
   'pip==23.2.1'
-RUN npm install -g @devcontainers/cli@v0.30.0
+RUN npm install -g @devcontainers/cli@v0.57.0
 ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update -y && sudo apt-get install -y \
   iputils-ping \

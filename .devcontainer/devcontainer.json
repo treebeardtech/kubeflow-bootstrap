@@ -27,7 +27,9 @@
     }
   },
   "features": {
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {
+      "shallowClone": true
+    },
     "ghcr.io/devcontainers/features/terraform:1": {
       "version": "1.6.2"
     },
