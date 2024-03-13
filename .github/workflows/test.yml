@@ -1,0 +1,13 @@
+name: test
+on:
+  # schedule:
+    # - cron: 0 13 * * 1 # Every Monday at 1PM UTC (9AM EST)
+  pull_request:
+jobs:
+  test-container:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm install -g @devcontainers/cli@v0.30.0
+      - run: devcontainer up --workspace-folder=.
+      - run: devcontainer exec --workspace-folder=. make k3d-create
