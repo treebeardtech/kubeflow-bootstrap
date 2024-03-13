@@ -11,7 +11,6 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -U \
   'pip==23.2.1'
 RUN npm install -g @devcontainers/cli@v0.57.0
 ENV DEBIAN_FRONTEND=noninteractive
-ENV HOMEBREW_NO_AUTO_UPDATE=1
 RUN sudo apt-get update -y && sudo apt-get install -y \
   iputils-ping \
   traceroute \
@@ -19,3 +18,5 @@ RUN sudo apt-get update -y && sudo apt-get install -y \
   vim
   ENV PATH="/home/vscode/.local/bin/:$PATH"
 ENV EDITOR=vim
+ENV HOMEBREW_NO_AUTO_UPDATE=1
+ENV HOMEBREW_NO_INSTALL_UPGRADE=1
