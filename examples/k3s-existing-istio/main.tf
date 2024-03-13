@@ -102,7 +102,7 @@ resource "null_resource" "completed" {
 
 module "treebeardkf" {
   source = "../.."
-  bootstrap_values = [
+  kubeflow_values = [
     <<EOF
 valuesObject:
   certManager:

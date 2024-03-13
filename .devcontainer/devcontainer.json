@@ -1,6 +1,4 @@
 {
-  "postCreateCommand": "make post-create",
-  "postStartCommand": "make post-start",
   "remoteUser": "vscode",
   "customizations": {
     "vscode": {
@@ -9,10 +7,7 @@
         "python.pythonPath": "/usr/local/bin/python"
       },
       "extensions": [
-        "ms-python.python",
         "mutantdino.resourcemonitor",
-        "github.copilot",
-        "github.copilot-chat"
       ]
     }
   },
@@ -31,9 +26,9 @@
       "version": "1.6.2"
     },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-    "ghcr.io/devcontainers-contrib/features/kind:1": {},
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.25.6"
+      "helm": "3.14.0",
+      "version": "1.27"
     },
     "ghcr.io/rio/features/k3d:1": {},
     "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {
@@ -47,20 +42,4 @@
     "ghcr.io/devcontainers-contrib/features/argo-cd:1": {
     },
   },
-  "mounts": [
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-    // "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.zsh_history,target=/home/vscode/.zsh_history,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.zshrc,target=/home/vscode/.zshrc,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.zshenv,target=/home/vscode/.zshenv,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.terraform.d,target=/home/vscode/.terraform.d,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.azure,target=/home/vscode/.azure,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/infracost,target=/home/vscode/.config/infracost,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/gcloud,target=/home/vscode/.config/gcloud,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/starship.toml,target=/home/vscode/.config/starship.toml,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.kube,target=/home/vscode/.kube,type=bind,consistency=cached",
-    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
-  ]
 }

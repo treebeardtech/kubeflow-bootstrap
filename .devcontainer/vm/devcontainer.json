@@ -26,40 +26,27 @@
       "NODE_VERSION": "18.7"
     }
   },
-  "runArgs": [ // maybe remove this
+  "runArgs": [
     "--network=host",
   ],
   "features": {
-    "ghcr.io/devcontainers-contrib/features/cloudflared:1": {},
-    "ghcr.io/devcontainers/features/go:1": {
-    },
-    "ghcr.io/devcontainers/features/aws-cli": {
-      "version": "2.6.3"
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {
+      "shallowClone": true
     },
     "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
       "omzPlugins": "zsh-syntax-highlighting zsh-autosuggestions"
     },
     "ghcr.io/devcontainers-contrib/features/starship-homebrew:1": {},
-    "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {
-      "version": "2.59.0"
-    },
-    "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/terraform:1": {
       "version": "1.6.2"
     },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-    "ghcr.io/devcontainers-contrib/features/kind:1": {},
-    "ghcr.io/devcontainers-contrib/features/packer-asdf:2": {},
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.25.6"
+      "helm": "3.14.0",
+      "version": "1.27"
     },
     "ghcr.io/rio/features/k3d:1": {},
     // "ghcr.io/devcontainers/features/nix:1": {},
-    "ghcr.io/devcontainers-contrib/features/infracost:1": {
-      "version": "0.10.30"
-    },
-    "ghcr.io/dhoeric/features/google-cloud-cli:1": {
-    },
     "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {
     },
     "ghcr.io/devcontainers/features/github-cli:1": {

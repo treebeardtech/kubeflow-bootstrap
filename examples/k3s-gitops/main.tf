@@ -26,7 +26,7 @@ locals {
 
 module "treebeardkf" {
   source = "../.."
-  bootstrap_values = [
+  kubeflow_values = [
     <<EOF
 sources:
 - repoURL: 'https://github.com/treebeardtech/treebeard-kubeflow-gitops'
@@ -37,8 +37,7 @@ valueFiles:
 valuesObject:
   # example of inline config where terraform vars can be injected
   debug: ${local.debug}
-syncPolicy: null
-
+# syncPolicy: null # uncomment to debug
 EOF
   ]
   depends_on = [

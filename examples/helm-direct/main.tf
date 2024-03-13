@@ -1,28 +1,26 @@
-terraform {
-  required_version = ">= 1.3"
 
+terraform {
   required_providers {
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.12"
+      version = "~> 2.12.1"
     }
+  }
+  backend "local" {
   }
 }
 
-variable "enable_argocd" {
-  type    = bool
-  default = true
+variable "kubeconfig" {
+  type = string
 }
 
-variable "kubeflow_values" {
-  description = "Extra values"
-  type        = list(string)
-  default     = []
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig
+  }
 }
 
 resource "helm_release" "argo_cd" {
-  count = var.enable_argocd ? 1 : 0
-
   name             = "argocd"
   namespace        = "argocd"
   chart            = "argo-cd"
@@ -38,11 +36,13 @@ EOF
 }
 
 resource "helm_release" "kubeflow" {
-  name          = "kubeflow"
-  namespace     = "argocd"
-  chart         = "${path.module}/helm/kubeflow"
-  wait_for_jobs = true
-  values        = var.kubeflow_values
+  name      = "kubeflow"
+  namespace = "argocd"
+  chart     = "${path.module}/../../helm/kubeflow"
+  values = [
+    <<EOF
+EOF
+  ]
   depends_on = [
     helm_release.argo_cd
   ]

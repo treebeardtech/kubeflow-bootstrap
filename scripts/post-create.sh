@@ -1,4 +1,12 @@
-set -x; cd "$(mktemp -d)" &&
+#!/usr/bin/env bash
+set -e -u -o pipefail -x
+
+sudo chown -R vscode /home/linuxbrew/.linuxbrew/Homebrew /home/linuxbrew/.linuxbrew/bin
+@echo "post-create"
+brew install helm-docs yq
+
+# setup krew
+cd "$(mktemp -d)" &&
 OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
 ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
 KREW="krew-${OS}_${ARCH}" &&

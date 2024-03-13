@@ -7,7 +7,7 @@
   <br />
 
   <a target="_blank" href="https://artifacthub.io/packages/helm/treebeard-kubeflow/treebeard-kubeflow">
-    <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/kubeflow-helm" />
+    <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/kubeflow" />
   </a>
   <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm/latest">
     <img src="https://img.shields.io/badge/terraform-module-blue?logo=terraform" />
@@ -49,13 +49,19 @@ We provide a terraform and helm-based interface for managing Kubeflow via GitOps
 
 <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/arch.png" width="650" height="100%">
 
+### Packages
+
+1. Terraform module: A simple entrypoint for those new to Argo and looking for a 1-click experience
+2. kubeflow chart: A high-level helm entrypoint for setting up Kubeflow Argo Apps
+3. kubeflow-core chart: A lower-level argo apps chart which can be invoked in the "argo app-of-apps" pattern.
+
 ### System Requirements
 
 The default configuration of Kubeflow provided is designed to run on a cluster with 2cpus and 8G memory.
 
 ## Getting Started
 
-Note that as all of our examples are implemented in Terraform, we recommend using the Terraform module to start off. The [helm super-chart](https://github.com/treebeardtech/kubeflow-helm/tree/main/helm/treebeard-kubeflow) is likely to be a more viable interface as you move into production.
+Note that as all of our examples are implemented in Terraform, we recommend using the Terraform module to start off. The [helm super-chart](https://github.com/treebeardtech/kubeflow/tree/main/helm/treebeard-kubeflow) is likely to be a more viable interface as you move into production.
 
 We recommend trying out this module in a development environment first.
 
@@ -68,6 +74,12 @@ To do so, follow the [k3s tutorial](examples/k3s).
 </a>
 
 ## Guides
+
+### Install via helm CLI
+
+```sh
+helm install kf oci://ghcr.io/treebeardtech/helm/treebeard-kubeflow --version x.y.z
+```
 
 In order to integrate Kubeflow with your production systems there are some changes you 
 may want to make:
