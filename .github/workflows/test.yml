@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm install -g @devcontainers/cli@v0.30.0
       - run: devcontainer up --workspace-folder=.
-      - run: devcontainer exec --workspace-folder=. make k3d-create
+      - run: devcontainer exec --workspace-folder=. ./scripts/test.sh

@@ -34,9 +34,9 @@
       "version": "1.6.2"
     },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
-    "ghcr.io/devcontainers-contrib/features/kind:1": {},
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "1.25.6"
+      "helm": "3.14.0",
+      "version": "1.27"
     },
     "ghcr.io/rio/features/k3d:1": {},
     "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {
