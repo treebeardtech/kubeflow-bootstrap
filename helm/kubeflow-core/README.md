@@ -1,4 +1,4 @@
-# kubeflow-helm-core
+# kubeflow-core
 
 This chart installs argo apps and other installation utilities for Kubeflow.
 
