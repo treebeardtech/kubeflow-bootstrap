@@ -41,10 +41,9 @@ k3d-create:
 k3d-delete:
 	k3d cluster delete dev
 
-TIMESTAMP := $(shell date -u "+%Y-%m-%d-T%H-%M-%S")
-GIT_TAG := $(shell git describe --tags `git rev-list --tags --max-count=1` | sed 's/^v//')
-VERSION ?= $(if $(filter $(PROD),true),$(GIT_TAG),$(GIT_TAG)-dev+$(TIMESTAMP))
-
+build-chart: TIMESTAMP := $(shell date -u "+%Y-%m-%d-T%H-%M-%S")
+build-chart: GIT_TAG := $(shell git describe --tags `git rev-list --tags --max-count=1` | sed 's/^v//')
+build-chart: VERSION ?= $(if $(filter $(PROD),true),$(GIT_TAG),$(GIT_TAG)-dev+$(TIMESTAMP))
 build-chart:
 	rm -rf helm/*.tgz
 	helm package helm/kubeflow-core -d helm --version $(VERSION)

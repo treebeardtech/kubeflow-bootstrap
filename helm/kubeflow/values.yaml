@@ -6,7 +6,7 @@ finalizers:
   - resources-finalizer.argocd.argoproj.io
 project: default
 repoURL: ghcr.io/treebeardtech/helm
-targetRevision: "0.3.1"
+targetRevision: "0.3.1-dev+2024-03-13-T19-04-39"
 chart: kubeflow-core
 destination:
   server: https://kubernetes.default.svc
