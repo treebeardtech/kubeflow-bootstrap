@@ -30,6 +30,7 @@
     "--network=host",
   ],
   "features": {
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {},
     "ghcr.io/devcontainers-contrib/features/cloudflared:1": {},
     "ghcr.io/devcontainers/features/go:1": {
     },
