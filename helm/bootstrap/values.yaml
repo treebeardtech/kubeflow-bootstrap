@@ -1,4 +1,4 @@
-name: 000-bootstrap
+name: 000-kubeflow-helm
 namespace: argocd
 additionalLabels: {}
 additionalAnnotations: {}
@@ -6,7 +6,7 @@ finalizers:
 - resources-finalizer.argocd.argoproj.io
 project: default
 repoURL: ghcr.io/treebeardtech/helm
-targetRevision: 0.1-2024-03-11-T13-18-50
+targetRevision: 0.1-2024-03-11-T15-14-41
 chart: treebeard-kubeflow
 destination:
   server: https://kubernetes.default.svc
