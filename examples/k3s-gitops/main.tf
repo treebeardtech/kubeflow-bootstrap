@@ -37,8 +37,7 @@ valueFiles:
 valuesObject:
   # example of inline config where terraform vars can be injected
   debug: ${local.debug}
-syncPolicy: null
-
+# syncPolicy: null # uncomment to debug
 EOF
   ]
   depends_on = [

@@ -75,6 +75,11 @@ To do so, follow the [k3s tutorial](examples/k3s).
 
 ## Guides
 
+### Install via helm CLI
+
+```sh
+helm install kf oci://ghcr.io/treebeardtech/helm/treebeard-kubeflow --version x.y.z
+
 In order to integrate Kubeflow with your production systems there are some changes you 
 may want to make:
 

@@ -3,7 +3,7 @@ SHELLOPTS := $(if $(SHELLOPTS),$(SHELLOPTS):, )xtrace pipefail errexit nounset
 .PHONY: post-create
 post-create:
 	@echo "post-create"
-	brew install helm-docs
+	brew install helm-docs yq
 	./scripts/setup-krew.sh
 
 .PHONY: post-start
@@ -41,14 +41,18 @@ k3d-delete:
 	k3d cluster delete dev
 
 TIMESTAMP := $(shell date -u "+%Y-%m-%d-T%H-%M-%S")
-VERSION := 0.1-$(TIMESTAMP)
+GIT_TAG := $(shell git describe --tags `git rev-list --tags --max-count=1` | sed 's/^v//')
+VERSION ?= $(if $(filter $(PROD),true),$(GIT_TAG),$(GIT_TAG)-dev+$(TIMESTAMP))
 
 build-chart:
-	rm -rf helm/kubef-*.tgz
+	rm -rf helm/*.tgz
 	helm package helm/kubeflow-core -d helm --version $(VERSION)
+	yq eval '.targetRevision = "$(VERSION)"' -i helm/kubeflow/values.yaml
+	helm package helm/kubeflow -d helm --version $(VERSION)
 
 push-chart: build-chart
-	helm push helm/kubeflow-core-*.tgz oci://ghcr.io/treebeardtech/helm
+	helm push helm/kubeflow-core-$(VERSION).tgz oci://ghcr.io/treebeardtech/helm
+	helm push helm/kubeflow-$(VERSION).tgz oci://ghcr.io/treebeardtech/helm
 
 helm-repo-login:
 	echo $(GHCR_PAT) | docker login ghcr.io -u alex-treebeard --password-stdin

@@ -41,7 +41,6 @@ resource "helm_release" "kubeflow" {
   chart     = "${path.module}/../../helm/kubeflow"
   values = [
     <<EOF
-targetRevision: 0.1-2024-03-13-T12-09-21
 EOF
   ]
   depends_on = [

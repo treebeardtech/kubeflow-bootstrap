@@ -3,10 +3,10 @@ namespace: argocd
 additionalLabels: {}
 additionalAnnotations: {}
 finalizers:
-- resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
 project: default
 repoURL: ghcr.io/treebeardtech/helm
-targetRevision: 0.1-2024-03-11-T15-14-41
+targetRevision: "0.3.1"
 chart: kubeflow-core
 destination:
   server: https://kubernetes.default.svc

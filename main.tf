@@ -20,14 +20,6 @@ variable "kubeflow_values" {
   default     = []
 }
 
-locals {
-  defaults = [
-    <<EOF
-targetRevision: 0.1-2024-03-11-T15-14-41
-EOF
-  ]
-}
-
 resource "helm_release" "argo_cd" {
   count = var.enable_argocd ? 1 : 0
 
@@ -50,7 +42,7 @@ resource "helm_release" "kubeflow" {
   namespace     = "argocd"
   chart         = "${path.module}/helm/kubeflow"
   wait_for_jobs = true
-  values        = concat(local.defaults, var.kubeflow_values)
+  values        = var.kubeflow_values
   depends_on = [
     helm_release.argo_cd
   ]
