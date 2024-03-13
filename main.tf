@@ -14,14 +14,14 @@ variable "enable_argocd" {
   default = true
 }
 
-variable "bootstrap_values" {
+variable "kubeflow_values" {
   description = "Extra values"
   type        = list(string)
   default     = []
 }
 
 locals {
-  bootstrap_default = [
+  defaults = [
     <<EOF
 targetRevision: 0.1-2024-03-11-T15-14-41
 EOF
@@ -45,12 +45,12 @@ EOF
   ]
 }
 
-resource "helm_release" "kubeflow_helm" {
-  name          = "argo-bootstrap"
+resource "helm_release" "kubeflow" {
+  name          = "kubeflow"
   namespace     = "argocd"
-  chart         = "${path.module}/helm/kubeflow-helm"
+  chart         = "${path.module}/helm/kubeflow"
   wait_for_jobs = true
-  values        = concat(local.bootstrap_default, var.bootstrap_values)
+  values        = concat(local.defaults, var.kubeflow_values)
   depends_on = [
     helm_release.argo_cd
   ]

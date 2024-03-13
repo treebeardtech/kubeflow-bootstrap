@@ -26,7 +26,7 @@ locals {
 
 module "treebeardkf" {
   source = "../.."
-  bootstrap_values = [
+  kubeflow_values = [
     <<EOF
 sources:
 - repoURL: 'https://github.com/treebeardtech/treebeard-kubeflow-gitops'

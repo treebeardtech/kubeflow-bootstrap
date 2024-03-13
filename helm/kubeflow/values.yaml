@@ -1,4 +1,4 @@
-name: 000-kubeflow-helm
+name: 000-kubeflow
 namespace: argocd
 additionalLabels: {}
 additionalAnnotations: {}
@@ -7,7 +7,7 @@ finalizers:
 project: default
 repoURL: ghcr.io/treebeardtech/helm
 targetRevision: 0.1-2024-03-11-T15-14-41
-chart: treebeard-kubeflow
+chart: kubeflow-core
 destination:
   server: https://kubernetes.default.svc
   namespace: argocd

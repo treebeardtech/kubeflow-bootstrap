@@ -44,11 +44,11 @@ TIMESTAMP := $(shell date -u "+%Y-%m-%d-T%H-%M-%S")
 VERSION := 0.1-$(TIMESTAMP)
 
 build-chart:
-	rm -rf helm/treebeard-kubeflow-*.tgz
-	helm package helm/treebeard-kubeflow -d helm --version $(VERSION)
+	rm -rf helm/kubef-*.tgz
+	helm package helm/kubeflow-core -d helm --version $(VERSION)
 
 push-chart: build-chart
-	helm push helm/treebeard-kubeflow-*.tgz oci://ghcr.io/treebeardtech/helm
+	helm push helm/kubeflow-core-*.tgz oci://ghcr.io/treebeardtech/helm
 
 helm-repo-login:
 	echo $(GHCR_PAT) | docker login ghcr.io -u alex-treebeard --password-stdin

@@ -35,12 +35,13 @@ EOF
   ]
 }
 
-resource "helm_release" "kubeflow_helm" {
-  name      = "kubeflow-helm"
+resource "helm_release" "kubeflow" {
+  name      = "kubeflow"
   namespace = "argocd"
-  chart     = "${path.module}/../../helm/bootstrap"
+  chart     = "${path.module}/../../helm/kubeflow"
   values = [
     <<EOF
+targetRevision: 0.1-2024-03-13-T12-09-21
 EOF
   ]
   depends_on = [

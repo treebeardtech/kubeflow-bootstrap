@@ -1,7 +1,7 @@
 module "treebeardkf" {
   count  = var.enable_treebeardkf ? 1 : 0
   source = "../.."
-  bootstrap_values = [
+  kubeflow_values = [
     <<EOF
 sources:
 - repoURL: 'https://github.com/treebeardtech/treebeard-kubeflow-gitops'
