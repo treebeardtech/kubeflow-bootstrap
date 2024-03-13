@@ -49,6 +49,12 @@ We provide a terraform and helm-based interface for managing Kubeflow via GitOps
 
 <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/arch.png" width="650" height="100%">
 
+### Packages
+
+1. Terraform module: A simple entrypoint for those new to Argo and looking for a 1-click experience
+2. kubeflow-helm chart: A high-level helm entrypoint for setting up Kubeflow Argo Apps
+3. kubeflow-helm-core chart: A lower-level argo apps chart which can be invoked in the "argo app-of-apps" pattern.
+
 ### System Requirements
 
 The default configuration of Kubeflow provided is designed to run on a cluster with 2cpus and 8G memory.

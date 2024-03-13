@@ -1,4 +1,8 @@
-# kubeflow-helm
+# kubeflow-helm-core
+
+This chart installs argo apps and other installation utilities for Kubeflow.
+
+It should be invoked using Kubeflow Helm, although advanced users may directly build on it.
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 

@@ -1,4 +1,6 @@
-# bootstrap
+# Kubeflow-helm
+
+This is a bootstrap chart which installs kubeflow-helm-core.
 
 ![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
 
