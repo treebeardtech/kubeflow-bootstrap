@@ -2,10 +2,7 @@ SHELLOPTS := $(if $(SHELLOPTS),$(SHELLOPTS):, )xtrace pipefail errexit nounset
 
 .PHONY: post-create
 post-create:
-	sudo chown -R vscode /home/linuxbrew/.linuxbrew/Homebrew /home/linuxbrew/.linuxbrew/bin
-	@echo "post-create"
-	brew install helm-docs yq
-	./scripts/setup-krew.sh
+	./scripts/post-create.sh
 
 .PHONY: post-start
 post-start:
