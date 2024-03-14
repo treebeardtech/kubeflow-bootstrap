@@ -3,7 +3,7 @@ on:
   release:
     types:
       - published
-  pull_request: {}
+  # pull_request: {}
 jobs:
   release:
     runs-on: ubuntu-22.04
@@ -15,6 +15,7 @@ jobs:
         env:
           GHCR_PAT: ${{ secrets.RELEASE_PAT }}
           USERNAME: alex-treebeard
+          VERSION: ${GITHUB_REF:11}
       - uses: EndBug/add-and-commit@v7.0.0
         with:
             author_name: github-actions
