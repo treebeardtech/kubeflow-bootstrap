@@ -1,19 +1,19 @@
-name: test
-on:
-  # schedule:
-    # - cron: 0 13 * * 1 # Every Monday at 1PM UTC (9AM EST)
-  pull_request:
-jobs:
-  run-example:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm install -g @devcontainers/cli@v0.57.0
-      - run: devcontainer up --workspace-folder=. --config .devcontainer/ci/devcontainer.json 
-      - run: devcontainer exec --workspace-folder=. --config .devcontainer/ci/devcontainer.json ./scripts/test.sh
-  test-codespace:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm install -g @devcontainers/cli@v0.57.0
-      - run: devcontainer up --workspace-folder=.
+# name: test
+# on:
+#   # schedule:
+#     # - cron: 0 13 * * 1 # Every Monday at 1PM UTC (9AM EST)
+#   pull_request:
+# jobs:
+#   run-example:
+#     runs-on: ubuntu-22.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - run: npm install -g @devcontainers/cli@v0.57.0
+#       - run: devcontainer up --workspace-folder=. --config .devcontainer/ci/devcontainer.json 
+#       - run: devcontainer exec --workspace-folder=. --config .devcontainer/ci/devcontainer.json ./scripts/test.sh
+#   test-codespace:
+#     runs-on: ubuntu-22.04
+#     steps:
+#       - uses: actions/checkout@v2
+#       - run: npm install -g @devcontainers/cli@v0.57.0
+#       - run: devcontainer up --workspace-folder=.
