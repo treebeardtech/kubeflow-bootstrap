@@ -60,7 +60,7 @@ The default configuration of Kubeflow provided is designed to run on a cluster w
 
 ## Getting Started
 
-Note that as all of our examples are implemented in Terraform, we recommend using the Terraform module to start off. The [helm charts](https://github.com/treebeardtech/kubeflow/tree/main/helm) are likely to be a more viable interface as you move into production.
+Note that as all of our examples are implemented in Terraform, we recommend using the Terraform module to start off. The [helm charts](helm) are likely to be a more viable interface as you move into production.
 
 We recommend trying out this module in a development environment first.
 
