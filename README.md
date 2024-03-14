@@ -77,7 +77,12 @@ To do so, follow the [k3s tutorial](examples/k3s).
 ### Install via helm CLI
 
 ```sh
-helm install kf oci://ghcr.io/treebeardtech/helm/kubeflow --version x.y.z
+# install argo (necessary for orchestration)
+helm repo add argo-cd https://argoproj.github.io/argo-helm
+helm install -n argocd --create-namespace argo-cd argo-cd/argo-cd
+
+# install kubeflow
+helm install kubeflow -n argocd oci://ghcr.io/treebeardtech/helm/kubeflow --version x.y.z
 ```
 
 In order to integrate Kubeflow with your production systems there are some changes you 
