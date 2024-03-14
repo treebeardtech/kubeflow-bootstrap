@@ -13,9 +13,9 @@ jobs:
         env:
           GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.actor }}
-      # - run: make push-chart
-      #   env:
-      #     VERSION: ${GITHUB_REF:11}
+      - run: make push-chart
+        # env:
+        #   VERSION: ${GITHUB_REF:11}
       # - uses: EndBug/add-and-commit@v7.0.0
       #   with:
       #       author_name: github-actions
