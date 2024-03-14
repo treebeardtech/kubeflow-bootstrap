@@ -10,11 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: '0'
-      - run: make helm-repo-login && make push-chart
-        env:
-          GHCR_PAT: ${{ secrets.RELEASE_PAT }}
-          USERNAME: alex-treebeard
+          fetch-depth: '0' # ensure tag lookup works
+      - run: echo ${GITHUB_REF:11}
+      # - run: make helm-repo-login && make push-chart
+      #   env:
+      #     GHCR_PAT: ${{ secrets.RELEASE_PAT }}
+      #     USERNAME: alex-treebeard
       # - run: 
         # env:
         #   VERSION: ${GITHUB_REF:11}
