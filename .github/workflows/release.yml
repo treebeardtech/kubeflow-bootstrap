@@ -13,8 +13,8 @@ jobs:
           fetch-depth: '0'
       - run: make helm-repo-login && make push-chart
         env:
-          GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
-          USERNAME: ${{ github.actor }}
+          GHCR_PAT: ${{ secrets.RELEASE_PAT }}
+          USERNAME: alex-treebeard
       # - run: 
         # env:
         #   VERSION: ${GITHUB_REF:11}
