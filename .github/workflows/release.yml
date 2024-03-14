@@ -25,5 +25,5 @@ jobs:
             author_name: github-actions
             author_email: 41898282+github-actions[bot]@users.noreply.github.com
             add: helm/kubeflow/values.yaml
-            branch: ${{ env.GITHUB_HEAD_REF }}
+            branch: release
             message: Published new version
