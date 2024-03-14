@@ -24,7 +24,6 @@
 
 ## About this project
 
-
 This project simplifies MLOps in Kubernetes by providing Kubeflow in Helm and Terraform package formats. This allows scaling Kubeflow usage with the rest of your production systems.
 
 Kubeflow provides a cloud-native AI platform which can be used to deploy applications in
@@ -61,7 +60,7 @@ The default configuration of Kubeflow provided is designed to run on a cluster w
 
 ## Getting Started
 
-Note that as all of our examples are implemented in Terraform, we recommend using the Terraform module to start off. The [helm super-chart](https://github.com/treebeardtech/kubeflow/tree/main/helm/treebeard-kubeflow) is likely to be a more viable interface as you move into production.
+Note that as all of our examples are implemented in Terraform, we recommend using the Terraform module to start off. The [helm charts](https://github.com/treebeardtech/kubeflow/tree/main/helm) are likely to be a more viable interface as you move into production.
 
 We recommend trying out this module in a development environment first.
 
@@ -78,7 +77,7 @@ To do so, follow the [k3s tutorial](examples/k3s).
 ### Install via helm CLI
 
 ```sh
-helm install kf oci://ghcr.io/treebeardtech/helm/treebeard-kubeflow --version x.y.z
+helm install kf oci://ghcr.io/treebeardtech/helm/kubeflow --version x.y.z
 ```
 
 In order to integrate Kubeflow with your production systems there are some changes you 
