@@ -90,6 +90,7 @@ may want to make:
 
 ### Add Kubeflow to your Terraform module
 
+(see [Terraform Modules page](https://registry.terraform.io/modules/treebeardtech/kubeflow/helm/latest))
 ```hcl
 # resource or data for your k8s cluster
 ...
