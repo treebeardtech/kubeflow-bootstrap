@@ -158,7 +158,7 @@ See the [gitops example](examples/k3s-gitops) for details.
 
 ## Troubleshooting
 
-## Reconfiguration challenges
+### Reconfiguration challenges
 
 Moving the deployment between different states of configuration can be challenging
 due to the dependencies between components in the cluster.
