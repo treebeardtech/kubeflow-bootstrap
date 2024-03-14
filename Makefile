@@ -52,4 +52,4 @@ push-chart: build-chart
 	helm push helm/kubeflow-$(VERSION).tgz oci://ghcr.io/treebeardtech/helm
 
 helm-repo-login:
-	echo $(GHCR_PAT) | docker login ghcr.io -u alex-treebeard --password-stdin
+	echo $(GHCR_PAT) | docker login ghcr.io -u $(USERNAME) --password-stdin

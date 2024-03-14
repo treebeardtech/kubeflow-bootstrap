@@ -9,11 +9,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
-      - run: make docker-login
+      - run: make helm-repo-login
         env:
           GHCR_PAT: ${{ secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.actor }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       # - run: make push-chart
       #   env:
       #     VERSION: ${GITHUB_REF:11}
