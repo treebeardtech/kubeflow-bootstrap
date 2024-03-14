@@ -6,7 +6,7 @@
 
   <br />
 
-  <a target="_blank" href="https://artifacthub.io/packages/helm/treebeard-kubeflow/treebeard-kubeflow">
+  <a target="_blank" href="https://artifacthub.io/packages/helm/treebeardtech-kubeflow/kubeflow">
     <img src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/kubeflow" />
   </a>
   <a target="_blank" href="https://registry.terraform.io/modules/treebeardtech/kubeflow/helm/latest">
