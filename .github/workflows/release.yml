@@ -1,0 +1,28 @@
+name: release
+on:
+  release:
+    types:
+      - published
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0' # ensure tag lookup works
+      - run: |
+          #!/usr/bin/env bash
+          set -e -u -x -o pipefail
+          export VERSION=${GITHUB_REF:11}
+          make helm-repo-login
+          make push-chart
+        env:
+          GHCR_PAT: ${{ secrets.RELEASE_PAT }}
+          USERNAME: alex-treebeard
+      - uses: EndBug/add-and-commit@v7.0.0
+        with:
+            author_name: github-actions
+            author_email: 41898282+github-actions[bot]@users.noreply.github.com
+            add: helm/kubeflow/values.yaml
+            branch: main
+            message: Published new version
