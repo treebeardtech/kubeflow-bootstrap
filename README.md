@@ -165,3 +165,7 @@ Moving the deployment between different states of configuration can be challengi
 due to the dependencies between components in the cluster.
 
 If you have made a change to a dependency such as istio, or an auth component such as dex, it can be a good idea to re-create pods such that they re-initialise. This can be done by scaling to 0 then back up again, or simply deleting a pod managed by a deployment.
+
+## See also
+
+[Blog post about this project](https://www.treebeard.io/blog/kubeflows-missing-helm-chart)
