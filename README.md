@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Kubeflow Helm</h1>
+  <h1>Kubeflow Bootstrap</h1>
   <p><b>🪐 1-click Kubeflow</b></p>
 
   <img src="https://raw.githubusercontent.com/treebeardtech/terraform-helm-kubeflow/main/docs/tkf.png" width="400" height="100%">
