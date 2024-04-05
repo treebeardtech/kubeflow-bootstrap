@@ -75,7 +75,17 @@ terraform apply -var kubeconfig=$KUBECONFIG
 
 ### 3. Verify the installation
 
-Once terraform has finished, connect to the central dashboard and login as the default user.
+Watch k9s pods until all of them are in a ready state.
+
+You can also check argocd with:
+
+```
+kubectl port-forward  --namespace "argocd" svc/argo-cd-argocd-server 8081:80
+```
+
+then go the localhost:8081 and enter username 'admin', password (decoded `argocd/argocd-initial-admin-secret`)
+
+Once all is finished you can port forward into the ingress gateway:
 
 ```sh
 kubectl port-forward  --namespace "istio-system" svc/istio-ingressgateway 8080:http2

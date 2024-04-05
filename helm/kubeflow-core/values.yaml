@@ -612,3 +612,48 @@ tensorboardsWebApp:
         prune: false
       syncOptions:
         - ServerSideApply=true
+
+kuberay:
+  enabled: false
+  spec:
+    project: default
+    sources:
+      - chart: 'kuberay-operator'
+        repoURL: 'https://ray-project.github.io/kuberay-helm/'
+        targetRevision: "1.1.0"
+        helm:
+          releaseName: "kuberay"
+          ignoreMissingValueFiles: true
+          valuesObject:
+            resources: {}
+    destination:
+      namespace: 'kubeflow'
+      name: 'in-cluster'
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
+
+sparkOperator:
+  enabled: false
+  spec:
+    project: default
+    sources:
+      - chart: 'spark-operator'
+        repoURL: 'https://kubeflow.github.io/spark-operator'
+        targetRevision: "1.1.27"
+        helm:
+          releaseName: "spark-operator"
+          ignoreMissingValueFiles: true
+          valuesObject: {}
+    destination:
+      namespace: 'kubeflow'
+      name: 'in-cluster'
+    syncPolicy:
+      automated:
+        prune: false
+      syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true

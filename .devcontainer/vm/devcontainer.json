@@ -27,7 +27,7 @@
     }
   },
   "runArgs": [
-    "--network=host",
+    "--network=host", // Allows accessing k3d from within container using docker outside of docker
   ],
   "features": {
     "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {

@@ -1,0 +1,12 @@
+{{ if .Values.kuberay.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 300-kuberay
+  annotations:
+    argocd.argoproj.io/sync-wave: "300"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ .Values.kuberay.spec | toYaml | indent 2}}
+{{- end -}}
